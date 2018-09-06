@@ -1,6 +1,6 @@
 {
   "name": "react-native-flurry-sdk",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "React Native wrapper for Flurry SDK",
   "main": "index.js",
   "types" : "index.d.ts",
