@@ -1,0 +1,13 @@
+example
+android/build
+ios/build
+*.iml
+images
+
+gradle
+gradlew
+gradlew.bat
+.gradle
+.idea
+local.properties
+
