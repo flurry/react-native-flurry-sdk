@@ -15,34 +15,32 @@ A React Native wrapper for Flurry SDK
 ## Installation
 
 1. Install Flurry SDK module by `npm`
-  ```
-  npm install react-native-flurry-sdk --save
-  ```
+   ```
+   npm install react-native-flurry-sdk --save
+   ```
 2. Link React Native dependency
-  ```
-  react-native link react-native-flurry-sdk
-  ```
+   ```
+   react-native link react-native-flurry-sdk
+   ```
 3. Add Flurry JS code
-  ```javascript
-  import Flurry from 'react-native-flurry-sdk';
-  ```
-
+   ```javascript
+   import Flurry from 'react-native-flurry-sdk';
+   ```
 ### iOS
 
 1. Initialize Podfile under `ios` folder. Please have [CocoaPods](https://cocoapods.org) installed.
-  ```
-  cd ios
-  pod init
-
+   ```
+   cd ios
+   pod init
+   ```
 2. Open the Podfile and add Flurry dependency under your target.
-  ```
-  pod 'Flurry-iOS-SDK/FlurrySDK'
-
+   ```
+   pod 'Flurry-iOS-SDK/FlurrySDK'
+   ```
 3. Install the Flurry SDK by running the following command in the directory containing the Podfile.
-  ```
-  pod install
-  ```
-
+   ```
+   pod install
+   ```
 ## Example
 ```javascript
 import React, { Component } from 'react';
