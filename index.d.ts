@@ -2,9 +2,12 @@ declare module 'react-native-flurry-sdk' {
     interface FlurryStatic {
 
         /**
-         * Flurry.init('FLURRY_API_KEY');
+         * There are two overloads,
+         * e.g. Flurry.init('FLURRY_API_KEY'); Flurry.init('FLURRY_ANDROID_API_KEY', 'FLURRY_IOS_API_KEY');
+         * - init(apikey)
+         * - init(apikeyAndroid, apikeyIos)
          */
-        init(apiKey: string): void;
+        init(apiKey1: string, apiKey2?: string): void;
 
         /**
          * Method must be called prior to invoking init, e.g. Flurry.withCrashReporting(true);
@@ -67,12 +70,12 @@ declare module 'react-native-flurry-sdk' {
         setIAPReportingEnabled(enableIAP?: boolean): void;
 
         /**
-         * There are 2 overloads,
+         * There are two overloads,
          * e.g. Flurry.addOrigin('name', 'version'); Flurry.addOrigin('name', 'version'), {param: 'true'});
          * - addOrigin(originName, originVersion)
          * - addOrigin(originName, originVersion, originParameters)
          */
-        addOrigin(originName: string, originVersion: string, originParameters: any): void;
+        addOrigin(originName: string, originVersion: string, originParameters?: any): void;
 
         /**
          * e.g. Flurry.addSessionProperty('name', 'value');
@@ -127,7 +130,7 @@ declare module 'react-native-flurry-sdk' {
          * - onError(errorId, message, errorClass)
          * - onError(errorId, message, errorClass, errorParams)
          */
-        onError(errorId: string, message: string, errorClass: string, errorParams: any): void;
+        onError(errorId: string, message: string, errorClass: string, errorParams?: any): void;
 
         /**
          * e.g. Flurry.onPageView();

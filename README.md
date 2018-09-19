@@ -63,7 +63,7 @@ export default class App extends Component<Props> {
     Flurry.withLogLevel(2);
     
     // Init once in the main constructor.
-    Flurry.init("ABCDEFGHIJKLMNOPQRST");
+    Flurry.init(FLURRY_ANDROID_API_KEY, FLURRY_IOS_API_KEY);
     
     // Example to get Flurry versions.
     Flurry.getVersions(
@@ -114,7 +114,8 @@ the Flurry references.
   Flurry.withLogLevel(logLevel = 5);
   ```
   ```javascript
-  Flurry.init(apiKey: string);
+  Flurry.init(apiKeyAndroid: string, apiKeyIos: string);  // preferred; passing null if not available
+  Flurry.init(apiKey: string);  // use when only single platform is supported, or shared (not recommended)
   ```
 - **Methods to set users preferences**
   ```javascript

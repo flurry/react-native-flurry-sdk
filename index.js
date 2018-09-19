@@ -1,5 +1,6 @@
 import {
     NativeModules,
+    Platform,
  } from 'react-native';
 
 const { ReactNativeFlurry } = NativeModules;
@@ -17,18 +18,36 @@ function priorInit(wrapped) {
 }
 
 export default class Flurry {
-    static init(apiKey) {
+    static init(apiKey1, apiKey2) {
         if (initFlurryCalled) {
             console.error('Flurry.init: already called');
             return;
         }
 
-        if (!apiKey) {
+        if (arguments.length === 0) {
             console.error('Flurry.init: apiKey(string) is required');
             return;
+        } else if (arguments.length === 1) {
+            if (!apiKey1) {
+                console.error('Flurry.init: apiKey1(string) is required');
+                return;
+            }
+            ReactNativeFlurry.init(apiKey1);
+        } else if (arguments.length === 2) {
+            if (Platform.OS === 'android') {
+                if (!apiKey1) {
+                    console.error('Flurry.init: apiKey1(string) is required');
+                    return;
+                }
+                ReactNativeFlurry.init(apiKey1);
+            } else if (Platform.OS === 'ios') {
+                if (!apiKey2) {
+                    console.error('Flurry.init: apiKey2(string) is required');
+                    return;
+                }
+                ReactNativeFlurry.init(apiKey2);
+            }
         }
-
-        ReactNativeFlurry.init(apiKey);
 
         initFlurryCalled = true;
     }
