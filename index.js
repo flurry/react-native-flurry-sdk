@@ -28,20 +28,20 @@ export default class Flurry {
             console.error('Flurry.init: apiKey(string) is required');
             return;
         } else if (arguments.length === 1) {
-            if (!apiKey1) {
+            if (apiKey1 == null) {
                 console.error('Flurry.init: apiKey1(string) is required');
                 return;
             }
             ReactNativeFlurry.init(apiKey1);
         } else if (arguments.length === 2) {
             if (Platform.OS === 'android') {
-                if (!apiKey1) {
+                if (apiKey1 == null) {
                     console.error('Flurry.init: apiKey1(string) is required');
                     return;
                 }
                 ReactNativeFlurry.init(apiKey1);
             } else if (Platform.OS === 'ios') {
-                if (!apiKey2) {
+                if (apiKey2 == null) {
                     console.error('Flurry.init: apiKey2(string) is required');
                     return;
                 }
@@ -77,7 +77,7 @@ export default class Flurry {
     }
 
     static setAge(age) {
-        if (!age || typeof age !== 'number' || age <= 0 || age >= 110) {
+        if (typeof age !== 'number' || age <= 0 || age >= 110) {
             console.error(`Flurry.setAge: age must be a valid positive number between 0 and 110. Got ${age}`);
             return;
         }
@@ -86,7 +86,7 @@ export default class Flurry {
     }
 
     static setGender(gender) {
-        if (!gender || typeof gender !== 'string' || !['m', 'f'].includes(gender)) {
+        if (typeof gender !== 'string' || !['m', 'f'].includes(gender)) {
             console.error(`Flurry.setGender: gender must be one of ['m', 'f']. Got ${gender}`);
             return;
         }
@@ -95,7 +95,7 @@ export default class Flurry {
     }
 
     static setReportLocation(reportLocation) {
-        if (!reportLocation || typeof reportLocation !== 'boolean') {
+        if (typeof reportLocation !== 'boolean') {
             console.error(`Flurry.setReportLocation: reportLocation must be one of [true, false]. Got ${reportLocation}`);
             return;
         }
@@ -104,12 +104,12 @@ export default class Flurry {
     }
 
     static setSessionOrigin(originName, deepLink) {
-        if (!originName || typeof originName !== 'string') {
+        if (typeof originName !== 'string') {
             console.error(`Flurry.setSessionOrigin: originName must be string. Got ${originName}`);
             return;
         }
 
-        if (!deepLink || typeof deepLink !== 'string') {
+        if (typeof deepLink !== 'string') {
             console.error(`Flurry.setSessionOrigin: deepLink must be string. Got ${deepLink}`);
             return;
         }
@@ -118,7 +118,7 @@ export default class Flurry {
     }
 
     static setUserId(userId) {
-        if (!userId || typeof userId !== 'string') {
+        if (typeof userId !== 'string') {
             console.error(`Flurry.setUserId: userId must be a string. Got ${userId}`);
             return;
         }
@@ -127,7 +127,7 @@ export default class Flurry {
     }
 
     static setVersionName(versionName = '1.0') {
-        if (!versionName || typeof versionName !== 'string') {
+        if (typeof versionName !== 'string') {
             console.error(`Flurry.setVersionName: versionName must be a string. Got ${versionName}`);
             return;
         }
@@ -136,7 +136,7 @@ export default class Flurry {
     }
 
     static setIAPReportingEnabled(enableIAP = true) {
-        if (!enableIAP || typeof enableIAP !== 'boolean') {
+        if (typeof enableIAP !== 'boolean') {
             console.error(`Flurry.setIAPReportingEnabled: enableIAP must be one of [true, false]. Got ${enableIAP}`);
             return;
         }
@@ -150,12 +150,12 @@ export default class Flurry {
      * - addOrigin(originName, originVersion, originParameters)
      */
     static addOrigin(originName, originVersion, originParameters) {
-        if (!originName || typeof originName !== 'string') {
+        if (typeof originName !== 'string') {
             console.error(`Flurry.addOrigin: originName must be string. Got ${originName}`);
             return;
         }
 
-        if (!originVersion || typeof originVersion !== 'string') {
+        if (typeof originVersion !== 'string') {
             console.error(`Flurry.addOrigin: originVersion must be string. Got ${originVersion}`);
             return;
         }
@@ -168,12 +168,12 @@ export default class Flurry {
     }
 
     static addSessionProperty(name, value) {
-        if (!name || typeof name !== 'string') {
+        if (typeof name !== 'string') {
             console.error(`Flurry.addSessionProperty: name must be string. Got ${name}`);
             return;
         }
 
-        if (!value || typeof value !== 'string') {
+        if (typeof value !== 'string') {
             console.error(`Flurry.addSessionProperty: value must be string. Got ${value}`);
             return;
         }
@@ -186,7 +186,7 @@ export default class Flurry {
     }
 
     static logBreadcrumb(crashBreadcrumb) {
-        if (!crashBreadcrumb || typeof crashBreadcrumb !== 'string') {
+        if (typeof crashBreadcrumb !== 'string') {
             console.error(`Flurry.logBreadcrumb: crashBreadcrumb must be a string. Got ${crashBreadcrumb}`);
             return;
         }
@@ -202,7 +202,7 @@ export default class Flurry {
      * - logEvent(eventId, parameters, timed)
      */
     static logEvent(eventId, parameters, timed) {
-        if (!eventId || typeof eventId !== 'string') {
+        if (typeof eventId !== 'string') {
             console.error(`Flurry.logEvent: eventId must be a string. Got ${eventId}`);
             return;
         }
@@ -221,32 +221,32 @@ export default class Flurry {
     }
 
     static logPayment(productName, productId, quantity, price, currency, transactionId, parameters) {
-        if (!productName || typeof productName !== 'string') {
+        if (typeof productName !== 'string') {
             console.error(`Flurry.logPayment: productName must be a string. Got ${productName}`);
             return;
         }
 
-        if (!productId || typeof productId !== 'string') {
+        if (typeof productId !== 'string') {
             console.error(`Flurry.logPayment: productId must be a string. Got ${productId}`);
             return;
         }
 
-        if (!quantity || typeof quantity !== 'number') {
+        if (typeof quantity !== 'number') {
             console.error(`Flurry.logPayment: quantity must be a number. Got ${quantity}`);
             return;
         }
 
-        if (!price || typeof price !== 'number') {
+        if (typeof price !== 'number') {
             console.error(`Flurry.logPayment: price must be a number. Got ${price}`);
             return;
         }
 
-        if (!currency || typeof currency !== 'string') {
+        if (typeof currency !== 'string') {
             console.error(`Flurry.logPayment: currency must be a string. Got ${currency}`);
             return;
         }
 
-        if (!transactionId || typeof transactionId !== 'string') {
+        if (typeof transactionId !== 'string') {
             console.error(`Flurry.logPayment: transactionId must be a string. Got ${transactionId}`);
             return;
         }
@@ -260,7 +260,7 @@ export default class Flurry {
      * - endTimedEvent(eventId, parameters)
      */
     static endTimedEvent(eventId, parameters) {
-        if (!eventId || typeof eventId !== 'string') {
+        if (typeof eventId !== 'string') {
             console.error(`Flurry.logEvent: endTimedEvent must be a string. Got ${eventId}`);
             return;
         }
@@ -278,17 +278,17 @@ export default class Flurry {
      * - onError(errorId, message, errorClass, errorParams)
      */
     static onError(errorId, message, errorClass, errorParams) {
-        if (!errorId || typeof errorId !== 'string') {
+        if (typeof errorId !== 'string') {
             console.error(`Flurry.onError: errorId must be a string. Got ${errorId}`);
             return;
         }
 
-        if (!message || typeof message !== 'string') {
+        if (typeof message !== 'string') {
             console.error(`Flurry.onError: message must be a string. Got ${message}`);
             return;
         }
 
-        if (!errorClass || typeof errorClass !== 'string') {
+        if (typeof errorClass !== 'string') {
             console.error(`Flurry.onError: errorClass must be a string. Got ${errorClass}`);
             return;
         }

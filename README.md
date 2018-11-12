@@ -5,7 +5,9 @@
 A React Native wrapper for Flurry SDK
 
 ## Table of contents
+
 - [Installation](#installation)
+  - [Android](#android)
   - [iOS](#ios)
 - [Example](#example)
 - [API Reference](#api-reference)
@@ -26,6 +28,20 @@ A React Native wrapper for Flurry SDK
    ```javascript
    import Flurry from 'react-native-flurry-sdk';
    ```
+
+### Android
+
+- By default, Flurry adds `INTERNET` and `ACCESS_NETWORK_STATE` permissions to optimize analytics data. Please see [Manual Flurry Android SDK Integration](https://developer.yahoo.com/flurry/docs/integrateflurry/android-manual/) for the other recommended options.
+- To improve analytics identities, please see [Manual Flurry Android SDK Integration](https://developer.yahoo.com/flurry/docs/integrateflurry/android-manual/) for adding Google Play Services library in your app by including the following in your `build.gradle` file:
+  ```
+  dependencies {
+      // Recommended to add Google Play Services
+      implementation 'com.google.android.gms:play-services-base:15.0.1'
+      implementation 'com.google.android.gms:play-services-ads:15.0.1' 
+      ...
+  }
+  ```
+
 ### iOS
 
 1. Initialize Podfile under `ios` folder. Please have [CocoaPods](https://cocoapods.org) installed.
@@ -41,7 +57,9 @@ A React Native wrapper for Flurry SDK
    ```
    pod install
    ```
+
 ## Example
+
 ```javascript
 import React, { Component } from 'react';
 import {
@@ -62,7 +80,9 @@ export default class App extends Component<Props> {
     Flurry.withLogEnabled(true);
     Flurry.withLogLevel(2);
     
-    // Init once in the main constructor.
+    // Init once in the main constructor. For each platfrom (Android, iOS) where the app runs
+    // you need to acquire a unique Flurry API Key. 
+    // i.e., you need two API keys if you are going to release the app on both Android and iOS platforms.
     Flurry.init(FLURRY_ANDROID_API_KEY, FLURRY_IOS_API_KEY);
     
     // Example to get Flurry versions.
@@ -99,6 +119,7 @@ export default class App extends Component<Props> {
 }
 ...
 ```
+
 ## API Reference
 
 See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http://flurry.github.io/flurry-android-sdk/com/flurry/android/FlurryAgent.html) /
@@ -126,6 +147,7 @@ the Flurry references.
   Flurry.setUserId(userId: string);
   Flurry.setVersionName(versionName: string);
      
+  Flurry.addOrigin(originName: string, originVersion: string);
   Flurry.addOrigin(originName: string, originVersion: string, originParameters: {});
   Flurry.addSessionProperty(name: string, value: string);
   ```
@@ -177,3 +199,4 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+

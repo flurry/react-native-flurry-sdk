@@ -2,22 +2,22 @@ apply plugin: 'com.android.library'
 
 buildscript {
     repositories {
+        google()
         jcenter()
-        maven { url "https://maven.google.com" }
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:3.0.1"
+        classpath "com.android.tools.build:gradle:3.1.4"
     }
 }
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.3"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
     }
@@ -33,11 +33,12 @@ repositories {
         url "$projectDir/../../../node_modules/react-native/android"
     }
     mavenCentral()
+    google()
     jcenter()
 }
 
 dependencies {
-    compile 'com.facebook.react:react-native:+'
-    compile 'com.flurry.android:analytics:11.3.0@aar'
+    implementation 'com.facebook.react:react-native:+'
+    implementation 'com.flurry.android:analytics:11.4.0@aar'
 }
 
