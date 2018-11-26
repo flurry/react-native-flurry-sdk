@@ -1,5 +1,11 @@
 # Change Log
 
+## v1.3.0 (2018-11-26)
+
+#### Bug Fixes
+
+* Fix iOS build error and ignore xcuserdata
+
 ## v1.2.0 (2018-11-12)
 
 #### Features

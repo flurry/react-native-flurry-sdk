@@ -12,6 +12,9 @@ gradle.properties
 local.properties
 *.log
 
+# iOS
+xcuserdata/
+
 # Mac
 .DS_Store
 

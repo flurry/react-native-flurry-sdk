@@ -2,6 +2,7 @@ example
 android/build
 ios/build
 *.iml
+xcuserdata
 images
 
 gradle

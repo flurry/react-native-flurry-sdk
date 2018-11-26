@@ -18,7 +18,7 @@
 #import <Flurry.h>
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"1.0.0";
+static NSString * const originVersion = @"1.3.0";
 
 @interface ReactNativeFlurry ()
 
