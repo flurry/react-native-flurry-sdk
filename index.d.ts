@@ -108,7 +108,7 @@ declare module 'react-native-flurry-sdk' {
          * - logEvent(eventId, parameters)
          * - logEvent(eventId, parameters, timed)
          */
-        logEvent(eventName: string, params?: any, timed?: boolean);
+        logEvent(eventName: string, params?: any, timed?: boolean): void;
 
         /**
          * e.g. Flurry.logPayment('productName', 'productId', 6, 36, 'currency', 'transactionId', {param: 'true'});

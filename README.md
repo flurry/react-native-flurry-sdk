@@ -44,6 +44,8 @@ A React Native wrapper for Flurry SDK
 
 ### iOS
 
+By default, the CocoaPods depedencies are automatically installed by `react-native link` command. To install the dependencies manually, please see [Import Flurry Libraries](https://developer.yahoo.com/flurry/docs/integrateflurry/ios/#import-flurry-libraries) or follow the steps below.
+
 1. Initialize Podfile under `ios` folder. Please have [CocoaPods](https://cocoapods.org) installed.
    ```
    cd ios

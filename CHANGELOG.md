@@ -1,5 +1,12 @@
 # Change Log
 
+## v1.4.0 (2019-01-23)
+
+#### Features
+
+* Upgrade Flurry Android SDK version to 11.5.0
+* Use post link scripts to automatically install iOS dependencies
+
 ## v1.3.0 (2018-11-26)
 
 #### Bug Fixes
