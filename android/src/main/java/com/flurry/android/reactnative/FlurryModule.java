@@ -63,7 +63,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
                     public void onSessionStarted() {
                     }
                 })
-                .build(getCurrentActivity(), apiKey);
+                .build(getReactApplicationContext(), apiKey);
     }
 
     @ReactMethod
