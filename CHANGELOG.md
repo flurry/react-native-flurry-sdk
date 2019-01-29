@@ -1,5 +1,12 @@
 # Change Log
 
+## v1.5.0 (2019-01-30)
+
+#### Bug Fixes
+
+* Use Application context to initialize Flurry Agent (Android)
+* Make iOS log level consistent with Android
+
 ## v1.4.0 (2019-01-23)
 
 #### Features

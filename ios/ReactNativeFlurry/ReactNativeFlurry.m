@@ -18,12 +18,12 @@
 #import <Flurry.h>
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"1.4.0";
+static NSString * const originVersion = @"1.5.0";
 
 @interface ReactNativeFlurry ()
 
 @property (strong, nonatomic) FlurrySessionBuilder *sessionBuilder;
-@property (nonatomic) FlurryLogLevel logLevel;
+@property (assign, nonatomic) FlurryLogLevel logLevel;
 
 @end
 
@@ -34,8 +34,8 @@ RCT_EXPORT_MODULE();
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.sessionBuilder = [FlurrySessionBuilder new];
-        self.logLevel = FlurryLogLevelCriticalOnly; // default log level
+        _sessionBuilder = [FlurrySessionBuilder new];
+        _logLevel = FlurryLogLevelCriticalOnly; // default log level
         [Flurry addOrigin:originName withVersion:originVersion];
     }
     return self;
@@ -75,11 +75,19 @@ RCT_EXPORT_METHOD(withLogEnabled:(BOOL)enabled) {
 }
 
 RCT_EXPORT_METHOD(withLogLevel:(NSInteger)value) {
-    if (value >= 4) {
+    if (value < 2 || value > 7) {
         NSLog(@"Flurry: Invalid log level %ld.", (long)value);
         return;
     }
-    self.logLevel = (FlurryLogLevel)value;
+    
+    if (value == 2) {
+        self.logLevel = FlurryLogLevelAll;
+    } else if (value <= 5) {
+        self.logLevel = FlurryLogLevelDebug;
+    } else {
+        self.logLevel = FlurryLogLevelCriticalOnly;
+    }
+    
     [self.sessionBuilder withLogLevel:self.logLevel];
 }
 

@@ -17,14 +17,17 @@ A React Native wrapper for Flurry SDK
 ## Installation
 
 1. Install Flurry SDK module by `npm`
+
    ```
    npm install react-native-flurry-sdk --save
    ```
 2. Link React Native dependency
+
    ```
    react-native link react-native-flurry-sdk
    ```
 3. Add Flurry JS code
+
    ```javascript
    import Flurry from 'react-native-flurry-sdk';
    ```
@@ -33,6 +36,7 @@ A React Native wrapper for Flurry SDK
 
 - By default, Flurry adds `INTERNET` and `ACCESS_NETWORK_STATE` permissions to optimize analytics data. Please see [Manual Flurry Android SDK Integration](https://developer.yahoo.com/flurry/docs/integrateflurry/android-manual/) for the other recommended options.
 - To improve analytics identities, please see [Manual Flurry Android SDK Integration](https://developer.yahoo.com/flurry/docs/integrateflurry/android-manual/) for adding Google Play Services library in your app by including the following in your `build.gradle` file:
+
   ```
   dependencies {
       // Recommended to add Google Play Services
@@ -47,20 +51,46 @@ A React Native wrapper for Flurry SDK
 By default, the CocoaPods depedencies are automatically installed by `react-native link` command. To install the dependencies manually, please see [Import Flurry Libraries](https://developer.yahoo.com/flurry/docs/integrateflurry/ios/#import-flurry-libraries) or follow the steps below.
 
 1. Initialize Podfile under `ios` folder. Please have [CocoaPods](https://cocoapods.org) installed.
+
    ```
    cd ios
    pod init
    ```
 2. Open the Podfile and add Flurry dependency under your target.
+
    ```
    pod 'Flurry-iOS-SDK/FlurrySDK'
    ```
 3. Install the Flurry SDK by running the following command in the directory containing the Podfile.
+
    ```
    pod install
    ```
 
 ## Example
+
+- `index.js`
+
+```javascript
+import { AppRegistry } from 'react-native';
+import { name as appName } from './app.json';
+import App from './App';
+import Flurry from 'react-native-flurry-sdk';
+
+// Called prior to invoking Flurry init.
+Flurry.withCrashReporting(true);
+Flurry.withLogEnabled(true);
+Flurry.withLogLevel(2);
+
+// Init Flurry once as early as possible. For each platfrom (Android, iOS) where the app runs
+// you need to acquire a unique Flurry API Key. 
+// i.e., you need two API keys if you are going to release the app on both Android and iOS platforms.
+Flurry.init(FLURRY_ANDROID_API_KEY, FLURRY_IOS_API_KEY);
+
+AppRegistry.registerComponent(appName, () => App);
+```
+
+- `App.js`
 
 ```javascript
 import React, { Component } from 'react';
@@ -76,16 +106,6 @@ type Props = {};
 export default class App extends Component<Props> {
   constructor(props) {
     super(props);
-    
-    // Called prior to invoking init.
-    Flurry.withCrashReporting(true);
-    Flurry.withLogEnabled(true);
-    Flurry.withLogLevel(2);
-    
-    // Init once in the main constructor. For each platfrom (Android, iOS) where the app runs
-    // you need to acquire a unique Flurry API Key. 
-    // i.e., you need two API keys if you are going to release the app on both Android and iOS platforms.
-    Flurry.init(FLURRY_ANDROID_API_KEY, FLURRY_IOS_API_KEY);
     
     // Example to get Flurry versions.
     Flurry.getVersions(
@@ -129,18 +149,21 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
 the Flurry references.
 
 - **Methods must be called prior to invoking init**
+
   ```javascript
   Flurry.withCrashReporting(crashReporting = true);
   Flurry.withContinueSessionMillis(sessionMillis = 10000);
   Flurry.withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics = true);
   Flurry.withLogEnabled(enableLog = true);
-  Flurry.withLogLevel(logLevel = 5);
+  Flurry.withLogLevel(logLevel = 5); // Android (2:VERBOSE, 3:DEBUG, 4:INFO, 5:WARN, 6:ERROR, 7:ASSERT), iOS (2:All, 3-5:Debug, 6-7:Critical)
   ```
+  
   ```javascript
   Flurry.init(apiKeyAndroid: string, apiKeyIos: string);  // preferred; passing null if not available
   Flurry.init(apiKey: string);  // use when only single platform is supported, or shared (not recommended)
   ```
 - **Methods to set users preferences**
+
   ```javascript
   Flurry.setAge(age: number);
   Flurry.setGender(gender = ['m', 'f']);
@@ -154,11 +177,13 @@ the Flurry references.
   Flurry.addSessionProperty(name: string, value: string);
   ```
 - **Methods to get Flurry versions**
+
   ```javascript
   Flurry.getVersions((msg) => errorCallback,
                      (agentVersion, releaseVersion, sessionId) => successCallback);
   ```
 - **Methods to log Flurry events**
+
   ```javascript
   Flurry.logEvent(eventId: string);
   Flurry.logEvent(eventId: string, timed: boolean);
@@ -174,10 +199,12 @@ the Flurry references.
   Flurry.onError(errorId: string, message: string, errorClass: string, errorParams: {});
      
   Flurry.logBreadcrumb(crashBreadcrumb: string);
-  Flurry.logPayment(productName: string, productId: string, quantity: number, price: number, currency: string, transactionId: string, parameters: {});  // Android, see setIAPReportingEnabled for iOS
+  Flurry.logPayment(productName: string, productId: string, quantity: number, price: number,
+                    currency: string, transactionId: string, parameters: {});  // Android, see setIAPReportingEnabled for iOS
   ```
 
 - **Methods to enable IAP reporting (iOS)**
+
   ```javascript
   Flurry.setIAPReportingEnabled(enableIAP: boolean);
   ```
