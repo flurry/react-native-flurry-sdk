@@ -77,15 +77,14 @@ import { name as appName } from './app.json';
 import App from './App';
 import Flurry from 'react-native-flurry-sdk';
 
-// Called prior to invoking Flurry init.
-Flurry.withCrashReporting(true);
-Flurry.withLogEnabled(true);
-Flurry.withLogLevel(2);
-
 // Init Flurry once as early as possible. For each platfrom (Android, iOS) where the app runs
 // you need to acquire a unique Flurry API Key. 
 // i.e., you need two API keys if you are going to release the app on both Android and iOS platforms.
-Flurry.init(FLURRY_ANDROID_API_KEY, FLURRY_IOS_API_KEY);
+new Flurry.Builder()
+    .withCrashReporting(true)
+    .withLogEnabled(true)
+    .withLogLevel(2)
+    .build(FLURRY_ANDROID_API_KEY, FLURRY_IOS_API_KEY);
 
 AppRegistry.registerComponent(appName, () => App);
 ```
@@ -148,7 +147,19 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
 [iOS](http://flurry.github.io/flurry-ios-sdk/)-[(Flurry)](http://flurry.github.io/flurry-ios-sdk/interface_flurry.html) for
 the Flurry references.
 
-- **Methods must be called prior to invoking init**
+- **Methods to initialize Flurry**
+
+  ```javascript
+  Flurry.Builder.withCrashReporting(crashReporting = true);
+  Flurry.Builder.withContinueSessionMillis(sessionMillis = 10000);
+  Flurry.Builder.withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics = true);
+  Flurry.Builder.withLogEnabled(enableLog = true);
+  Flurry.Builder.withLogLevel(logLevel = 5); // Android (2:VERBOSE, 3:DEBUG, 4:INFO, 5:WARN, 6:ERROR, 7:ASSERT), iOS (2:All, 3-5:Debug, 6-7:Critical)
+  
+  Flurry.Builder.build(apiKeyAndroid: string, apiKeyIos: string);  // preferred; passing null if not available
+  Flurry.Builder.build(apiKey: string);  // use when only single platform is supported, or shared (not recommended)
+  ```
+- **Methods must be called prior to invoking init** *(Deprecated, please use Flurry.Builder instead)*
 
   ```javascript
   Flurry.withCrashReporting(crashReporting = true);

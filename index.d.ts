@@ -6,31 +6,37 @@ declare module 'react-native-flurry-sdk' {
          * e.g. Flurry.init('FLURRY_API_KEY'); Flurry.init('FLURRY_ANDROID_API_KEY', 'FLURRY_IOS_API_KEY');
          * - init(apikey)
          * - init(apikeyAndroid, apikeyIos)
+         * @deprecated Please use Flurry.Builder instead.
          */
         init(apiKey1: string, apiKey2?: string): void;
 
         /**
          * Method must be called prior to invoking init, e.g. Flurry.withCrashReporting(true);
+         * @deprecated Please use Flurry.Builder instead.
          */
         withCrashReporting(crashReporting?: boolean): void;
 
         /**
          * Method must be called prior to invoking init, e.g. Flurry.withContinueSessionMillis(6000);
+         * @deprecated Please use Flurry.Builder instead.
          */
         withContinueSessionMillis(sessionMillis?: number): void;
 
         /**
          * Method must be called prior to invoking init, e.g. Flurry.withIncludeBackgroundSessionsInMetrics(true);
+         * @deprecated Please use Flurry.Builder instead.
          */
         withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics?: boolean): void;
 
         /**
          * Method must be called prior to invoking init, e.g. Flurry.withLogEnabled(true);
+         * @deprecated Please use Flurry.Builder instead.
          */
         withLogEnabled(enableLog?: boolean): void;
 
         /**
          * Method must be called prior to invoking init, e.g. Flurry.withLogLevel(5);
+         * @deprecated Please use Flurry.Builder instead.
          */
         withLogLevel(logLevel?: number): void;
 

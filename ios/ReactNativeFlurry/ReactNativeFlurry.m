@@ -18,7 +18,7 @@
 #import <Flurry.h>
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"1.5.0";
+static NSString * const originVersion = @"2.0.0";
 
 @interface ReactNativeFlurry ()
 
@@ -49,7 +49,10 @@ RCT_EXPORT_MODULE();
     return dispatch_get_main_queue();
 }
 
-RCT_EXPORT_METHOD(init:(nonnull NSString *)apiKey) {
+RCT_EXPORT_METHOD(initBuilder) {
+}
+
+RCT_EXPORT_METHOD(build:(nonnull NSString *)apiKey) {
     [Flurry startSession:apiKey withSessionBuilder:self.sessionBuilder];
 }
 

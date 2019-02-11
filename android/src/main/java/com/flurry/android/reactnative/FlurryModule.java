@@ -39,7 +39,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String REACT_CLASS = "ReactNativeFlurry";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "1.5.0";
+    private static final String ORIGIN_VERSION = "2.0.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 
@@ -51,11 +51,17 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     public FlurryModule(ReactApplicationContext reactContext) {
         super(reactContext);
 
+        // TODO remove this call after non-Builder APIs removed.
+        initBuilder();
+    }
+
+    @ReactMethod
+    public void initBuilder() {
         mFlurryAgentBuilder = new FlurryAgent.Builder();
     }
 
     @ReactMethod
-    public void init(@NonNull String apiKey) {
+    public void build(@NonNull String apiKey) {
         FlurryAgent.addOrigin(ORIGIN_NAME, ORIGIN_VERSION);
         mFlurryAgentBuilder
                 .withListener(new FlurryAgentListener() {
@@ -63,7 +69,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
                     public void onSessionStarted() {
                     }
                 })
-                .build(getReactApplicationContext(), apiKey);
+                .build(getCurrentActivity(), apiKey);
     }
 
     @ReactMethod

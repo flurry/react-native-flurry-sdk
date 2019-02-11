@@ -1,5 +1,17 @@
 # Change Log
 
+# v2.0.0 (2019-02-12)
+
+#### Features
+
+* Implement Flurry.Builder to replace init()
+* Mark init() and all Flurry.with* methods deprecated
+
+#### Bug Fixes
+
+* Revert "Use Application context to initialize Flurry Agent (Android)";
+  should use Activity context to init Flurry from Activity to avoid session delay
+
 ## v1.5.0 (2019-01-30)
 
 #### Bug Fixes

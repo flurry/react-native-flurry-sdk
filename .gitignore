@@ -2,7 +2,7 @@
 .gradle
 build/
 !gradle-wrapper.jar
-gradle.properties
+gradle*
 
 # Intellij
 *.iml
