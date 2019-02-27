@@ -107,12 +107,12 @@ export default class App extends Component<Props> {
     super(props);
     
     // Example to get Flurry versions.
-    Flurry.getVersions(
-        (msg) => {
-            console.log(msg);
+    Flurry.getVersions().then(
+        (versions) => {
+            console.log("Versions: " + versions.agentVersion + " : " + versions.releaseVersion + " : " + versions.sessionId);
         },
-        (agentVersion, releaseVersion, sessionId) => {
-            console.log("Versions: " + agentVersion + " : " + releaseVersion + " : " + sessionId);
+        (msg) => {
+            console.error(msg);
         }
     );
   }
@@ -190,6 +190,7 @@ the Flurry references.
 - **Methods to get Flurry versions**
 
   ```javascript
+  Flurry.getVersions(): Promise;
   Flurry.getVersions((msg) => errorCallback,
                      (agentVersion, releaseVersion, sessionId) => successCallback);
   ```

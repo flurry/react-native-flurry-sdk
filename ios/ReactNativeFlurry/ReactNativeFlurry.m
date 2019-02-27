@@ -18,7 +18,7 @@
 #import <Flurry.h>
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"2.0.0";
+static NSString * const originVersion = @"2.1.0";
 
 @interface ReactNativeFlurry ()
 
@@ -139,6 +139,19 @@ RCT_EXPORT_METHOD(getVersions:(RCTResponseSenderBlock)errorCallback successCallb
     NSString *agentVersion = [Flurry getFlurryAgentVersion];
     NSString *sessionId = [Flurry getSessionID];
     successCallback(@[agentVersion, [NSNull null], sessionId]);
+}
+
+RCT_REMAP_METHOD(getVersionsPromise, getVersionsPromiseWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    @try {
+        NSString *agentVersion = [Flurry getFlurryAgentVersion];
+        NSString *sessionId = [Flurry getSessionID];
+        NSDictionary *map = @{@"agentVersion": agentVersion,
+                              @"releaseVersion": [NSNull null],
+                              @"sessionId": sessionId};
+        resolve(map);
+    } @catch (NSException *exception) {
+        reject([exception description], [exception reason], nil);
+    }
 }
 
 RCT_EXPORT_METHOD(logEvent:(nonnull NSString *)eventId) {

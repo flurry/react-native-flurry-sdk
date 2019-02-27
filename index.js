@@ -19,37 +19,110 @@ function priorInit(wrapped) {
 }
 
 export default class Flurry {
+
+    static Builder = class {
+        constructor() {
+            ReactNativeFlurry.initBuilder();
+        }
+
+        build(...apiKeys) {
+            if (apiKeys.length === 0) {
+                console.error('Flurry.Builder.build: apiKey(string) is required');
+                return;
+            } else if (apiKeys.length === 1) {
+                if (typeof apiKeys[0] !== 'string') {
+                    console.error('Flurry.Builder.build: apiKey1(string) is required');
+                    return;
+                }
+                ReactNativeFlurry.build(apiKeys[0]);
+            } else if (apiKeys.length === 2) {
+                if (Platform.OS === 'android') {
+                    if (typeof apiKeys[0] !== 'string') {
+                        console.error('Flurry.Builder.build: apiKey1(string) is required');
+                        return;
+                    }
+                    ReactNativeFlurry.build(apiKeys[0]);
+                } else if (Platform.OS === 'ios') {
+                    if (typeof apiKeys[1] !== 'string') {
+                        console.error('Flurry.Builder.build: apiKey2(string) is required');
+                        return;
+                    }
+                    ReactNativeFlurry.build(apiKeys[1]);
+                }
+            }
+        }
+
+        withCrashReporting(crashReporting = true) {
+            ReactNativeFlurry.withCrashReporting(crashReporting);
+            return this;
+        }
+
+        withCrashReporting(crashReporting = true) {
+            ReactNativeFlurry.withCrashReporting(crashReporting);
+            return this;
+        }
+
+        withContinueSessionMillis(sessionMillis = 10000) {
+            if (sessionMillis < 5000) {
+                console.error('Flurry.Builder.withContinueSessionMillis: the minimum timeout for a session is 5,000 ms.');
+            }
+            ReactNativeFlurry.withContinueSessionMillis(sessionMillis);
+            return this;
+        }
+
+        withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics = true) {
+            ReactNativeFlurry.withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics);
+            return this;
+        }
+
+        withLogEnabled(enableLog = true) {
+            ReactNativeFlurry.withLogEnabled(enableLog);
+            return this;
+        }
+
+        withLogLevel(logLevel = 5) {
+            ReactNativeFlurry.withLogLevel(logLevel);
+            return this;
+        }
+
+        withMessaging(autoIntegration = true) {
+            ReactNativeFlurry.withMessaging(autoIntegration);
+            return this;
+        }
+    };
+
     /**
      * @deprecated Please use Flurry.Builder instead.
      */
-    static init(apiKey1, apiKey2) {
+    static init(...apiKeys) {
+        console.warn(`Flurry.init method is deprecated, please use Flurry.Builder instead.`);
         if (initFlurryCalled) {
             console.error('Flurry.init: already called');
             return;
         }
 
-        if (arguments.length === 0) {
+        if (apiKeys.length === 0) {
             console.error('Flurry.init: apiKey(string) is required');
             return;
-        } else if (arguments.length === 1) {
-            if (apiKey1 == null) {
+        } else if (apiKeys.length === 1) {
+            if (typeof apiKeys[0] !== 'string') {
                 console.error('Flurry.init: apiKey1(string) is required');
                 return;
             }
-            ReactNativeFlurry.build(apiKey1);
-        } else if (arguments.length === 2) {
+            ReactNativeFlurry.build(apiKeys[0]);
+        } else if (apiKeys.length === 2) {
             if (Platform.OS === 'android') {
-                if (apiKey1 == null) {
+                if (typeof apiKeys[0] !== 'string') {
                     console.error('Flurry.init: apiKey1(string) is required');
                     return;
                 }
-                ReactNativeFlurry.build(apiKey1);
+                ReactNativeFlurry.build(apiKeys[0]);
             } else if (Platform.OS === 'ios') {
-                if (apiKey2 == null) {
+                if (typeof apiKeys[1] !== 'string') {
                     console.error('Flurry.init: apiKey2(string) is required');
                     return;
                 }
-                ReactNativeFlurry.build(apiKey2);
+                ReactNativeFlurry.build(apiKeys[1]);
             }
         }
 
@@ -201,6 +274,9 @@ export default class Flurry {
     }
 
     static getVersions(errorCallback, successCallback) {
+        if (arguments.length === 0) {
+            return ReactNativeFlurry.getVersionsPromise();
+        }
         ReactNativeFlurry.getVersions(errorCallback, successCallback);
     }
 
@@ -324,65 +400,3 @@ export default class Flurry {
     }
 
 }
-
-Flurry.Builder = class {
-    constructor() {
-        ReactNativeFlurry.initBuilder();
-    }
-
-    build(apiKey1, apiKey2) {
-        if (arguments.length === 0) {
-            console.error('Flurry.Builder.build: apiKey(string) is required');
-            return;
-        } else if (arguments.length === 1) {
-            if (apiKey1 == null) {
-                console.error('Flurry.Builder.build: apiKey1(string) is required');
-                return;
-            }
-            ReactNativeFlurry.build(apiKey1);
-        } else if (arguments.length === 2) {
-            if (Platform.OS === 'android') {
-                if (apiKey1 == null) {
-                    console.error('Flurry.Builder.build: apiKey1(string) is required');
-                    return;
-                }
-                ReactNativeFlurry.build(apiKey1);
-            } else if (Platform.OS === 'ios') {
-                if (apiKey2 == null) {
-                    console.error('Flurry.Builder.build: apiKey2(string) is required');
-                    return;
-                }
-                ReactNativeFlurry.build(apiKey2);
-            }
-        }
-    }
-
-    withCrashReporting(crashReporting = true) {
-        ReactNativeFlurry.withCrashReporting(crashReporting);
-        return this;
-    }
-
-    withContinueSessionMillis(sessionMillis = 10000) {
-        if (sessionMillis < 5000) {
-            console.error('Flurry.Builder.withContinueSessionMillis: the minimum timeout for a session is 5,000 ms.');
-        }
-        ReactNativeFlurry.withContinueSessionMillis(sessionMillis);
-        return this;
-    }
-
-    withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics = true) {
-        ReactNativeFlurry.withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics);
-        return this;
-    }
-
-    withLogEnabled(enableLog = true) {
-        ReactNativeFlurry.withLogEnabled(enableLog);
-        return this;
-    }
-
-    withLogLevel(logLevel = 5) {
-        ReactNativeFlurry.withLogLevel(logLevel);
-        return this;
-    }
-
-};

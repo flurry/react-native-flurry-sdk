@@ -1,5 +1,16 @@
 # Change Log
 
+## v2.1.0 (2019-02-27)
+
+#### Features
+
+* Add getVersions overload method that returns Promise
+* Provide more JSDoc for code completion
+
+#### Bug Fixes
+
+* Use Activity context to init Flurry if available, otherwise use Application context (Android)
+
 # v2.0.0 (2019-02-12)
 
 #### Features

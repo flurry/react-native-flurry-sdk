@@ -16,15 +16,19 @@
 
 package com.flurry.android.reactnative;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.IllegalViewOperationException;
 import com.flurry.android.Constants;
 import com.flurry.android.FlurryAgent;
@@ -39,7 +43,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String REACT_CLASS = "ReactNativeFlurry";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "2.0.0";
+    private static final String ORIGIN_VERSION = "2.1.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 
@@ -63,13 +67,18 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void build(@NonNull String apiKey) {
         FlurryAgent.addOrigin(ORIGIN_NAME, ORIGIN_VERSION);
+
+        Context context = getCurrentActivity();
+        if (context == null) {
+            context = getReactApplicationContext();
+        }
         mFlurryAgentBuilder
                 .withListener(new FlurryAgentListener() {
                     @Override
                     public void onSessionStarted() {
                     }
                 })
-                .build(getCurrentActivity(), apiKey);
+                .build(context, apiKey);
     }
 
     @ReactMethod
@@ -161,6 +170,19 @@ public class FlurryModule extends ReactContextBaseJavaModule {
                     FlurryAgent.getSessionId());
         } catch (IllegalViewOperationException e) {
             errorCallback.invoke(e.getMessage());
+        }
+    }
+
+    @ReactMethod
+    public void getVersionsPromise(Promise promise) {
+        try {
+            WritableMap map = Arguments.createMap();
+            map.putInt("agentVersion", FlurryAgent.getAgentVersion());
+            map.putString("releaseVersion", FlurryAgent.getReleaseVersion());
+            map.putString("sessionId", FlurryAgent.getSessionId());
+            promise.resolve(map);
+        } catch (IllegalViewOperationException e) {
+            promise.reject("Flurry.getVersionsPromise", e);
         }
     }
 
