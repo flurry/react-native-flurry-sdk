@@ -1,4 +1,6 @@
 import {
+    DeviceEventEmitter,
+    NativeAppEventEmitter,
     NativeModules,
     Platform,
  } from 'react-native';
@@ -85,8 +87,8 @@ export default class Flurry {
             return this;
         }
 
-        withMessaging(autoIntegration = true) {
-            ReactNativeFlurry.withMessaging(autoIntegration);
+        withMessaging(enableMessaging = true) {
+            ReactNativeFlurry.withMessaging(enableMessaging);
             return this;
         }
     };
@@ -399,4 +401,49 @@ export default class Flurry {
         ReactNativeFlurry.onPageView();
     }
 
+    static addMessagingListener(callback) {
+        if (typeof callback !== 'function') {
+            console.error(`Flurry.addMessagingListener: callback must be a function. Got ${callback}`);
+            return;
+        }
+
+        var Emitter = (Platform.OS === 'android') ? DeviceEventEmitter : NativeAppEventEmitter;
+        Emitter.addListener('FlurryMessagingEvent', callback);
+
+        ReactNativeFlurry.enableMessagingListener(true);
+    }
+
+    static removeMessagingListener(callback) {
+       if (typeof callback !== 'function') {
+            console.error(`Flurry.removeMessagingListener: callback must be a function. Got ${callback}`);
+            return;
+        }
+
+        var Emitter = (Platform.OS === 'android') ? DeviceEventEmitter : NativeAppEventEmitter;
+        Emitter.removeListener('FlurryMessagingEvent', callback);
+    }
+
+    static willHandleMessage(handled) {
+        ReactNativeFlurry.willHandleMessage(handled);
+    }
+
+    static printMessage(message) {
+        if (message.hasOwnProperty('Token')) {
+            console.log('Flurry Messaging Type: ' + message.Type +
+                    '\n    Token: ' + message.Token);
+            return;
+        }
+
+        var data = '';
+        for (var prop in message.Data) {
+            data += '\n\t' + prop + ': ' + message.Data[prop];
+        }
+        console.log('Flurry Messaging Type: ' + message.Type +
+            '\n    Title: ' + message.Title +
+            '\n    Body: ' + message.Body +
+            '\n    ClickAction: ' + message.ClickAction +
+            '\n    Data:' + data);
+    }
+
 }
+

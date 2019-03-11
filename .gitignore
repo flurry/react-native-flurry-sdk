@@ -14,6 +14,7 @@ local.properties
 
 # iOS
 xcuserdata/
+*.a
 
 # Mac
 .DS_Store

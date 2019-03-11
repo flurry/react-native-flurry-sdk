@@ -15,15 +15,32 @@
  */
 
 #import "ReactNativeFlurry.h"
-#import <Flurry.h>
+#import "Flurry/Flurry.h"
+#import "FlurryMessaging/FlurryMessaging.h"
+
+#if __has_include(<React/RCTBridge.h>)
+#import <React/RCTBridge.h>
+#else
+#import "RCTBridge.h"
+#endif
+
+#if __has_include(<React/RCTEventDispatcher.h>)
+#import <React/RCTEventDispatcher.h>
+#else
+#import "RCTEventDispatcher.h"
+#endif
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"2.1.0";
+static NSString * const originVersion = @"3.0.0";
+static NSString * const kMessagingEvent = @"FlurryMessagingEvent";
+static NSString * const kNotificationReceived = @"NotificationReceived";
+static NSString * const kNotificationClicked = @"NotificationClicked";
 
-@interface ReactNativeFlurry ()
+@interface ReactNativeFlurry ()<FlurryMessagingDelegate>
 
 @property (strong, nonatomic) FlurrySessionBuilder *sessionBuilder;
 @property (assign, nonatomic) FlurryLogLevel logLevel;
+@property (assign, nonatomic) BOOL messagingListenerEnabled;
 
 @end
 
@@ -31,13 +48,29 @@ static NSString * const originVersion = @"2.1.0";
 
 RCT_EXPORT_MODULE();
 
+@synthesize bridge = _bridge;
+
+static ReactNativeFlurry *gInstance;
+
++ (void)initialize {
+    if (self == ReactNativeFlurry.class) {
+        gInstance = [[ReactNativeFlurry alloc] init];
+    }
+}
+
 - (instancetype)init {
+    if (gInstance != nil) {
+        return gInstance;
+    }
+    
     self = [super init];
     if (self) {
-        _sessionBuilder = [FlurrySessionBuilder new];
         _logLevel = FlurryLogLevelCriticalOnly; // default log level
+        _sessionBuilder = [FlurrySessionBuilder new];
+        _messagingListenerEnabled = NO;
         [Flurry addOrigin:originName withVersion:originVersion];
     }
+
     return self;
 }
 
@@ -49,11 +82,19 @@ RCT_EXPORT_MODULE();
     return dispatch_get_main_queue();
 }
 
+#pragma mark - Flurry Builder methods
+
 RCT_EXPORT_METHOD(initBuilder) {
+    if (self.sessionBuilder == nil) {
+        self.sessionBuilder = [FlurrySessionBuilder new];
+    }
 }
 
 RCT_EXPORT_METHOD(build:(nonnull NSString *)apiKey) {
-    [Flurry startSession:apiKey withSessionBuilder:self.sessionBuilder];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [Flurry startSession:apiKey withSessionBuilder:self.sessionBuilder];
+    });
 }
 
 RCT_EXPORT_METHOD(withCrashReporting:(BOOL)crashReporting) {
@@ -94,6 +135,18 @@ RCT_EXPORT_METHOD(withLogLevel:(NSInteger)value) {
     [self.sessionBuilder withLogLevel:self.logLevel];
 }
 
+RCT_EXPORT_METHOD(withMessaging:(BOOL)enableMessaging) {
+    if (enableMessaging) {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            [FlurryMessaging setAutoIntegrationForMessaging];
+            [FlurryMessaging setMessagingDelegate:self];
+        });
+    }
+}
+
+#pragma mark - React Native API methods
+
 RCT_EXPORT_METHOD(setAge:(int)age) {
     [Flurry setAge:age];
 }
@@ -115,7 +168,10 @@ RCT_EXPORT_METHOD(setUserId:(nullable NSString *)userId) {
 }
 
 RCT_EXPORT_METHOD(setVersionName:(nonnull NSString *)version) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [Flurry setAppVersion:version];
+#pragma clang diagnostic pop
 }
 
 RCT_EXPORT_METHOD(setIAPReportingEnabled:(BOOL)enableIAP) {
@@ -143,10 +199,11 @@ RCT_EXPORT_METHOD(getVersions:(RCTResponseSenderBlock)errorCallback successCallb
 
 RCT_REMAP_METHOD(getVersionsPromise, getVersionsPromiseWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     @try {
-        NSString *agentVersion = [Flurry getFlurryAgentVersion];
+        // Please note that AgentVersion on iOS platform is equivalent to ReleaseVersion on Android platform.
+        NSString *releaseVersion = [Flurry getFlurryAgentVersion];
         NSString *sessionId = [Flurry getSessionID];
-        NSDictionary *map = @{@"agentVersion": agentVersion,
-                              @"releaseVersion": [NSNull null],
+        NSDictionary *map = @{@"agentVersion": [NSNull null],
+                              @"releaseVersion": releaseVersion,
                               @"sessionId": sessionId};
         resolve(map);
     } @catch (NSException *exception) {
@@ -204,6 +261,44 @@ RCT_EXPORT_METHOD(onErrorParams:(nonnull NSString *)errorId message:(nullable NS
         error = [NSError errorWithDomain:errorClass code:0 userInfo:nil];
     }
     [Flurry logError:errorId message:message error:error withParameters:parameters];
+}
+
+RCT_EXPORT_METHOD(enableMessagingListener:(BOOL)enabled) {
+    self.messagingListenerEnabled = enabled;
+}
+
+RCT_EXPORT_METHOD(willHandleMessage:(BOOL)handled) {
+    NSLog(@"Flurry.willHandleMessage is not supported on iOS.");
+}
+
+#pragma mark - Flurry Messaging Delegate
+
+- (void)didReceiveMessage:(FlurryMessage *)message {
+    if (self.messagingListenerEnabled) {
+        NSDictionary *msgDict = @{@"Type": kNotificationReceived,
+                                  @"Title": message.title,
+                                  @"Body": message.body,
+                                  @"Data": message.appData,
+                                  };
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        [self.bridge.eventDispatcher sendAppEventWithName:kMessagingEvent body:msgDict];
+#pragma clang diagnostic pop
+    }
+}
+
+- (void)didReceiveActionWithIdentifier:(NSString *)identifier message:(FlurryMessage *)message {
+    if (self.messagingListenerEnabled) {
+        NSDictionary *msgDict = @{@"Type": kNotificationClicked,
+                                  @"Title": message.title,
+                                  @"Body": message.body,
+                                  @"Data": message.appData,
+                                  };
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        [self.bridge.eventDispatcher sendAppEventWithName:kMessagingEvent body:msgDict];
+#pragma clang diagnostic pop
+    }
 }
 
 @end

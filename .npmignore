@@ -2,8 +2,8 @@ example
 android/build
 ios/build
 *.iml
+*.a
 xcuserdata
-images
 
 gradle
 gradlew

@@ -1,5 +1,16 @@
 # Change Log
 
+# v3.0.0 (2019-03-11)
+
+#### Features
+
+* Support Flurry Push for messaging features
+
+#### Bug Fixes
+
+* Fix TypeScript index.d.ts warning
+* Match iOS versioning with Android
+
 ## v2.1.0 (2019-02-27)
 
 #### Features

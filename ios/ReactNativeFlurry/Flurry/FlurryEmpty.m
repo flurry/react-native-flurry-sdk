@@ -1,5 +1,5 @@
 /*
- * Copyright 2018, Oath Inc.
+ * Copyright 2019, Oath Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-#if __has_include(<React/RCTBridgeModule.h>)
-#import <React/RCTBridgeModule.h>
-#else
-#import "RCTBridgeModule.h"
-#endif
+#import "Flurry.h"
 
-@interface ReactNativeFlurry : NSObject <RCTBridgeModule>
+@implementation Flurry (ForceLoad)
 
 @end

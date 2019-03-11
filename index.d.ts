@@ -199,7 +199,7 @@ declare module 'react-native-flurry-sdk' {
          * @param successCallback success callback.
          * @return the Promise object if called without callbacks specified.
          */
-        getVersions(errorCallback?: any, successCallback?: any): Promise;
+        getVersions(errorCallback?: any, successCallback?: any): Promise<object>;
 
         /**
          * Logs the breadcrumb.
@@ -277,6 +277,68 @@ declare module 'react-native-flurry-sdk' {
          * e.g. Flurry.onPageView();
          */
         onPageView(): void;
+
+        /**
+         * Add a listener to receive messaging events, and handle the notification.
+         * Message type: 'NotificationReceived':  a notification has been received.
+         *               'NotificationClicked':   a notification has been clicked.
+         *               'NotificationCancelled': a notification has been cancelled. (Android only)
+         *               'TokenRefresh': push notification token has been changed. (Android only)
+         * Message.Title:       message title
+         * Message.Body:        message body
+         * Message.Data:        message data (Map)
+         * Message.ClickAction: click action (Android only)
+         *
+         * Please call required Flurry.willHandleMessage(boolean) when received event types of
+         * 'NotificationReceived' or 'NotificationClicked' as soon as possible to avoid delay.
+         * (Android only) If you would like to handle the notification yourself, return true to notify Flurry
+         * you've handled it, and Flurry will not show the notification ('NotificationReceived'),
+         * or Flurry will not launch the app or "click_action" activity ('NotificationClicked').
+         *
+         * e.g.
+         * Flurry.addMessagingListener((message) => {
+         *     if (message.Type === 'NotificationReceived') {
+         *         Flurry.willHandleMessage(false);
+         *     } else if (message.Type === 'NotificationClicked') {
+         *         Flurry.willHandleMessage(false);
+         *     }
+         *
+         *     Flurry.printMessage(message);
+         * });
+         *
+         * @param callback messaging event callback.
+         */
+        addMessagingListener(callback: any):void;
+
+        /**
+         * Remove a messaging events listener.
+         *
+         * @param callback messaging event callback.
+         */
+        removeMessagingListener(callback: any): void;
+
+        /**
+         * If you would like to handle the notification yourself, return true to notify Flurry
+         * you've handled it, and Flurry will not show the notification ('NotificationReceived'),
+         * or Flurry will not launch the app or "click_action" activity ('NotificationClicked').
+         *
+         * Required: Even it is supported by Android only, it is required to notify Flurry
+         *           when received event types of 'NotificationReceived' or 'NotificationClicked'.
+         *
+         * e.g. Flurry.willHandleMessage(true);
+         *
+         * @param handled True if you've handled the notification.
+         *                False if you haven't and want Flurry to handle it.
+         */
+        willHandleMessage(handled: boolean): void;
+
+        /**
+         * A helper function to print the message.
+         *
+         * @param message the message received.
+         */
+        printMessage(message: any): void;
+
     }
 
     const Flurry: FlurryStatic;

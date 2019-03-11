@@ -2,7 +2,9 @@
 
 [![npm](https://img.shields.io/npm/v/react-native-flurry-sdk.svg?colorB=blue&)](https://www.npmjs.com/package/react-native-flurry-sdk)
 
-A React Native wrapper for Flurry SDK
+A React Native plugin for Flurry SDK
+
+**Flurry Push** for messaging is now supported by our plugin!
 
 ## Table of contents
 
@@ -45,27 +47,62 @@ A React Native wrapper for Flurry SDK
       ...
   }
   ```
+- **Flurry Push**</br>
+  In order to use [Flurry Push](https://developer.yahoo.com/flurry/docs/push/) for [Android](https://developer.yahoo.com/flurry/docs/push/integration/android/), please follow the additional steps below:
+  1. Flurry Push requires your projects to initialize Flurry from your Application class. Please do the Flurry setup in `MainApplication.onCreate()`. With the same APIs as the JavaScript version.
+  
+     ```java
+       new FlurryModule.Builder()
+            .withCrashReporting(true)
+            .withLogEnabled(true)
+            .withLogLevel(Log.VERBOSE)
+            .withMessaging(true)
+            .build(this, FLURRY_ANDROID_API_KEY);
+     ```
+  2. Follow [Set up a Firebase Cloud Messaging client app on Android](https://firebase.google.com/docs/cloud-messaging/android/client). Complete "Set up Firebase and the FCM SDK" step for adding Firebase to your Android project. There should be a file `google-services.json` in your project's `android/app` folder now. You do not need to provide any setup codes here. Your `build.gradle` will look like:
+
+     ```
+        // android/build.gradle (project-level)
+        buildscript {
+            dependencies {
+                classpath 'com.google.gms:google-services:4.0.1'
+            }
+        }
+     ```
+     
+     ```
+        // android/app/build.gradle
+        apply plugin: 'com.google.gms.google-services'
+     ```
+  3. Set up "Android Authorization" in Flurry [Push Authorization](https://developer.yahoo.com/flurry/docs/push/authorization/).
 
 ### iOS
 
-By default, the CocoaPods depedencies are automatically installed by `react-native link` command. To install the dependencies manually, please see [Import Flurry Libraries](https://developer.yahoo.com/flurry/docs/integrateflurry/ios/#import-flurry-libraries) or follow the steps below.
+- Please note that react-native link may add react-native-flurry-sdk podspec to your Podfile. If you are not using [CocoaPods](https://cocoapods.org) or your Podfile looks roughly like the one described [here](http://facebook.github.io/react-native/docs/integration-with-existing-apps#configuring-cocoapods-dependencies), no further action is needed.
 
-1. Initialize Podfile under `ios` folder. Please have [CocoaPods](https://cocoapods.org) installed.
+  If you are migrating from version<3.0.0 and your Podfile does **NOT** have any other dependency than Flurry, please deintegrate CocoaPods from your project. You may also need to manually remove Podfile and xcworkspace files.
 
-   ```
-   cd ios
-   pod init
-   ```
-2. Open the Podfile and add Flurry dependency under your target.
+  ```
+  cd ios
+  pod deintegrate
+  ```
 
-   ```
-   pod 'Flurry-iOS-SDK/FlurrySDK'
-   ```
-3. Install the Flurry SDK by running the following command in the directory containing the Podfile.
+  If you have a Podfile only for native dependencies, please remove `pod 'Flurry-iOS-SDK/FlurrySDK'` from your Podfile, re-run `pod install`, remove `react-native-flurry-sdk.podspec`, and execute `react-native link` again.
 
-   ```
-   pod install
-   ```
+  ```
+  rm node_modules/react-native-flurry-sdk/react-native-flurry-sdk.podspec
+  react-native unlink react-native-flurry-sdk && react-native link react-native-flurry-sdk
+  ```
+- **Flurry Push**</br>
+  To set up Flurry Push, please take the following steps.
+  1. Open your `.xcodeproj` file using Xcode. It is usually located under the `ios` directory of your React Native app.
+  2. Go to "Capabilities" tab and enable Push Notifications.
+     ![push_ios_1](images/push_ios_1.png)
+  3. Enable Background Modes (Background Fetch and Remote Notifications turned on).
+     ![push_ios_2](images/push_ios_2.png)
+     Now your `Info.plist` should contain the following items. For more information, please see [Push Setup](https://developer.yahoo.com/flurry/docs/push/integration/ios/).
+     ![push_ios_3](images/push_ios_3.png)
+  4. Set up "iOS Authorization" in Flurry [Push Authorization](https://developer.yahoo.com/flurry/docs/push/authorization/).
 
 ## Example
 
@@ -77,14 +114,14 @@ import { name as appName } from './app.json';
 import App from './App';
 import Flurry from 'react-native-flurry-sdk';
 
-// Init Flurry once as early as possible. For each platfrom (Android, iOS) where the app runs
-// you need to acquire a unique Flurry API Key. 
+// Init Flurry once as early as possible recommended in index.js.
+// For each platfrom (Android, iOS) where the app runs you need to acquire a unique Flurry API Key. 
 // i.e., you need two API keys if you are going to release the app on both Android and iOS platforms.
 new Flurry.Builder()
-    .withCrashReporting(true)
-    .withLogEnabled(true)
-    .withLogLevel(2)
-    .build(FLURRY_ANDROID_API_KEY, FLURRY_IOS_API_KEY);
+  .withCrashReporting(true)
+  .withLogEnabled(true)
+  .withLogLevel(2)
+  .build(FLURRY_ANDROID_API_KEY, FLURRY_IOS_API_KEY);
 
 AppRegistry.registerComponent(appName, () => App);
 ```
@@ -107,14 +144,9 @@ export default class App extends Component<Props> {
     super(props);
     
     // Example to get Flurry versions.
-    Flurry.getVersions().then(
-        (versions) => {
-            console.log("Versions: " + versions.agentVersion + " : " + versions.releaseVersion + " : " + versions.sessionId);
-        },
-        (msg) => {
-            console.error(msg);
-        }
-    );
+    Flurry.getVersions().then((versions) => {
+      console.log("Versions: " + versions.agentVersion + " : " + versions.releaseVersion + " : " + versions.sessionId);
+    });
   }
  
   render() {
@@ -141,6 +173,28 @@ export default class App extends Component<Props> {
 ...
 ```
 
+- `index.js / Messaging.js`
+
+```javascript
+// To enable Flurry Push for Android, please duplicate Builder setup in your MainApplication.java.
+new Flurry.Builder()
+  .withMessaging(true)
+  ...
+
+// Optionally add a listener to receive messaging events, and handle the notification.
+// Please call required Flurry.willHandleMessage(boolean) when received event types of
+// 'NotificationReceived' or 'NotificationClicked' as soon as possible to avoid delay.
+Flurry.addMessagingListener((message) => {
+  if (message.Type === 'NotificationReceived') {
+    Flurry.willHandleMessage(false);
+  } else if (message.Type === 'NotificationClicked') {
+    Flurry.willHandleMessage(false);
+  }
+
+  Flurry.printMessage(message);
+});
+```
+
 ## API Reference
 
 See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http://flurry.github.io/flurry-android-sdk/com/flurry/android/FlurryAgent.html) /
@@ -155,6 +209,7 @@ the Flurry references.
   Flurry.Builder.withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics = true);
   Flurry.Builder.withLogEnabled(enableLog = true);
   Flurry.Builder.withLogLevel(logLevel = 5); // Android (2:VERBOSE, 3:DEBUG, 4:INFO, 5:WARN, 6:ERROR, 7:ASSERT), iOS (2:All, 3-5:Debug, 6-7:Critical)
+  Flurry.Builder.withMessaging(enableMessaging = true);
   
   Flurry.Builder.build(apiKeyAndroid: string, apiKeyIos: string);  // preferred; passing null if not available
   Flurry.Builder.build(apiKey: string);  // use when only single platform is supported, or shared (not recommended)
@@ -190,7 +245,7 @@ the Flurry references.
 - **Methods to get Flurry versions**
 
   ```javascript
-  Flurry.getVersions(): Promise;
+  Flurry.getVersions(): Promise<object>;
   Flurry.getVersions((msg) => errorCallback,
                      (agentVersion, releaseVersion, sessionId) => successCallback);
   ```
@@ -214,11 +269,24 @@ the Flurry references.
   Flurry.logPayment(productName: string, productId: string, quantity: number, price: number,
                     currency: string, transactionId: string, parameters: {});  // Android, see setIAPReportingEnabled for iOS
   ```
-
 - **Methods to enable IAP reporting (iOS)**
 
   ```javascript
   Flurry.setIAPReportingEnabled(enableIAP: boolean);
+  ```
+- **Methods for Messaging (Flurry Push)**
+
+  ```javascript
+  // message.Type: { 'NotificationReceived', 'NotificationClicked',
+  //                 'NotificationCancelled', 'TokenRefresh' } (Android only)
+  // message.Title:       message title
+  // message.Body:        message body
+  // message.Data:        message data (Map)
+  // message.ClickAction: click action (Android only)
+  Flurry.addMessagingListener((message) => callback);
+  Flurry.removeMessagingListener((message) => callback);
+  Flurry.willHandleMessage(handled: boolean); // Android only
+  Flurry.printMessage(message: object);
   ```
   
 ## Support
@@ -240,4 +308,3 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-

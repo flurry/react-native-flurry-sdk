@@ -7,13 +7,12 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:3.1.4"
+        classpath "com.android.tools.build:gradle:3.2.1"
     }
 }
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 28
 
     defaultConfig {
         minSdkVersion 16
@@ -40,5 +39,8 @@ repositories {
 dependencies {
     implementation 'com.facebook.react:react-native:+'
     implementation 'com.flurry.android:analytics:11.5.0@aar'
+    implementation 'com.flurry.android:marketing:11.5.0@aar'
+    implementation 'com.google.firebase:firebase-core:16.0.3'
+    implementation 'com.google.firebase:firebase-messaging:17.3.2'
 }
 

@@ -1,6 +1,6 @@
 require 'json'
 
-package = JSON.parse(File.read('../package.json'))
+package = JSON.parse(File.read('package.json'))
 
 Pod::Spec.new do |s|
   s.name         = package['name']
@@ -27,10 +27,10 @@ Pod::Spec.new do |s|
   s.author       = { "Flurry SDK" => "flurrysdk@gmail.com" }
   s.platform     = :ios, "8.0"
   s.source       = { :git => "https://github.com/flurry/react-native-flurry-sdk.git", :tag => "master" }
-  s.source_files  = "ReactNativeFlurry/**/*.{h,m}"
+  s.source_files = "ios/ReactNativeFlurry/**/*.{h,m}"
+  s.vendored_libraries = "ios/ReactNativeFlurry/Flurry/libFlurry.a", "ios/ReactNativeFlurry/FlurryMessaging/libFlurryMessaging.a"
   s.requires_arc = true
 
   s.dependency 'React'
-  s.dependency 'Flurry-iOS-SDK/FlurrySDK'
 
 end

@@ -1,6 +1,6 @@
 {
   "name": "react-native-flurry-sdk",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "React Native wrapper for Flurry SDK",
   "main": "index.js",
   "types" : "index.d.ts",
@@ -16,7 +16,10 @@
     "android",
     "ios",
     "flurry",
-    "analytics"
+    "analytics",
+    "messaging",
+    "push",
+    "marketing"
   ],
   "repository": {
     "type": "git",
@@ -27,13 +30,11 @@
     "url": "https://github.com/flurry/react-native-flurry-sdk/issues"
   },
   "dependencies": {
-    "which": "^1.3.1"
+    "progress": "^2.0.3"
   },
   "bundledDependencies": [],
-  "rnpm": {
-    "commands": {
-      "postlink": "node node_modules/react-native-flurry-sdk/scripts/postlink"
-    }
-  },
-  "deprecated": false
+  "deprecated": false,
+  "scripts": {
+    "postinstall": "node scripts/postinstall"
+  }
 }
