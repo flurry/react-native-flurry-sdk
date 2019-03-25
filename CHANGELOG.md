@@ -1,5 +1,17 @@
 # Change Log
 
+## v3.1.0 (2019-03-25)
+
+#### Features
+
+* Provide Enum for LogLevel and Gender
+* Improve and support more JSDoc for code completion
+* Upgrade Flurry Android SDK version to 11.6.0
+
+#### Bug Fixes
+
+* Do not include Firebase libraries for Android platform
+
 # v3.0.0 (2019-03-11)
 
 #### Features

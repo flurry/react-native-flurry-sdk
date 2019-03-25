@@ -22,6 +22,23 @@ function priorInit(wrapped) {
 
 export default class Flurry {
 
+    /**
+     * Android (2:VERBOSE, 3:DEBUG, 4:INFO, 5:WARN, 6:ERROR, 7:ASSERT), iOS (2:All, 3-5:Debug, 6-7:Critical)
+     */
+    static LogLevel = Object.freeze({
+	    VERBOSE: 2,
+	    DEBUG:   3,
+	    INFO:    4,
+	    WARN:    5,
+	    ERROR:   6,
+	    ASSERT:  7
+    });
+
+    static Gender = Object.freeze({
+	    MALE:   'm',
+	    FEMALE: 'f'
+    });
+
     static Builder = class {
         constructor() {
             ReactNativeFlurry.initBuilder();
@@ -59,11 +76,6 @@ export default class Flurry {
             return this;
         }
 
-        withCrashReporting(crashReporting = true) {
-            ReactNativeFlurry.withCrashReporting(crashReporting);
-            return this;
-        }
-
         withContinueSessionMillis(sessionMillis = 10000) {
             if (sessionMillis < 5000) {
                 console.error('Flurry.Builder.withContinueSessionMillis: the minimum timeout for a session is 5,000 ms.');
@@ -82,7 +94,7 @@ export default class Flurry {
             return this;
         }
 
-        withLogLevel(logLevel = 5) {
+        withLogLevel(logLevel = LogLevel.WARN) {
             ReactNativeFlurry.withLogLevel(logLevel);
             return this;
         }
@@ -166,7 +178,7 @@ export default class Flurry {
     /**
      * @deprecated Please use Flurry.Builder instead.
      */
-    static withLogLevel(logLevel = 5) {
+    static withLogLevel(logLevel = LogLevel.WARN) {
         priorInit(ReactNativeFlurry.withLogLevel)(logLevel);
     }
 
@@ -181,7 +193,7 @@ export default class Flurry {
 
     static setGender(gender) {
         if (typeof gender !== 'string' || !['m', 'f'].includes(gender)) {
-            console.error(`Flurry.setGender: gender must be one of ['m', 'f']. Got ${gender}`);
+            console.error(`Flurry.setGender: gender must be type of Flurry.Gender. Got ${gender}`);
             return;
         }
 

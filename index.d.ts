@@ -7,7 +7,27 @@ declare module 'react-native-flurry-sdk' {
      * Set of methods that allow developers to capture detailed, aggregate information
      * regarding the use of their app by end users.
      */
-    interface FlurryStatic {
+    export class Flurry {
+
+        /**
+         * Constants for setting log level in analytics SDK.
+         */ 
+        static LogLevel: {
+            VERBOSE: number,
+            DEBUG:   number,
+            INFO:    number,
+            WARN:    number,
+            ERROR:   number,
+            ASSERT:  number
+        }
+
+        /**
+         * Constants for setting gender in analytics SDK.
+         */
+        static Gender: {
+            MALE:   string,
+            FEMALE: string
+        }
 
         /**
          * Initialize the Flurry SDK.
@@ -21,7 +41,7 @@ declare module 'react-native-flurry-sdk' {
          * @param apiKey2 iOS User API Key.
          * @deprecated Please use Flurry.Builder instead.
          */
-        init(apiKey1: string, apiKey2?: string): void;
+        static init(apiKey1: string, apiKey2?: string): void;
 
         /**
          * True to enable or false to disable the ability to catch all uncaught exceptions
@@ -32,7 +52,7 @@ declare module 'react-native-flurry-sdk' {
          * Method must be called prior to invoking init, e.g. Flurry.withCrashReporting(true);
          * @deprecated Please use Flurry.Builder instead.
          */
-        withCrashReporting(crashReporting?: boolean): void;
+        static withCrashReporting(crashReporting?: boolean): void;
 
         /**
          * Set the timeout for expiring a Flurry session.
@@ -42,7 +62,7 @@ declare module 'react-native-flurry-sdk' {
          * Method must be called prior to invoking init, e.g. Flurry.withContinueSessionMillis(6000);
          * @deprecated Please use Flurry.Builder instead.
          */
-        withContinueSessionMillis(sessionMillis?: number): void;
+        static withContinueSessionMillis(sessionMillis?: number): void;
 
         /**
          * True if this session should be added to total sessions/DAUs when applicationstate is inactive or background.
@@ -52,28 +72,27 @@ declare module 'react-native-flurry-sdk' {
          * Method must be called prior to invoking init, e.g. Flurry.withIncludeBackgroundSessionsInMetrics(true);
          * @deprecated Please use Flurry.Builder instead.
          */
-        withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics?: boolean): void;
+        static withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics?: boolean): void;
 
         /**
          * True to enable or false to disable the internal logging for the Flurry SDK.
          * 
-         * @param enableLog true to enable logging,  false to disable it.
+         * @param enableLog true to enable logging, false to disable it.
          * 
          * Method must be called prior to invoking init, e.g. Flurry.withLogEnabled(true);
          * @deprecated Please use Flurry.Builder instead.
          */
-        withLogEnabled(enableLog?: boolean): void;
+        static withLogEnabled(enableLog?: boolean): void;
 
         /**
          * Set the log level of the internal Flurry SDK logging.
-         * Android (2:VERBOSE, 3:DEBUG, 4:INFO, 5:WARN, 6:ERROR, 7:ASSERT), iOS (2:All, 3-5:Debug, 6-7:Critical)
          * 
-         * @param logLevel The level to set it to.
+         * @param logLevel The level to set it to { VERBOSE, DEBUG, INFO, WARN, ERROR, ASSERT }.
          * 
-         * Method must be called prior to invoking init, e.g. Flurry.withLogLevel(5);
+         * Method must be called prior to invoking init, e.g. Flurry.withLogLevel(Flurry.LogLevel.WARN);
          * @deprecated Please use Flurry.Builder instead.
          */
-        withLogLevel(logLevel?: number): void;
+        static withLogLevel(logLevel?: number): void;
 
         /**
          * Sets the age of the user at the time of this session.
@@ -82,16 +101,16 @@ declare module 'react-native-flurry-sdk' {
          * 
          * @param age valid values are 0-110 
          */
-        setAge(age: number): void;
+        static setAge(age: number): void;
 
         /**
          * Sets the gender of the user.
          * 
-         * e.g. Flurry.setGender('f');
+         * e.g. Flurry.setGender(Flurry.Gender.FEMALE);
          * 
-         * @param gender one of 'f' or 'm'
+         * @param gender type of Flurry.Gender
          */
-        setGender(gender: string): void;
+        static setGender(gender: string): void;
 
         /**
          * Set whether Flurry should record location via GPS.
@@ -100,7 +119,7 @@ declare module 'react-native-flurry-sdk' {
          * 
          * @param reportLocation True to allow Flurry to record location via GPS, false otherwise
          */
-        setReportLocation(reportLocation: boolean): void;
+        static setReportLocation(reportLocation: boolean): void;
 
         /**
          * This method allows you to specify session origin and deep link for each session.
@@ -110,7 +129,7 @@ declare module 'react-native-flurry-sdk' {
          * @param originName Name of the origin.
          * @param deepLink   Url of the deep Link.
          */
-        setSessionOrigin(originName: string, deepLink: string): void;
+        static setSessionOrigin(originName: string, deepLink: string): void;
 
         /**
          * Sets the Flurry userId for this session.
@@ -119,7 +138,7 @@ declare module 'react-native-flurry-sdk' {
          * 
          * @param userId Unique user id for session.
          */
-        setUserId(userId: string): void;
+        static setUserId(userId: string): void;
 
         /**
          * Set the version name of the app.
@@ -128,7 +147,7 @@ declare module 'react-native-flurry-sdk' {
          * 
          * @param versionName The version of the app.
          */
-        setVersionName(versionName?: string): void;
+        static setVersionName(versionName?: string): void;
 
         /**
          * Sets the iOS In-App Purchase reporting enabled.
@@ -137,7 +156,7 @@ declare module 'react-native-flurry-sdk' {
          * 
          * @param enableIAP True to enable iOS In-App Purchase reporting, false otherwise
          */
-        setIAPReportingEnabled(enableIAP?: boolean): void;
+        static setIAPReportingEnabled(enableIAP?: boolean): void;
 
         /**
          * Add origin attribution.
@@ -150,7 +169,7 @@ declare module 'react-native-flurry-sdk' {
          * @param originName    The name/id of the origin you wish to attribute.
          * @param originVersion The version of the origin you wish to attribute.
          */
-        addOrigin(originName: string, originVersion: string, originParameters?: any): void;
+        static addOrigin(originName: string, originVersion: string, originParameters?: any): void;
 
         /**
          * This method allows you to associate parameters with an session.
@@ -160,7 +179,7 @@ declare module 'react-native-flurry-sdk' {
          * @param name  Property name.
          * @param value Property value.
          */
-        addSessionProperty(name: string, value: string): void;
+        static addSessionProperty(name: string, value: string): void;
 
         /**
          * Get the version of the Flurry SDK.
@@ -199,7 +218,7 @@ declare module 'react-native-flurry-sdk' {
          * @param successCallback success callback.
          * @return the Promise object if called without callbacks specified.
          */
-        getVersions(errorCallback?: any, successCallback?: any): Promise<object>;
+        static getVersions(errorCallback?: any, successCallback?: any): Promise<{agentVersion: number, releaseVersion: string, sessionId: string}>;
 
         /**
          * Logs the breadcrumb.
@@ -208,7 +227,7 @@ declare module 'react-native-flurry-sdk' {
          * 
          * @param crashBreadcrumb crash breadcrumb
          */
-        logBreadcrumb(crashBreadcrumb: string): void;
+        static logBreadcrumb(crashBreadcrumb: string): void;
 
         /**
          * Log an event.
@@ -224,7 +243,7 @@ declare module 'react-native-flurry-sdk' {
          * @param parameters A {@code Map<String, String>} of parameters to log with this event.
          * @param timed      True if this event is timed, false otherwise.
          */
-        logEvent(eventId: string, parameters?: any, timed?: boolean): void;
+        static logEvent(eventId: string, parameters?: any, timed?: boolean): void;
 
         /**
          * Log a payment.
@@ -240,7 +259,7 @@ declare module 'react-native-flurry-sdk' {
          * @param parameters    A {@code Map<String, String>} of the parameters which should be submitted
          *                      with this event.
          */
-        logPayment(productName: string, productId: string, quantity: number, price: number,
+        static logPayment(productName: string, productId: string, quantity: number, price: number,
                    currency: string, transactionId: string, parameters: any): void;
 
         /**
@@ -254,7 +273,7 @@ declare module 'react-native-flurry-sdk' {
          * @param eventId    The name/id of the event.
          * @param parameters A {@code Map<String, String>} of parameters to log with this event.
          */
-        endTimedEvent(eventId: string, parameters?: any): void;
+        static endTimedEvent(eventId: string, parameters?: any): void;
 
         /**
          * Report errors that your app catches.
@@ -269,14 +288,14 @@ declare module 'react-native-flurry-sdk' {
          * @param errorClass  Class in which the error is reported.
          * @param errorParams A {@code Map<String, String>} of parameters to log with this report.
          */
-        onError(errorId: string, message: string, errorClass: string, errorParams?: any): void;
+        static onError(errorId: string, message: string, errorClass: string, errorParams?: any): void;
 
         /**
          * Log a page view.
          * 
          * e.g. Flurry.onPageView();
          */
-        onPageView(): void;
+        static onPageView(): void;
 
         /**
          * Add a listener to receive messaging events, and handle the notification.
@@ -308,14 +327,14 @@ declare module 'react-native-flurry-sdk' {
          *
          * @param callback messaging event callback.
          */
-        addMessagingListener(callback: any):void;
+        static addMessagingListener(callback: any):void;
 
         /**
          * Remove a messaging events listener.
          *
          * @param callback messaging event callback.
          */
-        removeMessagingListener(callback: any): void;
+        static removeMessagingListener(callback: any): void;
 
         /**
          * If you would like to handle the notification yourself, return true to notify Flurry
@@ -330,17 +349,102 @@ declare module 'react-native-flurry-sdk' {
          * @param handled True if you've handled the notification.
          *                False if you haven't and want Flurry to handle it.
          */
-        willHandleMessage(handled: boolean): void;
+        static willHandleMessage(handled: boolean): void;
 
         /**
          * A helper function to print the message.
          *
          * @param message the message received.
          */
-        printMessage(message: any): void;
+        static printMessage(message: any): void;
 
     }
 
-    const Flurry: FlurryStatic;
+    export module Flurry {
+
+        /**
+         * Builder pattern for Flurry.
+         *
+         * Initialize the Flurry SDK.
+         *   build(apiKey1: string, apiKey2?: string): void;
+         *
+         * Enable the ability to catch all uncaught exceptions and have them reported back to Flurry.
+         *   withCrashReporting(crashReporting?: boolean): object;
+         *
+         * Set the timeout for expiring a Flurry session.
+         *   withContinueSessionMillis(sessionMillis?: number): object;
+         *
+         * Enable if this session should be added to total sessions/DAUs when applicationstate is inactive or background.
+         *   withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics?: boolean): object;
+         *
+         * Enable the internal logging for the Flurry SDK.
+         *   withLogEnabled(enableLog?: boolean): object;
+         *
+         * Set the log level of the internal Flurry SDK logging.
+         *   withLogLevel(logLevel?: number): object;
+         *
+         * Enable the Flurry Push for messaging.
+         *   withMessaging(enableMessaging?: boolean): object;
+         */       
+        class Builder {
+
+            /**
+             * Initialize the Flurry SDK.
+             * 
+             * There are two overloads,
+             * e.g. build('FLURRY_API_KEY'); build('FLURRY_ANDROID_API_KEY', 'FLURRY_IOS_API_KEY');
+             * - build(apikey)
+             * - build(apikeyAndroid, apikeyIos)
+             * 
+             * @param apiKey1 Android User API Key.
+             * @param apiKey2 iOS User API Key.
+             */
+            build(apiKey1: string, apiKey2?: string): void;
+
+            /**
+             * True to enable or false to disable the ability to catch all uncaught exceptions
+             * and have them reported back to Flurry.
+             * 
+             * @param crashReporting true to enable, false to disable.
+             */
+            withCrashReporting(crashReporting?: boolean): object;
+    
+            /**
+             * Set the timeout for expiring a Flurry session.
+             * 
+             * @param sessionMillis The time in milliseconds to set the session timeout to. Minimum value of 5000.
+             */
+            withContinueSessionMillis(sessionMillis?: number): object;
+    
+            /**
+             * True if this session should be added to total sessions/DAUs when applicationstate is inactive or background.
+             * 
+             * @param includeBackgroundSessionsInMetrics if background and inactive session should be counted toward dau
+             */
+            withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics?: boolean): object;
+    
+            /**
+             * True to enable or false to disable the internal logging for the Flurry SDK.
+             * 
+             * @param enableLog true to enable logging, false to disable it.
+             */
+            withLogEnabled(enableLog?: boolean): object;
+    
+            /**
+             * Set the log level of the internal Flurry SDK logging.
+             * 
+             * @param logLevel The level to set it to { VERBOSE, DEBUG, INFO, WARN, ERROR, ASSERT }.
+             */
+            withLogLevel(logLevel?: number): object;
+    
+            /**
+             * True to enable or false to disable the Flurry Push for messaging.
+             * 
+             * @param enableMessaging true to enable messaging, false to disable it.
+             */
+            withMessaging(enableMessaging?: boolean): object;
+        }
+    }
+
     export default Flurry;
 }

@@ -31,7 +31,7 @@
 #endif
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"3.0.0";
+static NSString * const originVersion = @"3.1.0";
 static NSString * const kMessagingEvent = @"FlurryMessagingEvent";
 static NSString * const kNotificationReceived = @"NotificationReceived";
 static NSString * const kNotificationClicked = @"NotificationClicked";
