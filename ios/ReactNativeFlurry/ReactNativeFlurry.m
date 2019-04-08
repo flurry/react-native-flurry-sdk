@@ -17,6 +17,7 @@
 #import "ReactNativeFlurry.h"
 #import "Flurry/Flurry.h"
 #import "FlurryMessaging/FlurryMessaging.h"
+#import "ReactNativeFlurryMessagingListener.h"
 
 #if __has_include(<React/RCTBridge.h>)
 #import <React/RCTBridge.h>
@@ -31,16 +32,14 @@
 #endif
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"3.1.0";
-static NSString * const kMessagingEvent = @"FlurryMessagingEvent";
-static NSString * const kNotificationReceived = @"NotificationReceived";
-static NSString * const kNotificationClicked = @"NotificationClicked";
+static NSString * const originVersion = @"3.2.0";
 
-@interface ReactNativeFlurry ()<FlurryMessagingDelegate>
+@interface ReactNativeFlurry ()<RNFlurryEventDispatcherDelegate>
 
 @property (strong, nonatomic) FlurrySessionBuilder *sessionBuilder;
 @property (assign, nonatomic) FlurryLogLevel logLevel;
-@property (assign, nonatomic) BOOL messagingListenerEnabled;
+@property (strong, nonatomic) ReactNativeFlurryMessagingListener *listener;
+@property (assign, nonatomic) BOOL isActive;
 
 @end
 
@@ -67,10 +66,15 @@ static ReactNativeFlurry *gInstance;
     if (self) {
         _logLevel = FlurryLogLevelCriticalOnly; // default log level
         _sessionBuilder = [FlurrySessionBuilder new];
-        _messagingListenerEnabled = NO;
+        _isActive = NO;
         [Flurry addOrigin:originName withVersion:originVersion];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reactNativeJavaScriptDidFinishLoad)
+                                                     name:RCTJavaScriptDidLoadNotification
+                                                   object:nil];
     }
-
+    
     return self;
 }
 
@@ -80,6 +84,10 @@ static ReactNativeFlurry *gInstance;
 
 - (dispatch_queue_t)methodQueue {
     return dispatch_get_main_queue();
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Flurry Builder methods
@@ -137,11 +145,7 @@ RCT_EXPORT_METHOD(withLogLevel:(NSInteger)value) {
 
 RCT_EXPORT_METHOD(withMessaging:(BOOL)enableMessaging) {
     if (enableMessaging) {
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            [FlurryMessaging setAutoIntegrationForMessaging];
-            [FlurryMessaging setMessagingDelegate:self];
-        });
+        [self.class enableMessaging];
     }
 }
 
@@ -264,41 +268,43 @@ RCT_EXPORT_METHOD(onErrorParams:(nonnull NSString *)errorId message:(nullable NS
 }
 
 RCT_EXPORT_METHOD(enableMessagingListener:(BOOL)enabled) {
-    self.messagingListenerEnabled = enabled;
+    [ReactNativeFlurryMessagingListener messagingListener].messagingListenerEnabled = enabled;
 }
 
 RCT_EXPORT_METHOD(willHandleMessage:(BOOL)handled) {
     NSLog(@"Flurry.willHandleMessage is not supported on iOS.");
 }
 
-#pragma mark - Flurry Messaging Delegate
+#pragma mark - Flurry Event Dispatcher delegate
 
-- (void)didReceiveMessage:(FlurryMessage *)message {
-    if (self.messagingListenerEnabled) {
-        NSDictionary *msgDict = @{@"Type": kNotificationReceived,
-                                  @"Title": message.title,
-                                  @"Body": message.body,
-                                  @"Data": message.appData,
-                                  };
+- (void)sendEvent:(NSString *)event params:(NSDictionary *)params {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        [self.bridge.eventDispatcher sendAppEventWithName:kMessagingEvent body:msgDict];
+    [self.bridge.eventDispatcher sendAppEventWithName:event body:params];
 #pragma clang diagnostic pop
-    }
 }
 
-- (void)didReceiveActionWithIdentifier:(NSString *)identifier message:(FlurryMessage *)message {
-    if (self.messagingListenerEnabled) {
-        NSDictionary *msgDict = @{@"Type": kNotificationClicked,
-                                  @"Title": message.title,
-                                  @"Body": message.body,
-                                  @"Data": message.appData,
-                                  };
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        [self.bridge.eventDispatcher sendAppEventWithName:kMessagingEvent body:msgDict];
-#pragma clang diagnostic pop
-    }
+- (BOOL)canAcceptEvents {
+    return self.isActive;
+}
+
+#pragma mark - Notification listener
+
+- (void)reactNativeJavaScriptDidFinishLoad {
+    self.isActive = YES;
+    [[ReactNativeFlurryMessagingListener messagingListener] sendPendingEvents];
+}
+
+#pragma mark - API
+
++ (void)enableMessaging {
+    static dispatch_once_t messagingToken;
+    dispatch_once(&messagingToken, ^{
+        [FlurryMessaging setAutoIntegrationForMessaging];
+        gInstance.listener = [ReactNativeFlurryMessagingListener messagingListener];
+        [FlurryMessaging setMessagingDelegate:gInstance.listener];
+        gInstance.listener.delegate = gInstance;
+    });
 }
 
 @end

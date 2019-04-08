@@ -22,4 +22,16 @@
 
 @interface ReactNativeFlurry : NSObject <RCTBridgeModule>
 
+/*
+ *  Call this API if you want enable Push Notificaions for React Native Flurry SDK.
+ *  This must be called right after application:didFinishLaunchingWithOptions:
+ *
+ *  This method takes care of all the setup for Push Notifications.
+ *  1) Registers for Notifications
+ *  2) Handles device tokens
+ *  3) Listens for callbacks from UIApplication and UNUserNotificationCenter
+ *  4) Send notification events to React Native
+ */
++ (void)enableMessaging;
+
 @end

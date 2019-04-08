@@ -1,5 +1,18 @@
 # Change Log
 
+## v3.2.0 (2019-04-08)
+
+#### Features
+
+* Provide Enum for MessageType
+* Improve and support more JSDoc for code completion
+* Support optional user's native `FlurryMarketingOptions` / `FlurryMessagingListener` for Android Push
+* Support iOS Cold start notification
+
+#### Bug Fixes
+
+* Fix undefined variable errors for default withLogLevel call
+
 ## v3.1.0 (2019-03-25)
 
 #### Features

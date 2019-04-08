@@ -58,7 +58,7 @@ A React Native plugin for Flurry SDK
             .withCrashReporting(true)
             .withLogEnabled(true)
             .withLogLevel(Log.VERBOSE)
-            .withMessaging(true)
+            .withMessaging(true, options_or_listener) // optional user's native `FlurryMarketingOptions` or `FlurryMessagingListener`.
             .build(this, FLURRY_ANDROID_API_KEY);
      ```
 
@@ -113,6 +113,17 @@ A React Native plugin for Flurry SDK
      Now your `Info.plist` should contain the following items. For more information, please see [Push Setup](https://developer.yahoo.com/flurry/docs/push/integration/ios/).
      ![push_ios_3](images/push_ios_3.png)
   4. Set up "iOS Authorization" in Flurry [Push Authorization](https://developer.yahoo.com/flurry/docs/push/authorization/).
+  5. In order to handle notifications from a cold start, Flurry Push requires to be initialized from AppDelegate as early as possible. Please open `AppDelegate.m`, import the header file
+
+     ```objc
+     #import "ReactNativeFlurry.h"
+     ```
+
+     And add this line right after `- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions`
+
+     ```objc
+     [ReactNativeFlurry enableMessaging];
+     ```
 
 ## Example
 
@@ -155,7 +166,7 @@ A React Native plugin for Flurry SDK
   
        // Example to get Flurry versions.
        Flurry.getVersions().then((versions) => {
-         console.log("Versions: " + versions.agentVersion + " : " + versions.releaseVersion + " : " + versions.sessionId);
+         console.log('Versions: ' + versions.agentVersion + ' : ' + versions.releaseVersion + ' : ' + versions.sessionId);
        });
      }
   
@@ -166,10 +177,10 @@ A React Native plugin for Flurry SDK
        Flurry.setReportLocation(true);
   
        // Log Flurry events.
-       Flurry.logEvent("React Native Event");
-       Flurry.logEvent("React Native Timed Event", {param: 'true'}, true);
+       Flurry.logEvent('React Native Event');
+       Flurry.logEvent('React Native Timed Event', {param: 'true'}, true);
        ...
-       Flurry.endTimedEvent("React Native Timed Event");
+       Flurry.endTimedEvent('React Native Timed Event');
   
        Flurry.onPageView();
   
@@ -193,11 +204,11 @@ A React Native plugin for Flurry SDK
   
    // Optionally add a listener to receive messaging events, and handle the notification.
    // Please call required Flurry.willHandleMessage(boolean) when received event types of
-   // 'NotificationReceived' or 'NotificationClicked' as soon as possible to avoid delay.
+   // MessageType.RECEIVED or MessageType.CLICKED as soon as possible to avoid delay.
    Flurry.addMessagingListener((message) => {
-     if (message.Type === 'NotificationReceived') {
+     if (message.Type === Flurry.MessageType.RECEIVED) {
        Flurry.willHandleMessage(false);
-     } else if (message.Type === 'NotificationClicked') {
+     } else if (message.Type === Flurry.MessageType.CLICKED) {
        Flurry.willHandleMessage(false);
      }
   
@@ -250,16 +261,16 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
   Flurry.setVersionName(versionName: string);
   
   Flurry.addOrigin(originName: string, originVersion: string);
-  Flurry.addOrigin(originName: string, originVersion: string, originParameters: {});
+  Flurry.addOrigin(originName: string, originVersion: string, originParameters: { [key: string]: string; });
   Flurry.addSessionProperty(name: string, value: string);
   ```
 
 - **Methods to get Flurry versions**
 
   ```javascript
-  Flurry.getVersions(): Promise<{agentVersion: number, releaseVersion: string, sessionId: string}>;
-  Flurry.getVersions((msg) => errorCallback,
-                     (agentVersion, releaseVersion, sessionId) => successCallback);
+  Flurry.getVersions(): Promise<{ agentVersion: number; releaseVersion: string; sessionId: string; }>;
+  Flurry.getVersions(errorCallback: (errorMessage: string) => void,
+                     successCallback: (agentVersion: number, releaseVersion: string, sessionId: string) => void);
   ```
 
 - **Methods to log Flurry events**
@@ -267,20 +278,20 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
   ```javascript
   Flurry.logEvent(eventId: string);
   Flurry.logEvent(eventId: string, timed: boolean);
-  Flurry.logEvent(eventId: string, parameters: {});
-  Flurry.logEvent(eventId: string, parameters: {}, timed: boolean);
+  Flurry.logEvent(eventId: string, parameters: { [key: string]: string; });
+  Flurry.logEvent(eventId: string, parameters: { [key: string]: string; }, timed: boolean);
   
   Flurry.endTimedEvent(eventId: string);
-  Flurry.endTimedEvent(eventId: string, parameters: {});
+  Flurry.endTimedEvent(eventId: string, parameters: { [key: string]: string; });
   
   Flurry.onPageView();
   
   Flurry.onError(errorId: string, message: string, errorClass: string);
-  Flurry.onError(errorId: string, message: string, errorClass: string, errorParams: {});
+  Flurry.onError(errorId: string, message: string, errorClass: string, errorParams: { [key: string]: string; });
   
   Flurry.logBreadcrumb(crashBreadcrumb: string);
   Flurry.logPayment(productName: string, productId: string, quantity: number, price: number,
-                    currency: string, transactionId: string, parameters: {});  // Android, see setIAPReportingEnabled for iOS
+                    currency: string, transactionId: string, parameters: { [key: string]: string; });  // Android, see setIAPReportingEnabled for iOS
   ```
 
 - **Methods to enable IAP reporting (iOS)**
@@ -292,16 +303,23 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
 - **Methods for Messaging (Flurry Push)**
 
   ```javascript
-  // message.Type: { 'NotificationReceived', 'NotificationClicked',
-  //                 'NotificationCancelled', 'TokenRefresh' } (Android only)
-  // message.Title:       message title
-  // message.Body:        message body
-  // message.Data:        message data (Map)
-  // message.ClickAction: click action (Android only)
-  Flurry.addMessagingListener((message) => callback);
-  Flurry.removeMessagingListener((message) => callback);
+  // Message.Type: Flurry.MessageType = { RECEIVED,  CLICKED,
+  //                                      CANCELLED, REFRESH } (Android only)
+  // Message.Title:       message title
+  // Message.Body:        message body
+  // Message.Data:        message data (Map)
+  // Message.ClickAction: click action (Android only)
+  // Message.Token:       refreshed token
+  Flurry.addMessagingListener(callback: (message: { Type: string;
+                    Title?: string; Body?: string; Data?: { [key: string]: string; }; ClickAction?: string;
+                    Token?: string; }) => void);
+  Flurry.removeMessagingListener(callback: (message: { Type: string;
+                    Title?: string; Body?: string; Data?: { [key: string]: string; }; ClickAction?: string;
+                    Token?: string; }) => void);
   Flurry.willHandleMessage(handled: boolean);
-  Flurry.printMessage(message: object);
+  Flurry.printMessage(message: { Type: string;
+                    Title?: string; Body?: string; Data?: { [key: string]: string; }; ClickAction?: string;
+                    Token?: string; });
   ```
 
 ## Support

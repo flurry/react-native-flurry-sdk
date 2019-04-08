@@ -50,7 +50,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String FLURRY_MESSAGING_EVENT = "FlurryMessagingEvent";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "3.1.0";
+    private static final String ORIGIN_VERSION = "3.2.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 
@@ -366,13 +366,29 @@ public class FlurryModule extends ReactContextBaseJavaModule {
          * @return The Builder instance.
          */
         public Builder withMessaging(final boolean enableMessaging) {
+            withMessaging(enableMessaging, (FlurryMessagingListener) null);
+
+            return this;
+        }
+
+        /**
+         * Enable Flurry add-on Messaging with listener.
+         *
+         * @param enableMessaging   true to enable messaging,
+         *                          currently support only auto integration.
+         * @param messagingListener user's messaging listener.
+         * @return The Builder instance.
+         */
+        public Builder withMessaging(final boolean enableMessaging, FlurryMessagingListener messagingListener) {
             if (!enableMessaging) {
                 return this;
             }
 
-            RNFlurryMessagingListener messagingListener = new RNFlurryMessagingListener();
+            if (messagingListener == null) {
+                messagingListener = new RNFlurryMessagingListener();
+            }
 
-            FlurryMarketingOptions flurryMessagingOptions = new FlurryMarketingOptions.Builder()
+            FlurryMarketingOptions messagingOptions = new FlurryMarketingOptions.Builder()
                     .setupMessagingWithAutoIntegration()
                     .withFlurryMessagingListener(messagingListener)
                     // Define yours if needed
@@ -381,7 +397,25 @@ public class FlurryModule extends ReactContextBaseJavaModule {
                     // .withDefaultNotificationIconAccentColor(getResources().getColor(R.color.colorPrimary))
                     .build();
 
-            FlurryMarketingModule marketingModule = new FlurryMarketingModule(flurryMessagingOptions);
+            FlurryMarketingModule marketingModule = new FlurryMarketingModule(messagingOptions);
+            mFlurryAgentBuilder.withModule(marketingModule);
+
+            return this;
+        }
+
+        /**
+         * Enable Flurry add-on Messaging with options.
+         *
+         * @param enableMessaging  true to enable messaging.
+         * @param messagingOptions user's messaging options.
+         * @return The Builder instance.
+         */
+        public Builder withMessaging(final boolean enableMessaging, final FlurryMarketingOptions messagingOptions) {
+            if (!enableMessaging) {
+                return this;
+            }
+
+            FlurryMarketingModule marketingModule = new FlurryMarketingModule(messagingOptions);
             mFlurryAgentBuilder.withModule(marketingModule);
 
             return this;

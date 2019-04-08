@@ -10,7 +10,7 @@ declare module 'react-native-flurry-sdk' {
     export class Flurry {
 
         /**
-         * Constants for setting log level in analytics SDK.
+         * Constants for setting log level in Flurry Analytics.
          */ 
         static LogLevel: {
             VERBOSE: number,
@@ -22,11 +22,21 @@ declare module 'react-native-flurry-sdk' {
         }
 
         /**
-         * Constants for setting gender in analytics SDK.
+         * Constants for setting gender in Flurry Analytics.
          */
         static Gender: {
             MALE:   string,
             FEMALE: string
+        }
+
+        /**
+         * Constants for message types in Flurry Push.
+         */
+        static MessageType: {
+            RECEIVED:  string,
+            CLICKED:   string,
+            CANCELLED: string,
+            REFRESH:   string
         }
 
         /**
@@ -169,7 +179,7 @@ declare module 'react-native-flurry-sdk' {
          * @param originName    The name/id of the origin you wish to attribute.
          * @param originVersion The version of the origin you wish to attribute.
          */
-        static addOrigin(originName: string, originVersion: string, originParameters?: any): void;
+        static addOrigin(originName: string, originVersion: string, originParameters?: { [key: string]: string; }): void;
 
         /**
          * This method allows you to associate parameters with an session.
@@ -192,7 +202,7 @@ declare module 'react-native-flurry-sdk' {
          *         console.error(msg);
          *     },
          *     (agentVersion, releaseVersion, sessionId) => {
-         *         console.log("Versions: " + agentVersion + " : " + releaseVersion + " : " + sessionId);
+         *         console.log('Versions: ' + agentVersion + ' : ' + releaseVersion + ' : ' + sessionId);
          *     }
          * );
          *
@@ -200,14 +210,14 @@ declare module 'react-native-flurry-sdk' {
          *
          * (async () => {
          *     var versions = await Flurry.getVersions();
-         *     console.log("Versions: " + versions.agentVersion + " : " + versions.releaseVersion + " : " + versions.sessionId);
+         *     console.log('Versions: ' + versions.agentVersion + ' : ' + versions.releaseVersion + ' : ' + versions.sessionId);
          * })();
          *
          * OR
          *
          * Flurry.getVersions().then(
          *     (versions) => {
-         *         console.log("Versions: " + versions.agentVersion + " : " + versions.releaseVersion + " : " + versions.sessionId);
+         *         console.log('Versions: ' + versions.agentVersion + ' : ' + versions.releaseVersion + ' : ' + versions.sessionId);
          *     },
          *     (msg) => {
          *         console.error(msg);
@@ -218,7 +228,9 @@ declare module 'react-native-flurry-sdk' {
          * @param successCallback success callback.
          * @return the Promise object if called without callbacks specified.
          */
-        static getVersions(errorCallback?: any, successCallback?: any): Promise<{agentVersion: number, releaseVersion: string, sessionId: string}>;
+        static getVersions(errorCallback?: (errorMessage: string) => void,
+                           successCallback?: (agentVersion: number, releaseVersion: string, sessionId: string) => void):
+                           Promise<{ agentVersion: number; releaseVersion: string; sessionId: string; }>;
 
         /**
          * Logs the breadcrumb.
@@ -243,7 +255,7 @@ declare module 'react-native-flurry-sdk' {
          * @param parameters A {@code Map<String, String>} of parameters to log with this event.
          * @param timed      True if this event is timed, false otherwise.
          */
-        static logEvent(eventId: string, parameters?: any, timed?: boolean): void;
+        static logEvent(eventId: string, parameters?: { [key: string]: string; }, timed?: boolean): void;
 
         /**
          * Log a payment.
@@ -260,7 +272,7 @@ declare module 'react-native-flurry-sdk' {
          *                      with this event.
          */
         static logPayment(productName: string, productId: string, quantity: number, price: number,
-                   currency: string, transactionId: string, parameters: any): void;
+                   currency: string, transactionId: string, parameters: { [key: string]: string; }): void;
 
         /**
          * End a timed event.
@@ -273,7 +285,7 @@ declare module 'react-native-flurry-sdk' {
          * @param eventId    The name/id of the event.
          * @param parameters A {@code Map<String, String>} of parameters to log with this event.
          */
-        static endTimedEvent(eventId: string, parameters?: any): void;
+        static endTimedEvent(eventId: string, parameters?: { [key: string]: string; }): void;
 
         /**
          * Report errors that your app catches.
@@ -288,7 +300,7 @@ declare module 'react-native-flurry-sdk' {
          * @param errorClass  Class in which the error is reported.
          * @param errorParams A {@code Map<String, String>} of parameters to log with this report.
          */
-        static onError(errorId: string, message: string, errorClass: string, errorParams?: any): void;
+        static onError(errorId: string, message: string, errorClass: string, errorParams?: { [key: string]: string; }): void;
 
         /**
          * Log a page view.
@@ -299,26 +311,27 @@ declare module 'react-native-flurry-sdk' {
 
         /**
          * Add a listener to receive messaging events, and handle the notification.
-         * Message type: 'NotificationReceived':  a notification has been received.
-         *               'NotificationClicked':   a notification has been clicked.
-         *               'NotificationCancelled': a notification has been cancelled. (Android only)
-         *               'TokenRefresh': push notification token has been changed. (Android only)
+         * Message.Type: RECEIVED:  a notification has been received.
+         *               CLICKED:   a notification has been clicked.
+         *               CANCELLED: a notification has been cancelled. (Android only)
+         *               REFRESH: push notification token has been changed. (Android only)
          * Message.Title:       message title
          * Message.Body:        message body
          * Message.Data:        message data (Map)
          * Message.ClickAction: click action (Android only)
+         * Message.Token:       refreshed token
          *
          * Please call required Flurry.willHandleMessage(boolean) when received event types of
-         * 'NotificationReceived' or 'NotificationClicked' as soon as possible to avoid delay.
+         * MessageType.RECEIVED or MessageType.CLICKED as soon as possible to avoid delay.
          * (Android only) If you would like to handle the notification yourself, return true to notify Flurry
-         * you've handled it, and Flurry will not show the notification ('NotificationReceived'),
-         * or Flurry will not launch the app or "click_action" activity ('NotificationClicked').
+         * you've handled it, and Flurry will not show the notification (MessageType.RECEIVED),
+         * or Flurry will not launch the app or 'click_action' activity (MessageType.CLICKED).
          *
          * e.g.
          * Flurry.addMessagingListener((message) => {
-         *     if (message.Type === 'NotificationReceived') {
+         *     if (message.Type === Flurry.MessageType.RECEIVED) {
          *         Flurry.willHandleMessage(false);
-         *     } else if (message.Type === 'NotificationClicked') {
+         *     } else if (message.Type === Flurry.MessageType.CLICKED) {
          *         Flurry.willHandleMessage(false);
          *     }
          *
@@ -327,22 +340,26 @@ declare module 'react-native-flurry-sdk' {
          *
          * @param callback messaging event callback.
          */
-        static addMessagingListener(callback: any):void;
+        static addMessagingListener(callback: (message: { Type: string;
+                    Title?: string; Body?: string; Data?: { [key: string]: string; }; ClickAction?: string;
+                    Token?: string; }) => void): void;
 
         /**
          * Remove a messaging events listener.
          *
          * @param callback messaging event callback.
          */
-        static removeMessagingListener(callback: any): void;
+        static removeMessagingListener(callback: (message: { Type: string;
+                    Title?: string; Body?: string; Data?: { [key: string]: string; }; ClickAction?: string;
+                    Token?: string; }) => void): void;
 
         /**
          * If you would like to handle the notification yourself, return true to notify Flurry
-         * you've handled it, and Flurry will not show the notification ('NotificationReceived'),
-         * or Flurry will not launch the app or "click_action" activity ('NotificationClicked').
+         * you've handled it, and Flurry will not show the notification (MessageType.RECEIVED),
+         * or Flurry will not launch the app or 'click_action' activity (MessageType.CLICKED).
          *
          * Required: Even it is supported by Android only, it is required to notify Flurry
-         *           when received event types of 'NotificationReceived' or 'NotificationClicked'.
+         *           when received event types of MessageType.RECEIVED or MessageType.CLICKED.
          *
          * e.g. Flurry.willHandleMessage(true);
          *
@@ -356,7 +373,9 @@ declare module 'react-native-flurry-sdk' {
          *
          * @param message the message received.
          */
-        static printMessage(message: any): void;
+        static printMessage(message: { Type: string;
+                    Title?: string; Body?: string; Data?: { [key: string]: string; }; ClickAction?: string;
+                    Token?: string; }): void;
 
     }
 

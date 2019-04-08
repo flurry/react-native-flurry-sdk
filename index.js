@@ -39,6 +39,13 @@ export default class Flurry {
 	    FEMALE: 'f'
     });
 
+    static MessageType = Object.freeze({
+        RECEIVED:  'NotificationReceived',
+        CLICKED:   'NotificationClicked',
+        CANCELLED: 'NotificationCancelled',
+        REFRESH:   'TokenRefresh'
+    });
+
     static Builder = class {
         constructor() {
             ReactNativeFlurry.initBuilder();
@@ -94,7 +101,7 @@ export default class Flurry {
             return this;
         }
 
-        withLogLevel(logLevel = LogLevel.WARN) {
+        withLogLevel(logLevel = Flurry.LogLevel.WARN) {
             ReactNativeFlurry.withLogLevel(logLevel);
             return this;
         }
@@ -178,7 +185,7 @@ export default class Flurry {
     /**
      * @deprecated Please use Flurry.Builder instead.
      */
-    static withLogLevel(logLevel = LogLevel.WARN) {
+    static withLogLevel(logLevel = Flurry.LogLevel.WARN) {
         priorInit(ReactNativeFlurry.withLogLevel)(logLevel);
     }
 
@@ -440,7 +447,7 @@ export default class Flurry {
     }
 
     static printMessage(message) {
-        if (message.hasOwnProperty('Token')) {
+        if (message.Type === Flurry.MessageType.REFRESH) {
             console.log('Flurry Messaging Type: ' + message.Type +
                     '\n    Token: ' + message.Token);
             return;

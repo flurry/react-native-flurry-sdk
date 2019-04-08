@@ -10,6 +10,7 @@
 		BC4520FB212753B100EDF713 /* ReactNativeFlurry.m in Sources */ = {isa = PBXBuildFile; fileRef = BC45200B21274B4D00EDF713 /* ReactNativeFlurry.m */; };
 		BC648AB0220120260098599C /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC648AA9220120260098599C /* libFlurry.a */; };
 		BC648AB1220120260098599C /* FlurryEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = BC648AAA220120260098599C /* FlurryEmpty.m */; };
+		BC65D180224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.m in Sources */ = {isa = PBXBuildFile; fileRef = BC65D17F224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.m */; };
 		CB876CE12213CDD30098E321 /* libFlurryMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB876CE02213CDD30098E321 /* libFlurryMessaging.a */; };
 		CB876CE52213CE4C0098E321 /* FlurryMessagingEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = CB876CE42213CE4C0098E321 /* FlurryMessagingEmpty.m */; };
 /* End PBXBuildFile section */
@@ -35,6 +36,8 @@
 		BC648AA9220120260098599C /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
 		BC648AAA220120260098599C /* FlurryEmpty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlurryEmpty.m; sourceTree = "<group>"; };
 		BC648AAF220120260098599C /* FlurrySessionBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurrySessionBuilder.h; sourceTree = "<group>"; };
+		BC65D17E224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReactNativeFlurryMessagingListener.h; sourceTree = "<group>"; };
+		BC65D17F224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactNativeFlurryMessagingListener.m; sourceTree = "<group>"; };
 		CB876CE02213CDD30098E321 /* libFlurryMessaging.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurryMessaging.a; sourceTree = "<group>"; };
 		CB876CE32213CE460098E321 /* FlurryMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryMessaging.h; sourceTree = "<group>"; };
 		CB876CE42213CE4C0098E321 /* FlurryMessagingEmpty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlurryMessagingEmpty.m; sourceTree = "<group>"; };
@@ -76,6 +79,8 @@
 				BC648AA6220120260098599C /* Flurry */,
 				BC45200A21274B4D00EDF713 /* ReactNativeFlurry.h */,
 				BC45200B21274B4D00EDF713 /* ReactNativeFlurry.m */,
+				BC65D17E224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.h */,
+				BC65D17F224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.m */,
 			);
 			path = ReactNativeFlurry;
 			sourceTree = "<group>";
@@ -141,6 +146,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 58B511D21A9E6C8500147676;
@@ -159,6 +165,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC4520FB212753B100EDF713 /* ReactNativeFlurry.m in Sources */,
+				BC65D180224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.m in Sources */,
 				BC648AB1220120260098599C /* FlurryEmpty.m in Sources */,
 				CB876CE52213CE4C0098E321 /* FlurryMessagingEmpty.m in Sources */,
 			);
