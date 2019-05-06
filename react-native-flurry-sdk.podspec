@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "8.0"
   s.source       = { :git => "https://github.com/flurry/react-native-flurry-sdk.git", :tag => "master" }
   s.source_files = "ios/ReactNativeFlurry/**/*.{h,m}"
-  s.vendored_libraries = "ios/ReactNativeFlurry/Flurry/libFlurry.a", "ios/ReactNativeFlurry/FlurryMessaging/libFlurryMessaging.a"
+  s.vendored_libraries = "ios/ReactNativeFlurry/Flurry/libFlurry.a", "ios/ReactNativeFlurry/FlurryMessaging/libFlurryMessaging.a", "ios/ReactNativeFlurry/FlurryConfig/libFlurryConfig.a"
   s.requires_arc = true
 
   s.dependency 'React'

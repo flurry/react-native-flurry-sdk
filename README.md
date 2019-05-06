@@ -194,6 +194,32 @@ A React Native plugin for Flurry SDK
    ...
    ```
 
+- `index.js / Config.js`
+
+   ```javascript
+   Flurry.addConfigListener((event) => {
+     if (event.Type === Flurry.ConfigStatus.SUCCESS) {
+       // Data fetched, activate it.
+       Flurry.activateConfig();
+     } else if (event.Type === Flurry.ConfigStatus.ACTIVATED) {
+       // Received cached data, or newly activated data.
+       Flurry.getConfigString('welcome_message', 'Welcome!').then((value) => {
+         console.log((event.isCache ? 'Received cached data: ' : 'Received newly activated data: ') + value.welcome_message);
+       });
+     } else if (event.Type === Flurry.ConfigStatus.UNCHANGED) {
+       // Fetch finished, but data unchanged.
+       Flurry.getConfigString('welcome_message', 'Welcome!').then((value) => {
+         console.log('Received unchanged data: ' + value.welcome_message);
+       });
+     } else if (event.Type === Flurry.ConfigStatus.ERROR) {
+       // Fetch failed.
+       console.log('Fetch error! Retrying: ' + event.isRetrying);
+     }
+   });
+
+   Flurry.fetchConfig();
+   ```
+
 - `index.js / Messaging.js`
 
    ```javascript
@@ -298,6 +324,20 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
 
   ```javascript
   Flurry.setIAPReportingEnabled(enableIAP: boolean);
+  ```
+
+- **Methods for Flurry Config**
+
+  ```javascript
+  // Event.Type:       Flurry.ConfigStatus = { SUCCESS, UNCHANGED, ERROR, ACTIVATED }
+  // Event.isRetrying: true if it is still retrying fetching, for ERROR type
+  // Event.isCache:    true if activated from the cached data, for ACTIVATED type
+  Flurry.addConfigListener   (callback: (event: { Type: string; isCache?: boolean; isRetrying?: boolean; }) => void);
+  Flurry.removeConfigListener(callback: (event: { Type: string; isCache?: boolean; isRetrying?: boolean; }) => void);
+  Flurry.fetchConfig();
+  Flurry.activateConfig():
+  Flurry.getConfigString(key: string, defaultValue: string):         Promise<{ [key: string]: string; }>;
+  Flurry.getConfigString(keyAndDefault: { [key: string]: string; }): Promise<{ [key: string]: string; }>;
   ```
 
 - **Methods for Messaging (Flurry Push)**

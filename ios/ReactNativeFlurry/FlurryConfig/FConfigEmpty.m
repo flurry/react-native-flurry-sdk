@@ -13,17 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ 
+#import "FConfig.h"
 
-#import <Foundation/Foundation.h>
-#import "FlurryMessaging/FlurryMessaging.h"
-#import "ReactNativeFlurry.h"
-
-@interface ReactNativeFlurryMessagingListener : NSObject<FlurryMessagingDelegate>
-
-@property (weak, nonatomic) id<RNFlurryEventDispatcherDelegate> delegate;
-@property (assign, nonatomic) BOOL messagingListenerEnabled;
-
-+ (instancetype)messagingListener;
-- (void)sendPendingEvents;
+@implementation FConfig (ForceLoad)
 
 @end

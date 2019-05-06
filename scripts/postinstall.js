@@ -30,6 +30,10 @@ const msgLink = 'https://raw.githubusercontent.com/flurry/flurry-ios-sdk/76d189f
 const msgPath = path.join(rootPath, 'ios', 'ReactNativeFlurry', 'FlurryMessaging', 'libFlurryMessaging.a');
 const msgMd5 = '5E419F17297BBF91B2D9AB9277180A9E';
 
+const configLink = 'https://raw.githubusercontent.com/flurry/flurry-ios-sdk/76d189f62b66c8fee4201fd70f1dfba5add3e5af/FlurryConfig/libFlurryConfig_9.3.1.a';
+const configPath = path.join(rootPath, 'ios', 'ReactNativeFlurry', 'FlurryConfig', 'libFlurryConfig.a');
+const configMd5 = 'FE3CA6EAADC988EC505B28CC95F77AB9';
+
 const getMd5 = (file) => {
   const bufferSize = 8192;
   const fd = fs.openSync(file, 'r');
@@ -63,10 +67,10 @@ const downloadFile = (path, link, name, md5) => {
       fs.unlinkSync(path);
     }
     
-    var file = fs.createWriteStream(path);
-    var request = https.get(link, function(response) {
-      var len = parseInt(response.headers['content-length'], 10);
-      var bar = new ProgressBar(`Downloading ${name} [:bar] :rate/bps :percent :etas`, {
+    let file = fs.createWriteStream(path);
+    let request = https.get(link, function(response) {
+      let len = parseInt(response.headers['content-length'], 10);
+      let bar = new ProgressBar(`Downloading ${name} [:bar] :rate/bps :percent :etas`, {
         complete: '=',
         incomplete: ' ',
         width: 20,
@@ -120,5 +124,6 @@ const migration = () => {
 (async () => {
   await downloadFile(sdkPath, sdkLink, 'Flurry SDK', sdkMd5);
   await downloadFile(msgPath, msgLink, 'Flurry Messaging SDK', msgMd5);
+  await downloadFile(configPath, configLink, 'Flurry Config SDK', configMd5);
   await migration();
 })();

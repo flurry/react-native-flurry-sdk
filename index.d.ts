@@ -310,6 +310,96 @@ declare module 'react-native-flurry-sdk' {
         static onPageView(): void;
 
         /**
+         * Register a listener for the state of fetching. Multiple listeners can be passed in and each
+         * one will be called in the order they are registered.
+         *
+         * Event.Type: ConfigStatus.SUCCESS:   Config data is successfully loaded from server.
+         *             ConfigStatus.UNCHANGED: Fetch completes but no changes from server.
+         *             ConfigStatus.ERROR:     Config data is failed to load from server.
+         *                                     Flurry Config will retry if failed in 10 sec., 30 sec., 3 min., then abandon.
+         *                                     Event.isRetrying: true if it is still retrying fetching
+         *             ConfigStatus.ACTIVATED: Config data is activated.
+         *                                     Flurry Config can receive activate notification when cached data is read,
+         *                                     and when newly fetched data is been activated.
+         *                                     Event.isCache: true if activated from the cached data
+         *
+         * e.g.
+         * Flurry.addConfigListener((event) => {
+         *     if (event.Type === Flurry.ConfigStatus.SUCCESS) {
+         *         // Data fetched, activate it.
+         *         Flurry.activateConfig();
+         *     } else if (event.Type === Flurry.ConfigStatus.ACTIVATED) {
+         *         // Received cached data, or newly activated data.
+         *         Flurry.getConfigString('welcome_message', 'Welcome!').then((value) => {
+         *             console.log((event.isCache ? 'Received cached data: ' : 'Received newly activated data: ') + value.welcome_message);
+         *         });
+         *     } else if (event.Type === Flurry.ConfigStatus.UNCHANGED) {
+         *         // Fetch finished, but data unchanged.
+         *         Flurry.getConfigString('welcome_message', 'Welcome!').then((value) => {
+         *             console.log('Received unchanged data: ' + value.welcome_message);
+         *         });
+         *     } else if (event.Type === Flurry.ConfigStatus.ERROR) {
+         *         // Fetch failed.
+         *         console.log('Fetch error! Retrying: ' + event.isRetrying);
+         *     }
+         * });
+         * 
+         * Flurry.fetchConfig();
+         *
+         * @param callback Callback listener to be registered.
+         */
+        static addConfigListener(
+            callback: (event: { Type: string; isCache?: boolean; isRetrying?: boolean; }) => void): void;
+
+        /**
+         * Unregister a callback listener
+         *
+         * @param callback Callback listener to be removed.
+         */
+        static removeConfigListener(
+            callback: (event: { Type: string; isCache?: boolean; isRetrying?: boolean; }) => void): void;
+
+        /**
+         * Fetch Config will trigger an async call to the server. Server has a throttle where when
+         * the user calls fetchConfig many times in a row, it will basically do a no-op.
+         * If we do go out to server, once we return we should store this value onto disk,
+         * to be picked up during initialization the next time around.
+         */
+        static fetchConfig(): void;
+    
+        /**
+         * Activate Config attempts to apply the most recent config.
+         */
+        static activateConfig(): void;
+    
+        /**
+         * Retrieves a String value, or a Map of String values from the configuration.
+         *
+         * e.g.
+         * var keyAndDefault = {
+         *         welcome_message:    'Welcome!',
+         *         welcome_font_size:  '12',
+         *         welcome_font_color: '#990066'
+         *     };
+         * 
+         * Flurry.getConfigString('welcome_message', 'Welcome!').then((value) => {
+         *     console.log('Received data: ' + value.welcome_message);
+         * });
+         * 
+         * Flurry.getConfigString(keyAndDefault).then((value) => {
+         *     console.log('Received map of data: ' +
+         *                 value.welcome_message + ":" + value.welcome_font_size + ":" + value.welcome_font_color);
+         * });
+         *
+         * @param key           The name of the configuration to retrieve.
+         * @param defaultValue  Value to return if this configuration does not exist.
+         * @param keyAndDefault A Map of name and the default values.
+         * @return The configuration value if it exists, or defaultValue. Or Map of values.
+         */
+        static getConfigString(key?: string, defaultValue?: string, keyAndDefault?: { [key: string]: string; }):
+                               Promise<{ [key: string]: string; }>;
+
+        /**
          * Add a listener to receive messaging events, and handle the notification.
          * Message.Type: RECEIVED:  a notification has been received.
          *               CLICKED:   a notification has been clicked.

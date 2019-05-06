@@ -1,5 +1,11 @@
 # Change Log
 
+# v3.5.0 (2019-05-06)
+
+#### Features
+
+* Support Flurry Config for remote config setup features
+
 ## v3.2.0 (2019-04-08)
 
 #### Features

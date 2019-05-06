@@ -20,6 +20,13 @@
 #import "RCTBridgeModule.h"
 #endif
 
+@protocol RNFlurryEventDispatcherDelegate <NSObject>
+
+- (BOOL)canAcceptEvents;
+- (void)sendEvent:(NSString *)event params:(NSDictionary *)params;
+
+@end
+
 @interface ReactNativeFlurry : NSObject <RCTBridgeModule>
 
 /*

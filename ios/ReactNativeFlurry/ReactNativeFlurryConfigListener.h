@@ -15,15 +15,16 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "FlurryMessaging/FlurryMessaging.h"
+#import "FlurryConfig/FConfig.h"
 #import "ReactNativeFlurry.h"
 
-@interface ReactNativeFlurryMessagingListener : NSObject<FlurryMessagingDelegate>
+@interface ReactNativeFlurryConfigListener : NSObject<FConfigObserver>
 
 @property (weak, nonatomic) id<RNFlurryEventDispatcherDelegate> delegate;
-@property (assign, nonatomic) BOOL messagingListenerEnabled;
+@property (strong, nonatomic, readonly) dispatch_queue_t queue;
 
-+ (instancetype)messagingListener;
-- (void)sendPendingEvents;
++ (instancetype)configListener;
+- (void)addCallback;
+- (void)removeCallback;
 
 @end

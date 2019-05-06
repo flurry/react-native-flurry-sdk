@@ -34,6 +34,8 @@ import com.facebook.react.uimanager.IllegalViewOperationException;
 import com.flurry.android.Constants;
 import com.flurry.android.FlurryAgent;
 import com.flurry.android.FlurryAgentListener;
+import com.flurry.android.FlurryConfig;
+import com.flurry.android.FlurryConfigListener;
 import com.flurry.android.marketing.FlurryMarketingModule;
 import com.flurry.android.marketing.FlurryMarketingOptions;
 import com.flurry.android.marketing.messaging.FlurryMessagingListener;
@@ -47,15 +49,19 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String TAG = "FlurryModule";
 
     private static final String REACT_CLASS = "ReactNativeFlurry";
+    private static final String FLURRY_CONFIG_EVENT = "FlurryConfigEvent";
     private static final String FLURRY_MESSAGING_EVENT = "FlurryMessagingEvent";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "3.2.0";
+    private static final String ORIGIN_VERSION = "3.5.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 
     private static ReactApplicationContext sReactApplicationContext = null;
     private static boolean sEnableMessagingListener = false;
+
+    private static RNFlurryConfigListener sRNFlurryConfigListener = null;
+    private static int sRequestConfigListener = 0;
 
     @Override
     public String getName() {
@@ -273,6 +279,59 @@ public class FlurryModule extends ReactContextBaseJavaModule {
         RNFlurryMessagingListener.notifyCallbackReturn(handled);
     }
 
+    @ReactMethod
+    public void registerConfigListener() {
+        sRequestConfigListener++;
+        if (sRNFlurryConfigListener == null) {
+            sRNFlurryConfigListener = new RNFlurryConfigListener();
+            FlurryConfig.getInstance().registerListener(sRNFlurryConfigListener);
+        }
+    }
+
+    @ReactMethod
+    public void unregisterConfigListener() {
+        sRequestConfigListener--;
+    }
+
+    @ReactMethod
+    public void fetchConfig() {
+        FlurryConfig.getInstance().fetchConfig();
+    }
+
+    @ReactMethod
+    public void activateConfig() {
+        FlurryConfig.getInstance().activateConfig();
+    }
+
+    @ReactMethod
+    public void getConfigString(@Nullable String key, String defaultValue, Promise promise) {
+        try {
+            WritableMap map = Arguments.createMap();
+            map.putString(key, FlurryConfig.getInstance().getString(key, defaultValue));
+            promise.resolve(map);
+        } catch (IllegalViewOperationException e) {
+            promise.reject("Flurry.getConfigString", e);
+        }
+    }
+
+    @ReactMethod
+    public void getConfigStringMap(@Nullable ReadableMap keyAndDefault, Promise promise) {
+        try {
+            WritableMap map = Arguments.createMap();
+            if (keyAndDefault != null) {
+                ReadableMapKeySetIterator iterator = keyAndDefault.keySetIterator();
+                while (iterator.hasNextKey()) {
+                    String key = iterator.nextKey();
+                    String defaultValue = keyAndDefault.getString(key);
+                    map.putString(key, FlurryConfig.getInstance().getString(key, defaultValue));
+                }
+            }
+            promise.resolve(map);
+        } catch (IllegalViewOperationException e) {
+            promise.reject("Flurry.getConfigString", e);
+        }
+    }
+
     private static Map<String, String> toMap(final ReadableMap readableMap) {
         if (readableMap == null) {
             return null;
@@ -424,6 +483,73 @@ public class FlurryModule extends ReactContextBaseJavaModule {
         public void build(@NonNull final Context context, @NonNull final String apiKey) {
             mFlurryAgentBuilder.build(context, apiKey);
         }
+    }
+
+    /**
+     * Wrapper Flurry Config listenet.
+     */
+    static class RNFlurryConfigListener implements FlurryConfigListener {
+
+        enum EventType {
+            FetchSuccess("FetchSuccess"),
+            FetchNoChange("FetchNoChange"),
+            FetchError("FetchError"),
+            ActivateComplete("ActivateComplete");
+
+            private final String name;
+
+            EventType(String name) {
+                this.name = name;
+            }
+
+            public String getName() {
+                return name;
+            }
+        }
+
+        @Override
+        public void onFetchSuccess() {
+            if ((sRequestConfigListener > 0) && (sReactApplicationContext != null)) {
+                sendEvent(EventType.FetchSuccess);
+            }
+        }
+
+        @Override
+        public void onFetchNoChange() {
+            if ((sRequestConfigListener > 0) && (sReactApplicationContext != null)) {
+                sendEvent(EventType.FetchNoChange);
+            }
+        }
+
+        @Override
+        public void onFetchError(boolean value) {
+            if ((sRequestConfigListener > 0) && (sReactApplicationContext != null)) {
+                sendEvent(EventType.FetchError, "isRetrying", value);
+            }
+        }
+
+        @Override
+        public void onActivateComplete(boolean value) {
+            if ((sRequestConfigListener > 0) && (sReactApplicationContext != null)) {
+                sendEvent(EventType.ActivateComplete, "isCache", value);
+            }
+        }
+
+        private void sendEvent(EventType type) {
+            sendEvent(type, null, false);
+        }
+
+        private void sendEvent(EventType type, String key, boolean value) {
+            WritableMap params = Arguments.createMap();
+            params.putString("Type", type.getName());
+            if (key != null) {
+                params.putBoolean(key, value);
+            }
+
+            sReactApplicationContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit(FLURRY_CONFIG_EVENT, params);
+        }
+
     }
 
     /**

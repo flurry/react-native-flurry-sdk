@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC2344CD225FF26000F38D94 /* FConfigEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2344CC225FF26000F38D94 /* FConfigEmpty.m */; };
+		BC2344DD225FF2E500F38D94 /* libFlurryConfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2344DC225FF2E500F38D94 /* libFlurryConfig.a */; };
+		BC2344E0225FF45A00F38D94 /* ReactNativeFlurryConfigListener.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2344DF225FF45A00F38D94 /* ReactNativeFlurryConfigListener.m */; };
 		BC4520FB212753B100EDF713 /* ReactNativeFlurry.m in Sources */ = {isa = PBXBuildFile; fileRef = BC45200B21274B4D00EDF713 /* ReactNativeFlurry.m */; };
 		BC648AB0220120260098599C /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC648AA9220120260098599C /* libFlurry.a */; };
 		BC648AB1220120260098599C /* FlurryEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = BC648AAA220120260098599C /* FlurryEmpty.m */; };
@@ -29,6 +32,11 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libReactNativeFlurry.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativeFlurry.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC2344CB225FF25B00F38D94 /* FConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FConfig.h; sourceTree = "<group>"; };
+		BC2344CC225FF26000F38D94 /* FConfigEmpty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FConfigEmpty.m; sourceTree = "<group>"; };
+		BC2344DC225FF2E500F38D94 /* libFlurryConfig.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurryConfig.a; sourceTree = "<group>"; };
+		BC2344DE225FF45A00F38D94 /* ReactNativeFlurryConfigListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReactNativeFlurryConfigListener.h; sourceTree = "<group>"; };
+		BC2344DF225FF45A00F38D94 /* ReactNativeFlurryConfigListener.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactNativeFlurryConfigListener.m; sourceTree = "<group>"; };
 		BC45200A21274B4D00EDF713 /* ReactNativeFlurry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReactNativeFlurry.h; sourceTree = "<group>"; };
 		BC45200B21274B4D00EDF713 /* ReactNativeFlurry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactNativeFlurry.m; sourceTree = "<group>"; };
 		BC648AA7220120260098599C /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
@@ -48,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC2344DD225FF2E500F38D94 /* libFlurryConfig.a in Frameworks */,
 				BC648AB0220120260098599C /* libFlurry.a in Frameworks */,
 				CB876CE12213CDD30098E321 /* libFlurryMessaging.a in Frameworks */,
 			);
@@ -72,15 +81,28 @@
 			);
 			sourceTree = "<group>";
 		};
+		BC2344CA225FF24F00F38D94 /* FlurryConfig */ = {
+			isa = PBXGroup;
+			children = (
+				BC2344CB225FF25B00F38D94 /* FConfig.h */,
+				BC2344CC225FF26000F38D94 /* FConfigEmpty.m */,
+				BC2344DC225FF2E500F38D94 /* libFlurryConfig.a */,
+			);
+			path = FlurryConfig;
+			sourceTree = "<group>";
+		};
 		BC45200921274B4D00EDF713 /* ReactNativeFlurry */ = {
 			isa = PBXGroup;
 			children = (
+				BC2344CA225FF24F00F38D94 /* FlurryConfig */,
 				CB876CE22213CE370098E321 /* FlurryMessaging */,
 				BC648AA6220120260098599C /* Flurry */,
 				BC45200A21274B4D00EDF713 /* ReactNativeFlurry.h */,
 				BC45200B21274B4D00EDF713 /* ReactNativeFlurry.m */,
 				BC65D17E224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.h */,
 				BC65D17F224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.m */,
+				BC2344DE225FF45A00F38D94 /* ReactNativeFlurryConfigListener.h */,
+				BC2344DF225FF45A00F38D94 /* ReactNativeFlurryConfigListener.m */,
 			);
 			path = ReactNativeFlurry;
 			sourceTree = "<group>";
@@ -168,6 +190,8 @@
 				BC65D180224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.m in Sources */,
 				BC648AB1220120260098599C /* FlurryEmpty.m in Sources */,
 				CB876CE52213CE4C0098E321 /* FlurryMessagingEmpty.m in Sources */,
+				BC2344E0225FF45A00F38D94 /* ReactNativeFlurryConfigListener.m in Sources */,
+				BC2344CD225FF26000F38D94 /* FConfigEmpty.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +293,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/ReactNativeFlurry/Flurry",
 					"$(PROJECT_DIR)/ReactNativeFlurry/FlurryMessaging",
+					"$(PROJECT_DIR)/ReactNativeFlurry/FlurryConfig",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ReactNativeFlurry;
@@ -291,6 +316,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/ReactNativeFlurry/Flurry",
 					"$(PROJECT_DIR)/ReactNativeFlurry/FlurryMessaging",
+					"$(PROJECT_DIR)/ReactNativeFlurry/FlurryConfig",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ReactNativeFlurry;

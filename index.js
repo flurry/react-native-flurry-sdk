@@ -39,6 +39,13 @@ export default class Flurry {
 	    FEMALE: 'f'
     });
 
+    static ConfigStatus = Object.freeze({
+        SUCCESS:   'FetchSuccess',
+        UNCHANGED: 'FetchNoChange',
+        ERROR:     'FetchError',
+        ACTIVATED: 'ActivateComplete'
+    });
+
     static MessageType = Object.freeze({
         RECEIVED:  'NotificationReceived',
         CLICKED:   'NotificationClicked',
@@ -418,6 +425,56 @@ export default class Flurry {
 
     static onPageView() {
         ReactNativeFlurry.onPageView();
+    }
+
+    static addConfigListener(callback) {
+        if (typeof callback !== 'function') {
+            console.error(`Flurry.addConfigListener: callback must be a function. Got ${callback}`);
+            return;
+        }
+
+        var Emitter = (Platform.OS === 'android') ? DeviceEventEmitter : NativeAppEventEmitter;
+        Emitter.addListener('FlurryConfigEvent', callback);
+
+        ReactNativeFlurry.registerConfigListener();
+    }
+
+    static removeConfigListener(callback) {
+       if (typeof callback !== 'function') {
+            console.error(`Flurry.removeConfigListener: callback must be a function. Got ${callback}`);
+            return;
+        }
+
+        var Emitter = (Platform.OS === 'android') ? DeviceEventEmitter : NativeAppEventEmitter;
+        Emitter.removeListener('FlurryConfigEvent', callback);
+
+        ReactNativeFlurry.unregisterConfigListener();
+    }
+
+    static fetchConfig() {
+        ReactNativeFlurry.fetchConfig();
+    }
+
+    static activateConfig() {
+        ReactNativeFlurry.activateConfig();
+    }
+
+    static getConfigString(key, defaultValue) {
+        if (arguments.length === 1) {
+            return ReactNativeFlurry.getConfigStringMap(key);
+        } else if (arguments.length === 2) {
+            if (typeof key !== 'string') {
+                console.error(`Flurry.getConfigString: key must be a string. Got ${key}`);
+                return;
+            }
+
+            if (typeof defaultValue !== 'string') {
+                console.error(`Flurry.getConfigString: defaultValue must be a string. Got ${defaultValue}`);
+                return;
+            }
+
+            return ReactNativeFlurry.getConfigString(key, defaultValue);
+        }
     }
 
     static addMessagingListener(callback) {
