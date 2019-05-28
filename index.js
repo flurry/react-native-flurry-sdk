@@ -117,6 +117,20 @@ export default class Flurry {
             ReactNativeFlurry.withMessaging(enableMessaging);
             return this;
         }
+
+        withTVSessionReportingInterval(interval = 5) {
+            if (Platform.OS === 'ios' && Platform.isTVOS) {
+                ReactNativeFlurry.withTVSessionReportingInterval(interval);
+            }
+            return this;
+        }
+
+        withTVEventCountThreshold(threshold = 10) {
+            if (Platform.OS === 'ios' && Platform.isTVOS) {
+                ReactNativeFlurry.withTVEventCountThreshold(threshold);
+            }
+            return this;
+        }
     };
 
     /**
@@ -440,7 +454,7 @@ export default class Flurry {
     }
 
     static removeConfigListener(callback) {
-       if (typeof callback !== 'function') {
+        if (typeof callback !== 'function') {
             console.error(`Flurry.removeConfigListener: callback must be a function. Got ${callback}`);
             return;
         }
@@ -490,7 +504,7 @@ export default class Flurry {
     }
 
     static removeMessagingListener(callback) {
-       if (typeof callback !== 'function') {
+        if (typeof callback !== 'function') {
             console.error(`Flurry.removeMessagingListener: callback must be a function. Got ${callback}`);
             return;
         }

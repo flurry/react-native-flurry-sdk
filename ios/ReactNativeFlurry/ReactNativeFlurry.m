@@ -16,10 +16,13 @@
 
 #import "ReactNativeFlurry.h"
 #import "Flurry/Flurry.h"
+
+#if TARGET_OS_IOS
 #import "FlurryMessaging/FlurryMessaging.h"
 #import "FlurryConfig/FConfig.h"
 #import "ReactNativeFlurryMessagingListener.h"
 #import "ReactNativeFlurryConfigListener.h"
+#endif
 
 #if __has_include(<React/RCTBridge.h>)
 #import <React/RCTBridge.h>
@@ -34,15 +37,18 @@
 #endif
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"3.5.0";
+static NSString * const originVersion = @"3.6.0";
 
 @interface ReactNativeFlurry ()<RNFlurryEventDispatcherDelegate>
 
 @property (strong, nonatomic) FlurrySessionBuilder *sessionBuilder;
 @property (assign, nonatomic) FlurryLogLevel logLevel;
+@property (assign, nonatomic) BOOL isActive;
+
+#if TARGET_OS_IOS
 @property (strong, nonatomic) ReactNativeFlurryMessagingListener *messagingListener;
 @property (strong, nonatomic) ReactNativeFlurryConfigListener *configListener;
-@property (assign, nonatomic) BOOL isActive;
+#endif
 
 @end
 
@@ -147,9 +153,23 @@ RCT_EXPORT_METHOD(withLogLevel:(NSInteger)value) {
 }
 
 RCT_EXPORT_METHOD(withMessaging:(BOOL)enableMessaging) {
+#if TARGET_OS_IOS
     if (enableMessaging) {
         [self.class enableMessaging];
     }
+#endif
+}
+
+RCT_EXPORT_METHOD(withTVSessionReportingInterval:(NSInteger)value) {
+#if TARGET_OS_TV
+    [self.sessionBuilder withTVSessionReportingInterval:value];
+#endif
+}
+
+RCT_EXPORT_METHOD(withTVEventCountThreshold:(NSInteger)value) {
+#if TARGET_OS_TV
+    [self.sessionBuilder withTVEventCountThreshold:value];
+#endif
 }
 
 #pragma mark - React Native API methods
@@ -251,7 +271,9 @@ RCT_EXPORT_METHOD(logPayment:(NSString *)productName productId:(NSString *)produ
 }
 
 RCT_EXPORT_METHOD(onPageView) {
+#if TARGET_OS_IOS
     [Flurry logPageView];
+#endif
 }
 
 RCT_EXPORT_METHOD(onError:(nonnull NSString *)errorId message:(nullable NSString *)message errorClass:(nullable NSString *)errorClass) {
@@ -273,37 +295,48 @@ RCT_EXPORT_METHOD(onErrorParams:(nonnull NSString *)errorId message:(nullable NS
 #pragma mark - Flurry Messaging
 
 RCT_EXPORT_METHOD(enableMessagingListener:(BOOL)enabled) {
+#if TARGET_OS_IOS
     [ReactNativeFlurryMessagingListener messagingListener].messagingListenerEnabled = enabled;
+#endif
 }
 
 RCT_EXPORT_METHOD(willHandleMessage:(BOOL)handled) {
-    NSLog(@"Flurry.willHandleMessage is not supported on iOS.");
+    NSLog(@"Flurry.willHandleMessage is not supported on iOS and tvOS.");
 }
 
 #pragma mark - Flurry Config
 
 RCT_EXPORT_METHOD(registerConfigListener) {
+#if TARGET_OS_IOS
     if (!self.configListener) {
         self.configListener = [ReactNativeFlurryConfigListener configListener];
         self.configListener.delegate = self;
         [[FConfig sharedInstance] registerObserver:self.configListener withExecutionQueue:self.configListener.queue];
     }
     [self.configListener addCallback];
+#endif
 }
 
 RCT_EXPORT_METHOD(unregisterConfigListener) {
+#if TARGET_OS_IOS
     [self.configListener removeCallback];
+#endif
 }
 
 RCT_EXPORT_METHOD(fetchConfig) {
+#if TARGET_OS_IOS
     [[FConfig sharedInstance] fetchConfig];
+#endif
 }
 
 RCT_EXPORT_METHOD(activateConfig) {
+#if TARGET_OS_IOS
     [[FConfig sharedInstance] activateConfig];
+#endif
 }
 
 RCT_REMAP_METHOD(getConfigString, getConfigString:(nonnull NSString *)key defaultValue:(nonnull NSString *)defaultValue resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+#if TARGET_OS_IOS
     @try {
         NSString *value = [[FConfig sharedInstance] getStringForKey:key withDefault:defaultValue];
         NSDictionary *map = @{key: value};
@@ -311,9 +344,11 @@ RCT_REMAP_METHOD(getConfigString, getConfigString:(nonnull NSString *)key defaul
     } @catch (NSException *exception) {
         reject([exception description], [exception reason], nil);
     }
+#endif
 }
 
 RCT_REMAP_METHOD(getConfigStringMap, getConfigStringMap:(nonnull NSDictionary *)defaultMap resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+#if TARGET_OS_IOS
     @try {
         NSMutableDictionary<NSString *, NSString *> *map = [NSMutableDictionary dictionary];
         for (NSString *key in defaultMap) {
@@ -324,6 +359,7 @@ RCT_REMAP_METHOD(getConfigStringMap, getConfigStringMap:(nonnull NSDictionary *)
     } @catch (NSException *exception) {
         reject([exception description], [exception reason], nil);
     }
+#endif
 }
 
 #pragma mark - Flurry Event Dispatcher delegate
@@ -343,11 +379,14 @@ RCT_REMAP_METHOD(getConfigStringMap, getConfigStringMap:(nonnull NSDictionary *)
 
 - (void)reactNativeJavaScriptDidFinishLoad {
     self.isActive = YES;
+#if TARGET_OS_IOS
     [[ReactNativeFlurryMessagingListener messagingListener] sendPendingEvents];
+#endif
 }
 
 #pragma mark - API
 
+#if TARGET_OS_IOS
 + (void)enableMessaging {
     static dispatch_once_t messagingToken;
     dispatch_once(&messagingToken, ^{
@@ -357,5 +396,6 @@ RCT_REMAP_METHOD(getConfigStringMap, getConfigStringMap:(nonnull NSDictionary *)
         gInstance.messagingListener.delegate = gInstance;
     });
 }
+#endif
 
 @end

@@ -11,6 +11,7 @@ A React Native plugin for Flurry SDK
 - [Installation](#installation)
   - [Android](#android)
   - [iOS](#ios)
+  - [tvOS](#tvos)
 - [Example](#example)
 - [API Reference](#api-reference)
 - [Support](#support)
@@ -125,6 +126,11 @@ A React Native plugin for Flurry SDK
      [ReactNativeFlurry enableMessaging];
      ```
 
+### tvOS
+
+- Please note that Flurry Messaging and Flurry Config are currently not available on tvOS. For the detailed list of unavailable APIs, please see API reference below.
+- CocoaPods integration is not supported on tvOS. Please consider using `react-native link` or manually link the library as described [here](https://facebook.github.io/react-native/docs/linking-libraries-ios).
+
 ## Example
 
 - `index.js`
@@ -138,6 +144,7 @@ A React Native plugin for Flurry SDK
    // Init Flurry once as early as possible recommended in index.js.
    // For each platfrom (Android, iOS) where the app runs you need to acquire a unique Flurry API Key.
    // i.e., you need two API keys if you are going to release the app on both Android and iOS platforms.
+   // If you are building for TV platforms, you will need two API keys for Android TV and tvOS.
    new Flurry.Builder()
      .withCrashReporting(true)
      .withLogEnabled(true)
@@ -255,10 +262,14 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
   Flurry.Builder.withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics = true);
   Flurry.Builder.withLogEnabled(enableLog = true);
   Flurry.Builder.withLogLevel(logLevel = Flurry.LogLevel.WARN); // LogLevel = { VERBOSE, DEBUG, INFO, WARN, ERROR, ASSERT }
-  Flurry.Builder.withMessaging(enableMessaging = true);
+  Flurry.Builder.withMessaging(enableMessaging = true); // not available on tvOS
   
   Flurry.Builder.build(apiKeyAndroid: string, apiKeyIos: string);  // preferred; passing null if not available
   Flurry.Builder.build(apiKey: string);  // use when only single platform is supported, or shared (not recommended)
+  
+  // tvOS only
+  Flurry.Builder.withTVSessionReportingInterval(interval = 5);
+  Flurry.Builder.withTVEventCountThreshold(threshold = 10);
   ```
 
 - **Methods must be called prior to invoking init** *(Deprecated, please use Flurry.Builder instead)*
@@ -310,17 +321,17 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
   Flurry.endTimedEvent(eventId: string);
   Flurry.endTimedEvent(eventId: string, parameters: { [key: string]: string; });
   
-  Flurry.onPageView();
+  Flurry.onPageView(); // not available on tvOS
   
   Flurry.onError(errorId: string, message: string, errorClass: string);
   Flurry.onError(errorId: string, message: string, errorClass: string, errorParams: { [key: string]: string; });
   
   Flurry.logBreadcrumb(crashBreadcrumb: string);
   Flurry.logPayment(productName: string, productId: string, quantity: number, price: number,
-                    currency: string, transactionId: string, parameters: { [key: string]: string; });  // Android, see setIAPReportingEnabled for iOS
+                    currency: string, transactionId: string, parameters: { [key: string]: string; });  // Android, see setIAPReportingEnabled for iOS and tvOS
   ```
 
-- **Methods to enable IAP reporting (iOS)**
+- **Methods to enable IAP reporting (iOS and tvOS)**
 
   ```javascript
   Flurry.setIAPReportingEnabled(enableIAP: boolean);

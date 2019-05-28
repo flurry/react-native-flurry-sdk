@@ -1,5 +1,11 @@
 # Change Log
 
+## v3.6.0 (2019-05-28)
+
+#### Features
+
+* Support Analytics features on the tvOS platform
+
 # v3.5.0 (2019-05-06)
 
 #### Features

@@ -1,6 +1,6 @@
 {
   "name": "react-native-flurry-sdk",
-  "version": "3.5.0",
+  "version": "3.6.0",
   "description": "React Native wrapper for Flurry SDK",
   "main": "index.js",
   "types" : "index.d.ts",
@@ -15,8 +15,10 @@
     "module",
     "android",
     "ios",
+    "tvos",
     "flurry",
     "analytics",
+    "config",
     "messaging",
     "push",
     "marketing"

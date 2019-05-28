@@ -516,42 +516,56 @@ declare module 'react-native-flurry-sdk' {
              * 
              * @param crashReporting true to enable, false to disable.
              */
-            withCrashReporting(crashReporting?: boolean): object;
+            withCrashReporting(crashReporting?: boolean): Flurry.Builder;
     
             /**
              * Set the timeout for expiring a Flurry session.
              * 
              * @param sessionMillis The time in milliseconds to set the session timeout to. Minimum value of 5000.
              */
-            withContinueSessionMillis(sessionMillis?: number): object;
+            withContinueSessionMillis(sessionMillis?: number): Flurry.Builder;
     
             /**
              * True if this session should be added to total sessions/DAUs when applicationstate is inactive or background.
              * 
              * @param includeBackgroundSessionsInMetrics if background and inactive session should be counted toward dau
              */
-            withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics?: boolean): object;
+            withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics?: boolean): Flurry.Builder;
     
             /**
              * True to enable or false to disable the internal logging for the Flurry SDK.
              * 
              * @param enableLog true to enable logging, false to disable it.
              */
-            withLogEnabled(enableLog?: boolean): object;
+            withLogEnabled(enableLog?: boolean): Flurry.Builder;
     
             /**
              * Set the log level of the internal Flurry SDK logging.
              * 
              * @param logLevel The level to set it to { VERBOSE, DEBUG, INFO, WARN, ERROR, ASSERT }.
              */
-            withLogLevel(logLevel?: number): object;
+            withLogLevel(logLevel?: number): Flurry.Builder;
     
             /**
              * True to enable or false to disable the Flurry Push for messaging.
              * 
              * @param enableMessaging true to enable messaging, false to disable it.
              */
-            withMessaging(enableMessaging?: boolean): object;
+            withMessaging(enableMessaging?: boolean): Flurry.Builder;
+
+            /**
+             * Set the minimum duration (in minutes) before a partial session report is sent to Flurry. The acceptable values are between 5 and 60 minutes. tvOS only.
+             * 
+             * @param interval The period after which a partial session report is sent to Flurry.
+             */
+            withTVSessionReportingInterval(interval?: number): Flurry.Builder;
+
+            /**
+             * Sets the minimum number of events before a partial session report is sent to Flurry. The acceptable values are between 5 and 50. tvOS only.
+             * 
+             * @param threshold The number of events after which partial session report is sent to Flurry.
+             */
+            withTVEventCountThreshold(threshold?: number): Flurry.Builder;
         }
     }
 
