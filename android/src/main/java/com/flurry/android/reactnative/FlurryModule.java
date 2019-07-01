@@ -53,7 +53,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String FLURRY_MESSAGING_EVENT = "FlurryMessagingEvent";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "3.6.0";
+    private static final String ORIGIN_VERSION = "3.7.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 

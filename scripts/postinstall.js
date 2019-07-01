@@ -116,4 +116,7 @@ const sdkPaths = JSON.parse(fs.readFileSync(path.join(rootPath, 'scripts', 'path
     await downloadFile(tmpPath, sdkPaths[key].link, key, sdkPaths[key].md5);
   }
   await migration();
+  console.log(`\n[iOS Flurry Push]\n\nPlease note that Flurry Push is now included in a separate target. If you are using Flurry Push, please relink react-native-flurry-sdk by running:\n\n\
+\treact-native unlink react-native-flurry-sdk && react-native link react-native-flurry-sdk\n\n\
+and type Y or press return while being asked if you need to integrate Flurry Push.\n\n`);
 })();

@@ -1,5 +1,11 @@
 # Change Log
 
+## v3.7.0 (2019-07-01)
+
+#### Bug Fixes
+
+* For iOS, provide a separate target for Flurry Push to avoid Apple Push Notification service conflict
+
 ## v3.6.0 (2019-05-28)
 
 #### Features

@@ -88,6 +88,14 @@ A React Native plugin for Flurry SDK
 
 ### iOS
 
+- Please note that Flurry Push is now included in a separate target. If you are using Flurry Push, please relink react-native-flurry-sdk
+
+  ```bash
+  react-native unlink react-native-flurry-sdk && react-native link react-native-flurry-sdk
+  ```
+
+  and type Y or press return while being asked if you need to integrate Flurry Push.
+
 - Please note that react-native link may add react-native-flurry-sdk podspec to your Podfile. If you are not using [CocoaPods](https://cocoapods.org) or your Podfile looks roughly like the one described [here](http://facebook.github.io/react-native/docs/integration-with-existing-apps#configuring-cocoapods-dependencies), no further action is needed.
 
   If you are migrating from version<3.0.0 and your Podfile does **NOT** have any other dependency than Flurry, please deintegrate CocoaPods from your project. You may also need to manually remove Podfile and xcworkspace files.
@@ -106,15 +114,18 @@ A React Native plugin for Flurry SDK
 
 - **Flurry Push**</br>
   To set up Flurry Push, please take the following steps.
-  1. Open your `.xcodeproj` file using Xcode. It is usually located under the `ios` directory of your React Native app.
-  2. Go to "Capabilities" tab and enable Push Notifications.
-     ![push_ios_1](images/push_ios_1.png)
-  3. Enable Background Modes (Background Fetch and Remote Notifications turned on).
-     ![push_ios_2](images/push_ios_2.png)
+  1. When executing `react-native link react-native-flurry-sdk`, please type Y while being asked if you need to integrate Flurry Push.
+  2. Open your `.xcodeproj` file using Xcode. It is usually located under the `ios` directory of your React Native app.
+  3. Select your iOS app target and go to "General" tab. In "Linked Frameworks and Libraries" section, please make sure `libReactNativeFlurryWithMessaging.a` is present.
+     ![push_ios_4](images/push_ios_1.png)
+  4. Go to "Capabilities" tab and enable Push Notifications.
+     ![push_ios_1](images/push_ios_2.png)
+  5. Enable Background Modes (Background Fetch and Remote Notifications turned on).
+     ![push_ios_2](images/push_ios_3.png)
      Now your `Info.plist` should contain the following items. For more information, please see [Push Setup](https://developer.yahoo.com/flurry/docs/push/integration/ios/).
-     ![push_ios_3](images/push_ios_3.png)
-  4. Set up "iOS Authorization" in Flurry [Push Authorization](https://developer.yahoo.com/flurry/docs/push/authorization/).
-  5. In order to handle notifications from a cold start, Flurry Push requires to be initialized from AppDelegate as early as possible. Please open `AppDelegate.m`, import the header file
+     ![push_ios_3](images/push_ios_4.png)
+  6. Set up "iOS Authorization" in Flurry [Push Authorization](https://developer.yahoo.com/flurry/docs/push/authorization/).
+  7. In order to handle notifications from a cold start, Flurry Push requires to be initialized from AppDelegate as early as possible. Please open `AppDelegate.m`, import the header file
 
      ```objc
      #import "ReactNativeFlurry.h"

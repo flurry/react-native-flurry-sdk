@@ -13,16 +13,31 @@
 		BC4520FB212753B100EDF713 /* ReactNativeFlurry.m in Sources */ = {isa = PBXBuildFile; fileRef = BC45200B21274B4D00EDF713 /* ReactNativeFlurry.m */; };
 		BC648AB0220120260098599C /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC648AA9220120260098599C /* libFlurry.a */; };
 		BC648AB1220120260098599C /* FlurryEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = BC648AAA220120260098599C /* FlurryEmpty.m */; };
-		BC65D180224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.m in Sources */ = {isa = PBXBuildFile; fileRef = BC65D17F224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.m */; };
+		BC79F55122C18FD8006BE0D5 /* FConfigEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2344CC225FF26000F38D94 /* FConfigEmpty.m */; };
+		BC79F55222C18FDB006BE0D5 /* libFlurryConfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC2344DC225FF2E500F38D94 /* libFlurryConfig.a */; };
+		BC79F55322C18FDE006BE0D5 /* FlurryMessagingEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = CB876CE42213CE4C0098E321 /* FlurryMessagingEmpty.m */; };
+		BC79F55422C18FE0006BE0D5 /* libFlurryMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BCA0053922C14A75002776C6 /* libFlurryMessaging.a */; };
+		BC79F55522C18FE5006BE0D5 /* FlurryEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = BC648AAA220120260098599C /* FlurryEmpty.m */; };
+		BC79F55622C18FE7006BE0D5 /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC648AA9220120260098599C /* libFlurry.a */; };
+		BC79F55722C18FEE006BE0D5 /* ReactNativeFlurry.m in Sources */ = {isa = PBXBuildFile; fileRef = BC45200B21274B4D00EDF713 /* ReactNativeFlurry.m */; };
+		BC79F55822C18FF1006BE0D5 /* ReactNativeFlurryMessagingListener.m in Sources */ = {isa = PBXBuildFile; fileRef = BC65D17F224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.m */; };
+		BC79F55922C18FF4006BE0D5 /* ReactNativeFlurryConfigListener.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2344DF225FF45A00F38D94 /* ReactNativeFlurryConfigListener.m */; };
 		BCBC948322934CCA008720F2 /* libFlurryTVOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BCBC948222934CCA008720F2 /* libFlurryTVOS.a */; };
 		BCBC948422934CD3008720F2 /* ReactNativeFlurry.m in Sources */ = {isa = PBXBuildFile; fileRef = BC45200B21274B4D00EDF713 /* ReactNativeFlurry.m */; };
 		BCBC948522934CDC008720F2 /* FlurryEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = BC648AAA220120260098599C /* FlurryEmpty.m */; };
-		CB876CE12213CDD30098E321 /* libFlurryMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB876CE02213CDD30098E321 /* libFlurryMessaging.a */; };
-		CB876CE52213CE4C0098E321 /* FlurryMessagingEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = CB876CE42213CE4C0098E321 /* FlurryMessagingEmpty.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		58B511D91A9E6C8500147676 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BC79F54622C18FC9006BE0D5 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
@@ -58,9 +73,10 @@
 		BC648AAF220120260098599C /* FlurrySessionBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurrySessionBuilder.h; sourceTree = "<group>"; };
 		BC65D17E224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReactNativeFlurryMessagingListener.h; sourceTree = "<group>"; };
 		BC65D17F224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactNativeFlurryMessagingListener.m; sourceTree = "<group>"; };
+		BC79F54822C18FC9006BE0D5 /* libReactNativeFlurryWithMessaging.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativeFlurryWithMessaging.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BCA0053922C14A75002776C6 /* libFlurryMessaging.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurryMessaging.a; sourceTree = "<group>"; };
 		BCBC947722934C97008720F2 /* libReactNativeFlurryTVOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativeFlurryTVOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCBC948222934CCA008720F2 /* libFlurryTVOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurryTVOS.a; sourceTree = "<group>"; };
-		CB876CE02213CDD30098E321 /* libFlurryMessaging.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurryMessaging.a; sourceTree = "<group>"; };
 		CB876CE32213CE460098E321 /* FlurryMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryMessaging.h; sourceTree = "<group>"; };
 		CB876CE42213CE4C0098E321 /* FlurryMessagingEmpty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlurryMessagingEmpty.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,7 +88,16 @@
 			files = (
 				BC2344DD225FF2E500F38D94 /* libFlurryConfig.a in Frameworks */,
 				BC648AB0220120260098599C /* libFlurry.a in Frameworks */,
-				CB876CE12213CDD30098E321 /* libFlurryMessaging.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BC79F54522C18FC9006BE0D5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC79F55622C18FE7006BE0D5 /* libFlurry.a in Frameworks */,
+				BC79F55422C18FE0006BE0D5 /* libFlurryMessaging.a in Frameworks */,
+				BC79F55222C18FDB006BE0D5 /* libFlurryConfig.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +126,7 @@
 				BC45200921274B4D00EDF713 /* ReactNativeFlurry */,
 				134814211AA4EA7D00B7C361 /* Products */,
 				BCBC947722934C97008720F2 /* libReactNativeFlurryTVOS.a */,
+				BC79F54822C18FC9006BE0D5 /* libReactNativeFlurryWithMessaging.a */,
 			);
 			sourceTree = "<group>";
 		};
@@ -148,7 +174,7 @@
 			children = (
 				CB876CE32213CE460098E321 /* FlurryMessaging.h */,
 				CB876CE42213CE4C0098E321 /* FlurryMessagingEmpty.m */,
-				CB876CE02213CDD30098E321 /* libFlurryMessaging.a */,
+				BCA0053922C14A75002776C6 /* libFlurryMessaging.a */,
 			);
 			path = FlurryMessaging;
 			sourceTree = "<group>";
@@ -171,6 +197,23 @@
 			name = ReactNativeFlurry;
 			productName = RCTDataManager;
 			productReference = 134814201AA4EA6300B7C361 /* libReactNativeFlurry.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		BC79F54722C18FC9006BE0D5 /* ReactNativeFlurryWithMessaging */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BC79F55022C18FC9006BE0D5 /* Build configuration list for PBXNativeTarget "ReactNativeFlurryWithMessaging" */;
+			buildPhases = (
+				BC79F54422C18FC9006BE0D5 /* Sources */,
+				BC79F54522C18FC9006BE0D5 /* Frameworks */,
+				BC79F54622C18FC9006BE0D5 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ReactNativeFlurryWithMessaging;
+			productName = ReactNativeFlurryWithMessaging;
+			productReference = BC79F54822C18FC9006BE0D5 /* libReactNativeFlurryWithMessaging.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		BCBC947622934C97008720F2 /* ReactNativeFlurryTVOS */ = {
@@ -202,6 +245,10 @@
 					58B511DA1A9E6C8500147676 = {
 						CreatedOnToolsVersion = 6.1.1;
 					};
+					BC79F54722C18FC9006BE0D5 = {
+						CreatedOnToolsVersion = 10.2.1;
+						ProvisioningStyle = Automatic;
+					};
 					BCBC947622934C97008720F2 = {
 						CreatedOnToolsVersion = 10.2.1;
 						ProvisioningStyle = Automatic;
@@ -222,6 +269,7 @@
 			projectRoot = "";
 			targets = (
 				58B511DA1A9E6C8500147676 /* ReactNativeFlurry */,
+				BC79F54722C18FC9006BE0D5 /* ReactNativeFlurryWithMessaging */,
 				BCBC947622934C97008720F2 /* ReactNativeFlurryTVOS */,
 			);
 		};
@@ -233,11 +281,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC4520FB212753B100EDF713 /* ReactNativeFlurry.m in Sources */,
-				BC65D180224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.m in Sources */,
 				BC648AB1220120260098599C /* FlurryEmpty.m in Sources */,
-				CB876CE52213CE4C0098E321 /* FlurryMessagingEmpty.m in Sources */,
 				BC2344E0225FF45A00F38D94 /* ReactNativeFlurryConfigListener.m in Sources */,
 				BC2344CD225FF26000F38D94 /* FConfigEmpty.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BC79F54422C18FC9006BE0D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC79F55722C18FEE006BE0D5 /* ReactNativeFlurry.m in Sources */,
+				BC79F55522C18FE5006BE0D5 /* FlurryEmpty.m in Sources */,
+				BC79F55822C18FF1006BE0D5 /* ReactNativeFlurryMessagingListener.m in Sources */,
+				BC79F55322C18FDE006BE0D5 /* FlurryMessagingEmpty.m in Sources */,
+				BC79F55922C18FF4006BE0D5 /* ReactNativeFlurryConfigListener.m in Sources */,
+				BC79F55122C18FD8006BE0D5 /* FConfigEmpty.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,10 +338,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -321,6 +377,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -347,7 +404,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ReactNativeFlurry/Flurry",
-					"$(PROJECT_DIR)/ReactNativeFlurry/FlurryMessaging",
 					"$(PROJECT_DIR)/ReactNativeFlurry/FlurryConfig",
 				);
 				OTHER_LDFLAGS = "-ObjC";
@@ -370,13 +426,92 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ReactNativeFlurry/Flurry",
-					"$(PROJECT_DIR)/ReactNativeFlurry/FlurryMessaging",
 					"$(PROJECT_DIR)/ReactNativeFlurry/FlurryConfig",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ReactNativeFlurry;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		BC79F54E22C18FC9006BE0D5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"HAS_MESSAGING=1",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ReactNativeFlurry/FlurryConfig",
+					"$(PROJECT_DIR)/ReactNativeFlurry/FlurryMessaging",
+					"$(PROJECT_DIR)/ReactNativeFlurry/Flurry",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BC79F54F22C18FC9006BE0D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = "HAS_MESSAGING=1";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ReactNativeFlurry/FlurryConfig",
+					"$(PROJECT_DIR)/ReactNativeFlurry/FlurryMessaging",
+					"$(PROJECT_DIR)/ReactNativeFlurry/Flurry",
+				);
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -479,6 +614,15 @@
 			buildConfigurations = (
 				58B511F01A9E6C8500147676 /* Debug */,
 				58B511F11A9E6C8500147676 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BC79F55022C18FC9006BE0D5 /* Build configuration list for PBXNativeTarget "ReactNativeFlurryWithMessaging" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC79F54E22C18FC9006BE0D5 /* Debug */,
+				BC79F54F22C18FC9006BE0D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -22,3 +22,8 @@ xcuserdata/
 # Native code
 .externalNativeBuild/
 
+# VS Code
+.vscode
+
+# dependencies
+node_modules

@@ -18,9 +18,11 @@
 #import "Flurry/Flurry.h"
 
 #if TARGET_OS_IOS
+#ifdef HAS_MESSAGING
 #import "FlurryMessaging/FlurryMessaging.h"
-#import "FlurryConfig/FConfig.h"
 #import "ReactNativeFlurryMessagingListener.h"
+#endif
+#import "FlurryConfig/FConfig.h"
 #import "ReactNativeFlurryConfigListener.h"
 #endif
 
@@ -37,7 +39,7 @@
 #endif
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"3.6.0";
+static NSString * const originVersion = @"3.7.0";
 
 @interface ReactNativeFlurry ()<RNFlurryEventDispatcherDelegate>
 
@@ -46,7 +48,9 @@ static NSString * const originVersion = @"3.6.0";
 @property (assign, nonatomic) BOOL isActive;
 
 #if TARGET_OS_IOS
+#ifdef HAS_MESSAGING
 @property (strong, nonatomic) ReactNativeFlurryMessagingListener *messagingListener;
+#endif
 @property (strong, nonatomic) ReactNativeFlurryConfigListener *configListener;
 #endif
 
@@ -296,7 +300,11 @@ RCT_EXPORT_METHOD(onErrorParams:(nonnull NSString *)errorId message:(nullable NS
 
 RCT_EXPORT_METHOD(enableMessagingListener:(BOOL)enabled) {
 #if TARGET_OS_IOS
+#ifdef HAS_MESSAGING
     [ReactNativeFlurryMessagingListener messagingListener].messagingListenerEnabled = enabled;
+#else
+    [self handleMessagingNotFound];
+#endif
 #endif
 }
 
@@ -380,14 +388,17 @@ RCT_REMAP_METHOD(getConfigStringMap, getConfigStringMap:(nonnull NSDictionary *)
 - (void)reactNativeJavaScriptDidFinishLoad {
     self.isActive = YES;
 #if TARGET_OS_IOS
+#ifdef HAS_MESSAGING
     [[ReactNativeFlurryMessagingListener messagingListener] sendPendingEvents];
+#endif
 #endif
 }
 
-#pragma mark - API
+#pragma mark - Native API
 
 #if TARGET_OS_IOS
 + (void)enableMessaging {
+#ifdef HAS_MESSAGING
     static dispatch_once_t messagingToken;
     dispatch_once(&messagingToken, ^{
         [FlurryMessaging setAutoIntegrationForMessaging];
@@ -395,7 +406,16 @@ RCT_REMAP_METHOD(getConfigStringMap, getConfigStringMap:(nonnull NSDictionary *)
         [FlurryMessaging setMessagingDelegate:gInstance.messagingListener];
         gInstance.messagingListener.delegate = gInstance;
     });
+#else
+    [gInstance handleMessagingNotFound];
+#endif
 }
 #endif
+
+#pragma mark - Private helpers
+
+- (void)handleMessagingNotFound {
+    NSLog(@"Flurry: You are using `libReactNativeFlurry.a` instead of `libReactNativeFlurryWithMessaging.a`. Please re-link react-native-flurry-sdk by executing\n\treact-native unlink react-native-flurry-sdk && react-native link react-native-flurry-sdk\nand type Y while being asked if you need to integrate Flurry Push.");
+}
 
 @end
