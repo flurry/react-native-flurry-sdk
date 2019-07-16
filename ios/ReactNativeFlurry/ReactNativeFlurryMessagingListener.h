@@ -15,7 +15,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "FlurryMessaging/FlurryMessaging.h"
+#import "FlurryMessaging.h"
 #import "ReactNativeFlurry.h"
 
 @interface ReactNativeFlurryMessagingListener : NSObject<FlurryMessagingDelegate>

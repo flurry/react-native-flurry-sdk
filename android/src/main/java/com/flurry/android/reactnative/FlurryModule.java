@@ -17,8 +17,7 @@
 package com.flurry.android.reactnative;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
@@ -43,7 +42,6 @@ import com.flurry.android.marketing.messaging.notification.FlurryMessage;
 
 import java.util.HashMap;
 import java.util.Map;
-import android.util.Log;
 
 public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String TAG = "FlurryModule";
@@ -53,7 +51,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String FLURRY_MESSAGING_EVENT = "FlurryMessagingEvent";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "3.7.0";
+    private static final String ORIGIN_VERSION = "4.0.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 
@@ -83,7 +81,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void build(@NonNull String apiKey) {
+    public void build(String apiKey) {
         FlurryAgent.addOrigin(ORIGIN_NAME, ORIGIN_VERSION);
 
         Context context = getCurrentActivity();
@@ -135,7 +133,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setGender(@NonNull String gender) {
+    public void setGender(String gender) {
         byte _gender = Constants.UNKNOWN;
         if (gender.equalsIgnoreCase("m")) {
             _gender = Constants.MALE;
@@ -151,17 +149,17 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setSessionOrigin(@NonNull String originName, @Nullable String deepLink) {
+    public void setSessionOrigin(String originName, String deepLink) {
         FlurryAgent.setSessionOrigin(originName, deepLink);
     }
 
     @ReactMethod
-    public void setUserId(@NonNull String userId) {
+    public void setUserId(String userId) {
         FlurryAgent.setUserId(userId);
     }
 
     @ReactMethod
-    public void setVersionName(@NonNull String versionName) {
+    public void setVersionName(String versionName) {
         FlurryAgent.setVersionName(versionName);
     }
 
@@ -171,18 +169,18 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void addOrigin(@NonNull String originName, @NonNull String originVersion) {
+    public void addOrigin(String originName, String originVersion) {
         FlurryAgent.addOrigin(originName, originVersion);
     }
 
     @ReactMethod
-    public void addOriginParams(@NonNull String originName, @NonNull String originVersion,
+    public void addOriginParams(String originName, String originVersion,
                                 final ReadableMap originParameters) {
         FlurryAgent.addOrigin(originName, originVersion, toMap(originParameters));
     }
 
     @ReactMethod
-    public void addSessionProperty(@NonNull String name, @Nullable String value) {
+    public void addSessionProperty(String name, String value) {
         FlurryAgent.addSessionProperty(name, value);
     }
 
@@ -210,57 +208,56 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void logBreadcrumb(@NonNull String crashBreadcrumb) {
+    public void logBreadcrumb(String crashBreadcrumb) {
         FlurryAgent.logBreadcrumb(crashBreadcrumb);
     }
 
     @ReactMethod
-    public void logEvent(@NonNull String eventId) {
+    public void logEvent(String eventId) {
         FlurryAgent.logEvent(eventId);
     }
 
     @ReactMethod
-    public void logEventTimed(@NonNull String eventId, boolean timed) {
+    public void logEventTimed(String eventId, boolean timed) {
         FlurryAgent.logEvent(eventId, timed);
     }
 
     @ReactMethod
-    public void logEventParams(@NonNull String eventId, @NonNull ReadableMap parameters) {
+    public void logEventParams(String eventId, ReadableMap parameters) {
         FlurryAgent.logEvent(eventId, toMap(parameters));
     }
 
     @ReactMethod
-    public void logEventParamsTimed(@NonNull String eventId, @NonNull ReadableMap parameters,
+    public void logEventParamsTimed(String eventId, ReadableMap parameters,
                                     boolean timed) {
         FlurryAgent.logEvent(eventId, toMap(parameters), timed);
     }
 
     @ReactMethod
-    public void logPayment(@NonNull String productName, @NonNull String productId,
-                           int quantity, double price, @NonNull String currency,
-                           @NonNull String transactionId, @Nullable ReadableMap parameters) {
+    public void logPayment(String productName, String productId, int quantity, double price,
+                           String currency, String transactionId, ReadableMap parameters) {
         FlurryAgent.logPayment(productName, productId, quantity, price, currency, transactionId,
                 toMap(parameters));
     }
 
     @ReactMethod
-    public void endTimedEvent(@NonNull String eventId) {
+    public void endTimedEvent(String eventId) {
         FlurryAgent.endTimedEvent(eventId);
     }
 
     @ReactMethod
-    public void endTimedEventParams(@NonNull String eventId, @NonNull ReadableMap parameters) {
+    public void endTimedEventParams(String eventId, ReadableMap parameters) {
         FlurryAgent.endTimedEvent(eventId, toMap(parameters));
     }
 
     @ReactMethod
-    public void onError(@NonNull String errorId, @NonNull String message, @NonNull String errorClass) {
+    public void onError(String errorId, String message, String errorClass) {
         FlurryAgent.onError(errorId, message, errorClass);
     }
 
     @ReactMethod
-    public void onErrorParams(@NonNull String errorId, @NonNull String message, @NonNull String errorClass,
-                              @Nullable ReadableMap errorParams) {
+    public void onErrorParams(String errorId, String message, String errorClass,
+                              ReadableMap errorParams) {
         FlurryAgent.onError(errorId, message, errorClass, toMap(errorParams));
     }
 
@@ -304,7 +301,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getConfigString(@Nullable String key, String defaultValue, Promise promise) {
+    public void getConfigString(String key, String defaultValue, Promise promise) {
         try {
             WritableMap map = Arguments.createMap();
             map.putString(key, FlurryConfig.getInstance().getString(key, defaultValue));
@@ -315,7 +312,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getConfigStringMap(@Nullable ReadableMap keyAndDefault, Promise promise) {
+    public void getConfigStringMap(ReadableMap keyAndDefault, Promise promise) {
         try {
             WritableMap map = Arguments.createMap();
             if (keyAndDefault != null) {
@@ -480,7 +477,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
             return this;
         }
 
-        public void build(@NonNull final Context context, @NonNull final String apiKey) {
+        public void build(final Context context, final String apiKey) {
             mFlurryAgentBuilder.build(context, apiKey);
         }
     }

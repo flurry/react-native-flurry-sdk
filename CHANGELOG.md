@@ -1,5 +1,11 @@
 # Change Log
 
+# v4.0.0 (2019-07-16)
+
+#### Features
+
+* Support React Native >= 0.60
+
 ## v3.7.0 (2019-07-01)
 
 #### Bug Fixes

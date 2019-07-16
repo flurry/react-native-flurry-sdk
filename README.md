@@ -25,7 +25,13 @@ A React Native plugin for Flurry SDK
    npm install react-native-flurry-sdk --save
    ```
 
-2. Link React Native dependency
+2. If you are using React Native >= 0.60, install CocoaPods dependency
+
+   ```bash
+   cd ios && pod install && cd ..
+   ```
+
+   If you are using React Native < 0.60, link React Native dependency
 
    ```bash
    react-native link react-native-flurry-sdk
@@ -88,42 +94,51 @@ A React Native plugin for Flurry SDK
 
 ### iOS
 
-- Please note that Flurry Push is now included in a separate target. If you are using Flurry Push, please relink react-native-flurry-sdk
-
-  ```bash
-  react-native unlink react-native-flurry-sdk && react-native link react-native-flurry-sdk
-  ```
-
-  and type Y or press return while being asked if you need to integrate Flurry Push.
-
-- Please note that react-native link may add react-native-flurry-sdk podspec to your Podfile. If you are not using [CocoaPods](https://cocoapods.org) or your Podfile looks roughly like the one described [here](http://facebook.github.io/react-native/docs/integration-with-existing-apps#configuring-cocoapods-dependencies), no further action is needed.
-
-  If you are migrating from version<3.0.0 and your Podfile does **NOT** have any other dependency than Flurry, please deintegrate CocoaPods from your project. You may also need to manually remove Podfile and xcworkspace files.
-
-  ```bash
-  cd ios
-  pod deintegrate
-  ```
-
-  If you have a Podfile only for native dependencies, please remove `pod 'Flurry-iOS-SDK/FlurrySDK'` from your Podfile, re-run `pod install`, remove `react-native-flurry-sdk.podspec`, and execute `react-native link` again.
-
-  ```bash
-  rm node_modules/react-native-flurry-sdk/react-native-flurry-sdk.podspec
-  react-native unlink react-native-flurry-sdk && react-native link react-native-flurry-sdk
-  ```
+- Please note that starting from [React Native 0.60](https://facebook.github.io/react-native/blog/2019/07/03/version-60), [CocoaPods](https://cocoapods.org) is now the default integration approach for React Native iOS projects. If you are not using CocoaPods, please stick to `react-native-flurry-sdk@3.7.0`.
 
 - **Flurry Push**</br>
   To set up Flurry Push, please take the following steps.
-  1. When executing `react-native link react-native-flurry-sdk`, please type Y while being asked if you need to integrate Flurry Push.
-  2. Open your `.xcodeproj` file using Xcode. It is usually located under the `ios` directory of your React Native app.
-  3. Select your iOS app target and go to "General" tab. In "Linked Frameworks and Libraries" section, please make sure `libReactNativeFlurryWithMessaging.a` is present.
-     ![push_ios_4](images/push_ios_1.png)
-  4. Go to "Capabilities" tab and enable Push Notifications.
-     ![push_ios_1](images/push_ios_2.png)
+  1. Open your Podfile, which is located under `ios` folder of your project.
+  2. Add the following line in your target section before `use_native_modules!`
+     
+     ```ruby
+     pod 'react-native-flurry-sdk', :path => '../node_modules/react-native-flurry-sdk/ios', :subspecs => ['FlurrySDK-Push']
+     ```
+     
+     Your target section of Podfile should now look like this:
+
+     ```ruby
+     target 'YourTarget' do
+
+       # Pods for your target
+       pod 'React', :path => '../node_modules/react-native/'
+       pod 'React-Core', :path => '../node_modules/react-native/React'
+       # ... other React dependencies
+       
+       # Add react-native-flurry-sdk
+       pod 'react-native-flurry-sdk', :path => '../node_modules/react-native-flurry-sdk/ios', :subspecs => ['FlurrySDK-Push']
+       
+       # ... other targets
+       target 'YourTargetTests' do
+         # ...
+       end
+
+       use_native_modules!
+
+     end
+     ```
+  3. Install the dependencies again by executing
+
+     ```bash
+     cd ios && pod install && cd ..
+     ```
+
+  4. Open your `.xcworkspace` file which is under the `ios` folder. Go to "Capabilities" tab and enable Push Notifications.
+     ![push_ios_1](images/push_ios_1.png)
   5. Enable Background Modes (Background Fetch and Remote Notifications turned on).
-     ![push_ios_2](images/push_ios_3.png)
+     ![push_ios_2](images/push_ios_2.png)
      Now your `Info.plist` should contain the following items. For more information, please see [Push Setup](https://developer.yahoo.com/flurry/docs/push/integration/ios/).
-     ![push_ios_3](images/push_ios_4.png)
+     ![push_ios_3](images/push_ios_3.png)
   6. Set up "iOS Authorization" in Flurry [Push Authorization](https://developer.yahoo.com/flurry/docs/push/authorization/).
   7. In order to handle notifications from a cold start, Flurry Push requires to be initialized from AppDelegate as early as possible. Please open `AppDelegate.m`, import the header file
 
@@ -140,7 +155,6 @@ A React Native plugin for Flurry SDK
 ### tvOS
 
 - Please note that Flurry Messaging and Flurry Config are currently not available on tvOS. For the detailed list of unavailable APIs, please see API reference below.
-- CocoaPods integration is not supported on tvOS. Please consider using `react-native link` or manually link the library as described [here](https://facebook.github.io/react-native/docs/linking-libraries-ios).
 
 ## Example
 

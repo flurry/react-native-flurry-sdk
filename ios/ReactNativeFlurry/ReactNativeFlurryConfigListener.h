@@ -15,7 +15,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "FlurryConfig/FConfig.h"
+#import "FConfig.h"
 #import "ReactNativeFlurry.h"
 
 @interface ReactNativeFlurryConfigListener : NSObject<FConfigObserver>

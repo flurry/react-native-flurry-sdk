@@ -15,14 +15,14 @@
  */
 
 #import "ReactNativeFlurry.h"
-#import "Flurry/Flurry.h"
+#import "Flurry.h"
 
 #if TARGET_OS_IOS
 #ifdef HAS_MESSAGING
-#import "FlurryMessaging/FlurryMessaging.h"
+#import "FlurryMessaging.h"
 #import "ReactNativeFlurryMessagingListener.h"
 #endif
-#import "FlurryConfig/FConfig.h"
+#import "FConfig.h"
 #import "ReactNativeFlurryConfigListener.h"
 #endif
 
@@ -39,7 +39,7 @@
 #endif
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"3.7.0";
+static NSString * const originVersion = @"4.0.0";
 
 @interface ReactNativeFlurry ()<RNFlurryEventDispatcherDelegate>
 
@@ -415,7 +415,7 @@ RCT_REMAP_METHOD(getConfigStringMap, getConfigStringMap:(nonnull NSDictionary *)
 #pragma mark - Private helpers
 
 - (void)handleMessagingNotFound {
-    NSLog(@"Flurry: You are using `libReactNativeFlurry.a` instead of `libReactNativeFlurryWithMessaging.a`. Please re-link react-native-flurry-sdk by executing\n\treact-native unlink react-native-flurry-sdk && react-native link react-native-flurry-sdk\nand type Y while being asked if you need to integrate Flurry Push.");
+    NSLog(@"Flurry: You are using Flurry SDK without Flurry Push. If you want to integrate Flurry Push, please open your Podfile, add the following line in your target section before 'use_native_modules!'\n\n  pod 'react-native-flurry-sdk', :path => '../node_modules/react-native-flurry-sdk/ios', :subspecs => ['FlurrySDK-Push']\n\n and execute 'pod install' under your 'ios' folder.");
 }
 
 @end
