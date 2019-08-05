@@ -1,6 +1,7 @@
 require 'json'
 
 package = JSON.parse(File.read('../package.json'))
+sdkVersion = '9.3.1'
 
 Pod::Spec.new do |s|
   s.name         = package['name']
@@ -30,19 +31,21 @@ Pod::Spec.new do |s|
   s.default_subspec = 'FlurrySDK'
 
   s.subspec 'FlurrySDK' do |ss|
+    ss.ios.deployment_target = '8.0'
     ss.ios.source_files = [
       'ReactNativeFlurry/ReactNativeFlurry.{h,m}',
       'ReactNativeFlurry/ReactNativeFlurryConfigListener.{h,m}'
     ]
+    ss.ios.dependency 'Flurry-iOS-SDK/FlurrySDK', "~> #{sdkVersion}"
+    ss.ios.dependency 'Flurry-iOS-SDK/FlurryConfig', "~> #{sdkVersion}"
+
+    ss.tvos.deployment_target = '9.0'
     ss.tvos.source_files = [
       'ReactNativeFlurry/ReactNativeFlurry.{h,m}'
     ]
-    ss.ios.deployment_target = '8.0'
-    ss.tvos.deployment_target = '9.0'
+    ss.tvos.dependency 'Flurry-iOS-SDK/FlurryTVOS', "~> #{sdkVersion}"
+    
     ss.dependency 'React'
-    ss.ios.dependency 'Flurry-iOS-SDK/FlurrySDK', '~> 9.3.1'
-    ss.tvos.dependency 'Flurry-iOS-SDK/FlurryTVOS', '~> 9.3.1'
-    ss.ios.dependency 'Flurry-iOS-SDK/FlurryConfig', '~> 9.3.1'
   end
 
   s.subspec 'FlurrySDK-Push' do |ss|
@@ -50,9 +53,9 @@ Pod::Spec.new do |s|
     ss.platform = :ios, '9.0'
     ss.pod_target_xcconfig = { 'GCC_PREPROCESSOR_DEFINITIONS' => 'HAS_MESSAGING=1' }
     ss.dependency 'React'
-    ss.dependency 'Flurry-iOS-SDK/FlurrySDK', '~> 9.3.1'
-    ss.dependency 'Flurry-iOS-SDK/FlurryConfig', '~> 9.3.1'
-    ss.dependency 'Flurry-iOS-SDK/FlurryMessaging', '~> 9.3.1'
+    ss.dependency 'Flurry-iOS-SDK/FlurrySDK', "~> #{sdkVersion}"
+    ss.dependency 'Flurry-iOS-SDK/FlurryConfig', "~> #{sdkVersion}"
+    ss.dependency 'Flurry-iOS-SDK/FlurryMessaging', "~> #{sdkVersion}"
   end
 
 end

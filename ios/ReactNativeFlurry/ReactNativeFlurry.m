@@ -15,14 +15,32 @@
  */
 
 #import "ReactNativeFlurry.h"
+#if __has_include(<Flurry-iOS-SDK/Flurry.h>)
+#import <Flurry-iOS-SDK/Flurry.h>
+#elif __has_include(<Flurry_iOS_SDK/Flurry.h>)
+#import <Flurry_iOS_SDK/Flurry.h>
+#else
 #import "Flurry.h"
+#endif
 
 #if TARGET_OS_IOS
 #ifdef HAS_MESSAGING
+#if __has_include(<Flurry-iOS-SDK/FlurryMessaging.h>)
+#import <Flurry-iOS-SDK/FlurryMessaging.h>
+#elif __has_include(<Flurry_iOS_SDK/FlurryMessaging.h>)
+#import <Flurry_iOS_SDK/FlurryMessaging.h>
+#else
 #import "FlurryMessaging.h"
+#endif
 #import "ReactNativeFlurryMessagingListener.h"
 #endif
+#if __has_include(<Flurry-iOS-SDK/FConfig.h>)
+#import <Flurry-iOS-SDK/FConfig.h>
+#elif __has_include(<Flurry_iOS_SDK/FConfig.h>)
+#import <Flurry_iOS_SDK/FConfig.h>
+#else
 #import "FConfig.h"
+#endif
 #import "ReactNativeFlurryConfigListener.h"
 #endif
 
@@ -39,7 +57,7 @@
 #endif
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"4.0.0";
+static NSString * const originVersion = @"4.1.0";
 
 @interface ReactNativeFlurry ()<RNFlurryEventDispatcherDelegate>
 
@@ -396,7 +414,6 @@ RCT_REMAP_METHOD(getConfigStringMap, getConfigStringMap:(nonnull NSDictionary *)
 
 #pragma mark - Native API
 
-#if TARGET_OS_IOS
 + (void)enableMessaging {
 #ifdef HAS_MESSAGING
     static dispatch_once_t messagingToken;
@@ -410,7 +427,6 @@ RCT_REMAP_METHOD(getConfigStringMap, getConfigStringMap:(nonnull NSDictionary *)
     [gInstance handleMessagingNotFound];
 #endif
 }
-#endif
 
 #pragma mark - Private helpers
 

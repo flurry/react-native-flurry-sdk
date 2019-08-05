@@ -1,5 +1,11 @@
 # Change Log
 
+## v4.1.0 (2019-08-05)
+
+#### Bug Fixes
+
+* Improve iOS podspec build, header macros
+
 # v4.0.0 (2019-07-16)
 
 #### Features

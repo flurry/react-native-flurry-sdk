@@ -15,7 +15,13 @@
  */
 
 #import <Foundation/Foundation.h>
+#if __has_include(<Flurry-iOS-SDK/FConfig.h>)
+#import <Flurry-iOS-SDK/FConfig.h>
+#elif __has_include(<Flurry_iOS_SDK/FConfig.h>)
+#import <Flurry_iOS_SDK/FConfig.h>
+#else
 #import "FConfig.h"
+#endif
 #import "ReactNativeFlurry.h"
 
 @interface ReactNativeFlurryConfigListener : NSObject<FConfigObserver>
