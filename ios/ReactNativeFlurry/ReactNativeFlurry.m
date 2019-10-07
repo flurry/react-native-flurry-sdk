@@ -57,7 +57,7 @@
 #endif
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"4.1.0";
+static NSString * const originVersion = @"5.0.0";
 
 @interface ReactNativeFlurry ()<RNFlurryEventDispatcherDelegate>
 
@@ -136,6 +136,10 @@ RCT_EXPORT_METHOD(build:(nonnull NSString *)apiKey) {
     });
 }
 
+RCT_EXPORT_METHOD(withAppVersion:(NSString *)versionName) {
+    [self.sessionBuilder withAppVersion:versionName];
+}
+
 RCT_EXPORT_METHOD(withCrashReporting:(BOOL)crashReporting) {
     [self.sessionBuilder withCrashReporting:crashReporting];
 }
@@ -143,6 +147,10 @@ RCT_EXPORT_METHOD(withCrashReporting:(BOOL)crashReporting) {
 RCT_EXPORT_METHOD(withContinueSessionMillis:(NSInteger)value) {
     double seconds = (double) value / 1000.0;
     [self.sessionBuilder withSessionContinueSeconds:(NSInteger)(round(seconds))];
+}
+
+RCT_EXPORT_METHOD(withIAPReportingEnabled:(BOOL)enableIAP) {
+    [self.sessionBuilder withIAPReportingEnabled:enableIAP];
 }
 
 RCT_EXPORT_METHOD(withIncludeBackgroundSessionsInMetrics:(BOOL)value) {
@@ -217,10 +225,7 @@ RCT_EXPORT_METHOD(setUserId:(nullable NSString *)userId) {
 }
 
 RCT_EXPORT_METHOD(setVersionName:(nonnull NSString *)version) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    [Flurry setAppVersion:version];
-#pragma clang diagnostic pop
+    NSLog(@"Flurry API Removal: [Flurry setAppVersion:] was deprecated and is removed from this version.");
 }
 
 RCT_EXPORT_METHOD(setIAPReportingEnabled:(BOOL)enableIAP) {
@@ -289,12 +294,23 @@ RCT_EXPORT_METHOD(logBreadcrumb:(nonnull NSString *)breadcrumb) {
 }
 
 RCT_EXPORT_METHOD(logPayment:(NSString *)productName productId:(NSString *)productId quantity:(NSInteger)quantity price:(double)price currency:(NSString *)currency transactionId:(NSString *)transactionId parameters:(NSDictionary *)parameters) {
-    NSLog(@"Flurry.logPayment is not supported on iOS. Please use Flurry.setIAPReportingEnabled instead.");
+    [Flurry logPaymentTransactionParamsWithTransactionId:transactionId
+                                               productId:productId
+                                                quantity:[NSString stringWithFormat:@"%ld", quantity]
+                                                   price:[NSString stringWithFormat:@"%f", price]
+                                                currency:currency
+                                             productName:productName
+                                        transactionState:@"0"
+                                       userDefinedParams:parameters
+                                          statusCallback:nil];
 }
 
 RCT_EXPORT_METHOD(onPageView) {
 #if TARGET_OS_IOS
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [Flurry logPageView];
+#pragma clang diagnostic pop
 #endif
 }
 

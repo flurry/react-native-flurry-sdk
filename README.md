@@ -1,10 +1,12 @@
 # React Native Flurry SDK (react-native-flurry-sdk)
 
 [![npm](https://img.shields.io/npm/v/react-native-flurry-sdk.svg?colorB=blue&)](https://www.npmjs.com/package/react-native-flurry-sdk)
+![platform](https://img.shields.io/badge/platform-android%20%7C%20ios%20%7C%20tvos-lightgrey)
+[![licence](https://img.shields.io/npm/l/react-native-flurry-sdk.svg?colorB=orange)](https://www.npmjs.com/package/react-native-flurry-sdk)
 
 A React Native plugin for Flurry SDK
 
-**Flurry Push** for messaging is now supported by our plugin!
+**Flurry Push** for messaging and **Flurry Config** for remote configuration are now supported by our plugin!
 
 ## Table of contents
 
@@ -214,8 +216,6 @@ A React Native plugin for Flurry SDK
        ...
        Flurry.endTimedEvent('React Native Timed Event');
   
-       Flurry.onPageView();
-  
        return (
          <View style={styles.container}>
            ...
@@ -282,8 +282,10 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
 - **Methods to initialize Flurry**
 
   ```javascript
+  Flurry.Builder.withAppVersion(versionName = '1.0'); // iOS only. For Android, please use Flurry.setVersionName() instead.
   Flurry.Builder.withCrashReporting(crashReporting = true);
   Flurry.Builder.withContinueSessionMillis(sessionMillis = 10000);
+  Flurry.Builder.withIAPReportingEnabled(enableIAP = true); // iOS only.
   Flurry.Builder.withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics = true);
   Flurry.Builder.withLogEnabled(enableLog = true);
   Flurry.Builder.withLogLevel(logLevel = Flurry.LogLevel.WARN); // LogLevel = { VERBOSE, DEBUG, INFO, WARN, ERROR, ASSERT }
@@ -320,7 +322,7 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
   Flurry.setReportLocation(reportLocation: boolean);
   Flurry.setSessionOrigin(originName: string, deepLink: string);
   Flurry.setUserId(userId: string);
-  Flurry.setVersionName(versionName: string);
+  Flurry.setVersionName(versionName: string); // Android only. For iOS, please use Flurry.Builder.withAppVersion() instead.
   
   Flurry.addOrigin(originName: string, originVersion: string);
   Flurry.addOrigin(originName: string, originVersion: string, originParameters: { [key: string]: string; });
@@ -346,14 +348,14 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
   Flurry.endTimedEvent(eventId: string);
   Flurry.endTimedEvent(eventId: string, parameters: { [key: string]: string; });
   
-  Flurry.onPageView(); // not available on tvOS
+  Flurry.onPageView(); // Deprecated, API removed, no longer supported by Flurry.
   
   Flurry.onError(errorId: string, message: string, errorClass: string);
   Flurry.onError(errorId: string, message: string, errorClass: string, errorParams: { [key: string]: string; });
   
   Flurry.logBreadcrumb(crashBreadcrumb: string);
   Flurry.logPayment(productName: string, productId: string, quantity: number, price: number,
-                    currency: string, transactionId: string, parameters: { [key: string]: string; });  // Android, see setIAPReportingEnabled for iOS and tvOS
+                    currency: string, transactionId: string, parameters: { [key: string]: string; });
   ```
 
 - **Methods to enable IAP reporting (iOS and tvOS)**

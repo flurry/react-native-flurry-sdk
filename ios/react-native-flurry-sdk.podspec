@@ -1,7 +1,7 @@
 require 'json'
 
 package = JSON.parse(File.read('../package.json'))
-sdkVersion = '9.3.1'
+sdkVersion = '10.0.2'
 
 Pod::Spec.new do |s|
   s.name         = package['name']
@@ -43,7 +43,7 @@ Pod::Spec.new do |s|
     ss.tvos.source_files = [
       'ReactNativeFlurry/ReactNativeFlurry.{h,m}'
     ]
-    ss.tvos.dependency 'Flurry-iOS-SDK/FlurryTVOS', "~> #{sdkVersion}"
+    ss.tvos.dependency 'Flurry-iOS-SDK/FlurrySDK', "~> #{sdkVersion}"
     
     ss.dependency 'React'
   end

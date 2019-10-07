@@ -85,6 +85,13 @@ export default class Flurry {
             }
         }
 
+        withAppVersion(versionName = '1.0') {
+            if (Platform.OS === 'ios') {
+                ReactNativeFlurry.withAppVersion(versionName);
+            }
+            return this;
+        }
+
         withCrashReporting(crashReporting = true) {
             ReactNativeFlurry.withCrashReporting(crashReporting);
             return this;
@@ -95,6 +102,13 @@ export default class Flurry {
                 console.error('Flurry.Builder.withContinueSessionMillis: the minimum timeout for a session is 5,000 ms.');
             }
             ReactNativeFlurry.withContinueSessionMillis(sessionMillis);
+            return this;
+        }
+
+        withIAPReportingEnabled(enableIAP = true) {
+            if (Platform.OS === 'ios') {
+                ReactNativeFlurry.withIAPReportingEnabled(enableIAP);
+            }
             return this;
         }
 
@@ -438,6 +452,8 @@ export default class Flurry {
     }
 
     static onPageView() {
+        console.warn(`Flurry.onPageView method is deprecated. API removed, no longer supported by Flurry.`);
+
         ReactNativeFlurry.onPageView();
     }
 

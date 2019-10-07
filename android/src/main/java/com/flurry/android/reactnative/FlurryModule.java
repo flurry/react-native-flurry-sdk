@@ -51,12 +51,13 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String FLURRY_MESSAGING_EVENT = "FlurryMessagingEvent";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "4.1.0";
+    private static final String ORIGIN_VERSION = "5.0.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 
     private static ReactApplicationContext sReactApplicationContext = null;
     private static boolean sEnableMessagingListener = false;
+    private static FlurryMessage sFlurryMessage = null;
 
     private static RNFlurryConfigListener sRNFlurryConfigListener = null;
     private static int sRequestConfigListener = 0;
@@ -73,6 +74,16 @@ public class FlurryModule extends ReactContextBaseJavaModule {
 
         // TODO remove this call after non-Builder APIs removed.
         initBuilder();
+    }
+
+    @Override
+    public void initialize() {
+        super.initialize();
+
+        if ((sFlurryMessage != null) && (sReactApplicationContext != null)) {
+            RNFlurryMessagingListener.sendEvent(RNFlurryMessagingListener.EventType.NotificationClicked, sFlurryMessage, false);
+            sFlurryMessage = null;
+        }
     }
 
     @ReactMethod
@@ -263,7 +274,8 @@ public class FlurryModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void onPageView() {
-        FlurryAgent.onPageView();
+        // Deprecated API removed
+        // FlurryAgent.onPageView();
     }
 
     @ReactMethod
@@ -584,7 +596,10 @@ public class FlurryModule extends ReactContextBaseJavaModule {
 
         @Override
         public boolean onNotificationClicked(FlurryMessage flurryMessage) {
-            if (sEnableMessagingListener && (sReactApplicationContext != null)) {
+            if (sReactApplicationContext == null) {
+                // React Native platform is inactive, cache for later.
+                sFlurryMessage = flurryMessage;
+            } else if (sEnableMessagingListener) {
                 return sendEvent(EventType.NotificationClicked, flurryMessage, true);
             }
             return false;
@@ -609,7 +624,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
             // no-op
         }
 
-        private boolean sendEvent(EventType type, FlurryMessage flurryMessage, boolean waitReturn) {
+        private static boolean sendEvent(EventType type, FlurryMessage flurryMessage, boolean waitReturn) {
             WritableMap params = Arguments.createMap();
             params.putString("Type", type.getName());
             params.putString("Title", flurryMessage.getTitle());
@@ -631,7 +646,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
             return sCallbackReturnValue;
         }
 
-        private void sendEvent(EventType type, String token) {
+        private static void sendEvent(EventType type, String token) {
             WritableMap params = Arguments.createMap();
             params.putString("Type", type.getName());
             params.putString("Token", token);

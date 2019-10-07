@@ -1,5 +1,17 @@
 # Change Log
 
+# v5.0.0 (2019-10-08)
+
+#### Features
+
+* Upgrade Flurry Android SDK version to 12.0.0
+* Upgrade Flurry iOS SDK version to 10.0.2
+* Mark onPageView API as deprecated
+
+#### Bug Fixes
+
+* Improve Android Flurry Messaging payload when app is closed
+
 ## v4.1.0 (2019-08-05)
 
 #### Bug Fixes

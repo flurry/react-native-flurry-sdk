@@ -306,6 +306,7 @@ declare module 'react-native-flurry-sdk' {
          * Log a page view.
          * 
          * e.g. Flurry.onPageView();
+         * @deprecated API removed, no longer supported by Flurry.
          */
         static onPageView(): void;
 
@@ -511,6 +512,13 @@ declare module 'react-native-flurry-sdk' {
             build(apiKey1: string, apiKey2?: string): void;
 
             /**
+             * Set the version name of the app.
+             * 
+             * @param versionName The version of the app.
+             */
+            withAppVersion(versionName?: string): Flurry.Builder;
+
+            /**
              * True to enable or false to disable the ability to catch all uncaught exceptions
              * and have them reported back to Flurry.
              * 
@@ -524,6 +532,13 @@ declare module 'react-native-flurry-sdk' {
              * @param sessionMillis The time in milliseconds to set the session timeout to. Minimum value of 5000.
              */
             withContinueSessionMillis(sessionMillis?: number): Flurry.Builder;
+
+            /**
+             * Set the iOS In-App Purchase reporting enabled.
+             * 
+             * @param enableIAP True to enable iOS In-App Purchase reporting, false otherwise.
+             */
+            withIAPReportingEnabled(enableIAP?: boolean): Flurry.Builder;
     
             /**
              * True if this session should be added to total sessions/DAUs when applicationstate is inactive or background.
