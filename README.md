@@ -283,8 +283,8 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
 
   ```javascript
   Flurry.Builder.withAppVersion(versionName = '1.0'); // iOS only. For Android, please use Flurry.setVersionName() instead.
-  Flurry.Builder.withCrashReporting(crashReporting = true);
   Flurry.Builder.withContinueSessionMillis(sessionMillis = 10000);
+  Flurry.Builder.withCrashReporting(crashReporting = true);
   Flurry.Builder.withIAPReportingEnabled(enableIAP = true); // iOS only.
   Flurry.Builder.withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics = true);
   Flurry.Builder.withLogEnabled(enableLog = true);
@@ -297,21 +297,6 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
   // tvOS only
   Flurry.Builder.withTVSessionReportingInterval(interval = 5);
   Flurry.Builder.withTVEventCountThreshold(threshold = 10);
-  ```
-
-- **Methods must be called prior to invoking init** *(Deprecated, please use Flurry.Builder instead)*
-
-  ```javascript
-  Flurry.withCrashReporting(crashReporting = true);
-  Flurry.withContinueSessionMillis(sessionMillis = 10000);
-  Flurry.withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics = true);
-  Flurry.withLogEnabled(enableLog = true);
-  Flurry.withLogLevel(logLevel = Flurry.LogLevel.WARN); // LogLevel = { VERBOSE, DEBUG, INFO, WARN, ERROR, ASSERT }
-  ```
-
-  ```javascript
-  Flurry.init(apiKeyAndroid: string, apiKeyIos: string);  // preferred; passing null if not available
-  Flurry.init(apiKey: string);  // use when only single platform is supported, or shared (not recommended)
   ```
 
 - **Methods to set users preferences**
@@ -374,8 +359,8 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
   Flurry.removeConfigListener(callback: (event: { Type: string; isCache?: boolean; isRetrying?: boolean; }) => void);
   Flurry.fetchConfig();
   Flurry.activateConfig():
-  Flurry.getConfigString(key: string, defaultValue: string):         Promise<{ [key: string]: string; }>;
-  Flurry.getConfigString(keyAndDefault: { [key: string]: string; }): Promise<{ [key: string]: string; }>;
+  Flurry.getConfigString(key: string, defaultValue: string):           Promise<{ [key: string]: string; }>;
+  Flurry.getConfigString(keysAndDefaults: { [key: string]: string; }): Promise<{ [key: string]: string; }>;
   ```
 
 - **Methods for Messaging (Flurry Push)**

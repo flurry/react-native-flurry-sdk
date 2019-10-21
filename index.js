@@ -7,19 +7,6 @@ import {
 
 const { ReactNativeFlurry } = NativeModules;
 
-let initFlurryCalled = false;
-
-function priorInit(wrapped) {
-    console.warn(`Flurry.${arguments.callee.caller.name} method is deprecated, please use Flurry.Builder instead.`);
-    return function() {
-        if (initFlurryCalled) {
-            console.error(`Flurry.${arguments.callee.caller.name} method must be called prior to invoking "init"`);
-            return;
-        }
-        wrapped.apply(this, arguments);
-    }
-}
-
 export default class Flurry {
 
     /**
@@ -87,37 +74,64 @@ export default class Flurry {
 
         withAppVersion(versionName = '1.0') {
             if (Platform.OS === 'ios') {
+                if (typeof versionName !== 'string') {
+                    console.error(`Flurry.withAppVersion: versionName must be string. Got ${versionName}`);
+                    return this;
+                }
+
                 ReactNativeFlurry.withAppVersion(versionName);
             }
             return this;
         }
 
         withCrashReporting(crashReporting = true) {
+            if (typeof crashReporting !== 'boolean') {
+                console.error(`Flurry.Builder.withCrashReporting: crashReporting must be one of [true, false]. Got ${crashReporting}`);
+                return this;
+            }
+
             ReactNativeFlurry.withCrashReporting(crashReporting);
             return this;
         }
 
         withContinueSessionMillis(sessionMillis = 10000) {
-            if (sessionMillis < 5000) {
+            if (typeof sessionMillis !== 'number' || sessionMillis < 5000) {
                 console.error('Flurry.Builder.withContinueSessionMillis: the minimum timeout for a session is 5,000 ms.');
+                return this;
             }
+
             ReactNativeFlurry.withContinueSessionMillis(sessionMillis);
             return this;
         }
 
         withIAPReportingEnabled(enableIAP = true) {
             if (Platform.OS === 'ios') {
+                if (typeof enableIAP !== 'boolean') {
+                    console.error(`Flurry.Builder.withIAPReportingEnabled: enableIAP must be one of [true, false]. Got ${enableIAP}`);
+                    return this;
+                }
+
                 ReactNativeFlurry.withIAPReportingEnabled(enableIAP);
             }
             return this;
         }
 
         withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics = true) {
+            if (typeof includeBackgroundSessionsInMetrics !== 'boolean') {
+                console.error(`Flurry.Builder.withIncludeBackgroundSessionsInMetrics: includeBackgroundSessionsInMetrics must be one of [true, false]. Got ${includeBackgroundSessionsInMetrics}`);
+                return this;
+            }
+
             ReactNativeFlurry.withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics);
             return this;
         }
 
         withLogEnabled(enableLog = true) {
+            if (typeof enableLog !== 'boolean') {
+                console.error(`Flurry.Builder.withLogEnabled: enableLog must be one of [true, false]. Got ${enableLog}`);
+                return this;
+            }
+
             ReactNativeFlurry.withLogEnabled(enableLog);
             return this;
         }
@@ -128,6 +142,11 @@ export default class Flurry {
         }
 
         withMessaging(enableMessaging = true) {
+            if (typeof enableMessaging !== 'boolean') {
+                console.error(`Flurry.Builder.withMessaging: enableMessaging must be one of [true, false]. Got ${enableMessaging}`);
+                return this;
+            }
+
             ReactNativeFlurry.withMessaging(enableMessaging);
             return this;
         }
@@ -146,83 +165,6 @@ export default class Flurry {
             return this;
         }
     };
-
-    /**
-     * @deprecated Please use Flurry.Builder instead.
-     */
-    static init(...apiKeys) {
-        console.warn(`Flurry.init method is deprecated, please use Flurry.Builder instead.`);
-        if (initFlurryCalled) {
-            console.error('Flurry.init: already called');
-            return;
-        }
-
-        if (apiKeys.length === 0) {
-            console.error('Flurry.init: apiKey(string) is required');
-            return;
-        } else if (apiKeys.length === 1) {
-            if (typeof apiKeys[0] !== 'string') {
-                console.error('Flurry.init: apiKey1(string) is required');
-                return;
-            }
-            ReactNativeFlurry.build(apiKeys[0]);
-        } else if (apiKeys.length === 2) {
-            if (Platform.OS === 'android') {
-                if (typeof apiKeys[0] !== 'string') {
-                    console.error('Flurry.init: apiKey1(string) is required');
-                    return;
-                }
-                ReactNativeFlurry.build(apiKeys[0]);
-            } else if (Platform.OS === 'ios') {
-                if (typeof apiKeys[1] !== 'string') {
-                    console.error('Flurry.init: apiKey2(string) is required');
-                    return;
-                }
-                ReactNativeFlurry.build(apiKeys[1]);
-            }
-        }
-
-        initFlurryCalled = true;
-    }
-
-    /**
-     * @deprecated Please use Flurry.Builder instead.
-     */
-    static withCrashReporting(crashReporting = true) {
-        priorInit(ReactNativeFlurry.withCrashReporting)(crashReporting);
-    }
-
-    /**
-     * @deprecated Please use Flurry.Builder instead.
-     */
-    static withContinueSessionMillis(sessionMillis = 10000) {
-        if (sessionMillis < 5000) {
-            console.error('Flurry.withContinueSessionMillis: the minimum timeout for a session is 5,000 ms.');
-        }
-
-        priorInit(ReactNativeFlurry.withContinueSessionMillis)(sessionMillis);
-    }
-
-    /**
-     * @deprecated Please use Flurry.Builder instead.
-     */
-    static withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics = true) {
-        priorInit(ReactNativeFlurry.withIncludeBackgroundSessionsInMetrics)(includeBackgroundSessionsInMetrics);
-    }
-
-    /**
-     * @deprecated Please use Flurry.Builder instead.
-     */
-    static withLogEnabled(enableLog = true) {
-        priorInit(ReactNativeFlurry.withLogEnabled)(enableLog);
-    }
-
-    /**
-     * @deprecated Please use Flurry.Builder instead.
-     */
-    static withLogLevel(logLevel = Flurry.LogLevel.WARN) {
-        priorInit(ReactNativeFlurry.withLogLevel)(logLevel);
-    }
 
     static setAge(age) {
         if (typeof age !== 'number' || age <= 0 || age >= 110) {
@@ -352,7 +294,7 @@ export default class Flurry {
      * - logEvent(eventId, parameters)
      * - logEvent(eventId, parameters, timed)
      */
-    static logEvent(eventId, parameters, timed) {
+    static logEvent(eventId, timedOrParameters, timed) {
         if (typeof eventId !== 'string') {
             console.error(`Flurry.logEvent: eventId must be a string. Got ${eventId}`);
             return;
@@ -367,7 +309,7 @@ export default class Flurry {
                 ReactNativeFlurry.logEventParams(eventId, arguments[1]);
             }
         } else if (arguments.length === 3) {
-            ReactNativeFlurry.logEventParamsTimed(eventId, parameters, timed);
+            ReactNativeFlurry.logEventParamsTimed(eventId, timedOrParameters, timed);
         }
     }
 
@@ -489,12 +431,12 @@ export default class Flurry {
         ReactNativeFlurry.activateConfig();
     }
 
-    static getConfigString(key, defaultValue) {
+    static getConfigString(keyOrDefaults, defaultValue) {
         if (arguments.length === 1) {
-            return ReactNativeFlurry.getConfigStringMap(key);
+            return ReactNativeFlurry.getConfigStringMap(keyOrDefaults);
         } else if (arguments.length === 2) {
-            if (typeof key !== 'string') {
-                console.error(`Flurry.getConfigString: key must be a string. Got ${key}`);
+            if (typeof keyOrDefaults !== 'string') {
+                console.error(`Flurry.getConfigString: key must be a string. Got ${keyOrDefaults}`);
                 return;
             }
 
@@ -503,7 +445,7 @@ export default class Flurry {
                 return;
             }
 
-            return ReactNativeFlurry.getConfigString(key, defaultValue);
+            return ReactNativeFlurry.getConfigString(keyOrDefaults, defaultValue);
         }
     }
 

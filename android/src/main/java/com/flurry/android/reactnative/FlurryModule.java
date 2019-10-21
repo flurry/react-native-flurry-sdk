@@ -51,7 +51,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String FLURRY_MESSAGING_EVENT = "FlurryMessagingEvent";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "5.0.0";
+    private static final String ORIGIN_VERSION = "5.1.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 
@@ -71,9 +71,6 @@ public class FlurryModule extends ReactContextBaseJavaModule {
         super(reactContext);
 
         sReactApplicationContext = reactContext;
-
-        // TODO remove this call after non-Builder APIs removed.
-        initBuilder();
     }
 
     @Override

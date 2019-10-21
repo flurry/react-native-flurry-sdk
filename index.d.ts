@@ -40,71 +40,6 @@ declare module 'react-native-flurry-sdk' {
         }
 
         /**
-         * Initialize the Flurry SDK.
-         * 
-         * There are two overloads,
-         * e.g. Flurry.init('FLURRY_API_KEY'); Flurry.init('FLURRY_ANDROID_API_KEY', 'FLURRY_IOS_API_KEY');
-         * - init(apikey)
-         * - init(apikeyAndroid, apikeyIos)
-         * 
-         * @param apiKey1 Android User API Key.
-         * @param apiKey2 iOS User API Key.
-         * @deprecated Please use Flurry.Builder instead.
-         */
-        static init(apiKey1: string, apiKey2?: string): void;
-
-        /**
-         * True to enable or false to disable the ability to catch all uncaught exceptions
-         * and have them reported back to Flurry.
-         * 
-         * @param crashReporting true to enable, false to disable.
-         * 
-         * Method must be called prior to invoking init, e.g. Flurry.withCrashReporting(true);
-         * @deprecated Please use Flurry.Builder instead.
-         */
-        static withCrashReporting(crashReporting?: boolean): void;
-
-        /**
-         * Set the timeout for expiring a Flurry session.
-         * 
-         * @param sessionMillis The time in milliseconds to set the session timeout to. Minimum value of 5000.
-         * 
-         * Method must be called prior to invoking init, e.g. Flurry.withContinueSessionMillis(6000);
-         * @deprecated Please use Flurry.Builder instead.
-         */
-        static withContinueSessionMillis(sessionMillis?: number): void;
-
-        /**
-         * True if this session should be added to total sessions/DAUs when applicationstate is inactive or background.
-         * 
-         * @param includeBackgroundSessionsInMetrics if background and inactive session should be counted toward dau
-         * 
-         * Method must be called prior to invoking init, e.g. Flurry.withIncludeBackgroundSessionsInMetrics(true);
-         * @deprecated Please use Flurry.Builder instead.
-         */
-        static withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics?: boolean): void;
-
-        /**
-         * True to enable or false to disable the internal logging for the Flurry SDK.
-         * 
-         * @param enableLog true to enable logging, false to disable it.
-         * 
-         * Method must be called prior to invoking init, e.g. Flurry.withLogEnabled(true);
-         * @deprecated Please use Flurry.Builder instead.
-         */
-        static withLogEnabled(enableLog?: boolean): void;
-
-        /**
-         * Set the log level of the internal Flurry SDK logging.
-         * 
-         * @param logLevel The level to set it to { VERBOSE, DEBUG, INFO, WARN, ERROR, ASSERT }.
-         * 
-         * Method must be called prior to invoking init, e.g. Flurry.withLogLevel(Flurry.LogLevel.WARN);
-         * @deprecated Please use Flurry.Builder instead.
-         */
-        static withLogLevel(logLevel?: number): void;
-
-        /**
          * Sets the age of the user at the time of this session.
          * 
          * e.g. Flurry.setAge(36);
@@ -172,7 +107,8 @@ declare module 'react-native-flurry-sdk' {
          * Add origin attribution.
          * 
          * There are two overloads,
-         * e.g. Flurry.addOrigin('name', 'version'); Flurry.addOrigin('name', 'version'), {param: 'true'});
+         * e.g., Flurry.addOrigin('name', 'version');
+         *       Flurry.addOrigin('name', 'version'), {param: 'true'});
          * - addOrigin(originName, originVersion)
          * - addOrigin(originName, originVersion, originParameters)
          * 
@@ -195,7 +131,7 @@ declare module 'react-native-flurry-sdk' {
          * Get the version of the Flurry SDK.
          * 
          * There are two overloads,
-         * e.g. 3 ways to call
+         * e.g., 3 ways to call
          *
          * Flurry.getVersions(
          *     (msg) => {
@@ -244,18 +180,31 @@ declare module 'react-native-flurry-sdk' {
         /**
          * Log an event.
          * 
-         * There are four overloads,
-         * e.g. Flurry.logEvent('eventId'); Flurry.logEvent('eventId', {param: 'true'}, true);
+         * There are two overloads,
+         * e.g., Flurry.logEvent('eventId');
+         *       Flurry.logEvent('eventId', true);
          * - logEvent(eventId)
          * - logEvent(eventId, timed)
+         * 
+         * @param eventId       The name/id of the event.
+         * @param timed         True if this event is timed, false otherwise.
+         */
+        static logEvent(eventId: string, timed?: boolean): void;
+
+        /**
+         * Log an event with parameters.
+         * 
+         * There are two overloads,
+         * e.g., Flurry.logEvent('eventId', {param: 'true'});
+         *       Flurry.logEvent('eventId', {param: 'true'}, true);
          * - logEvent(eventId, parameters)
          * - logEvent(eventId, parameters, timed)
          * 
-         * @param eventId    The name/id of the event.
-         * @param parameters A {@code Map<String, String>} of parameters to log with this event.
-         * @param timed      True if this event is timed, false otherwise.
+         * @param eventId       The name/id of the event.
+         * @param parameters    A {@code Map<String, String>} of parameters to log with this event.
+         * @param timed         True if this event is timed, false otherwise.
          */
-        static logEvent(eventId: string, parameters?: { [key: string]: string; }, timed?: boolean): void;
+        static logEvent(eventId: string, parameters: { [key: string]: string; }, timed?: boolean): void;
 
         /**
          * Log a payment.
@@ -278,7 +227,8 @@ declare module 'react-native-flurry-sdk' {
          * End a timed event.
          * 
          * There are two overloads,
-         * e.g. Flurry.endTimedEvent('eventId'); Flurry.endTimedEvent('eventId', {param: 'true'});
+         * e.g., Flurry.endTimedEvent('eventId');
+         *       Flurry.endTimedEvent('eventId', {param: 'true'});
          * - endTimedEvent(eventId)
          * - endTimedEvent(eventId, parameters)
          * 
@@ -291,7 +241,8 @@ declare module 'react-native-flurry-sdk' {
          * Report errors that your app catches.
          * 
          * There are two overloads,
-         * e.g. Flurry.onError('errorId', 'message', 'errorClass', {param: 'true'});
+         * e.g., Flurry.onError('errorId', 'message', 'errorClass');
+         *       Flurry.onError('errorId', 'message', 'errorClass', {param: 'true'});
          * - onError(errorId, message, errorClass)
          * - onError(errorId, message, errorClass, errorParams)
          * 
@@ -377,27 +328,36 @@ declare module 'react-native-flurry-sdk' {
          * Retrieves a String value, or a Map of String values from the configuration.
          *
          * e.g.
-         * var keyAndDefault = {
+         * Flurry.getConfigString('welcome_message', 'Welcome!').then((value) => {
+         *     console.log('Received data: ' + value.welcome_message);
+         * });
+         *
+         * @param key           The name of the configuration to retrieve.
+         * @param defaultValue  Value to return if this configuration does not exist.
+         * @returns The configuration value if it exists, or defaultValue.
+         */
+        static getConfigString(key: string, defaultValue: string):
+                               Promise<{ [key: string]: string; }>;
+        
+        /**
+         * Retrieves a Map of String values from the configuration.
+         * 
+         * e.g.
+         * let keysAndDefaults = {
          *         welcome_message:    'Welcome!',
          *         welcome_font_size:  '12',
          *         welcome_font_color: '#990066'
          *     };
          * 
-         * Flurry.getConfigString('welcome_message', 'Welcome!').then((value) => {
-         *     console.log('Received data: ' + value.welcome_message);
-         * });
-         * 
-         * Flurry.getConfigString(keyAndDefault).then((value) => {
+         * Flurry.getConfigString(keysAndDefaults).then((value) => {
          *     console.log('Received map of data: ' +
          *                 value.welcome_message + ":" + value.welcome_font_size + ":" + value.welcome_font_color);
          * });
-         *
-         * @param key           The name of the configuration to retrieve.
-         * @param defaultValue  Value to return if this configuration does not exist.
-         * @param keyAndDefault A Map of name and the default values.
-         * @return The configuration value if it exists, or defaultValue. Or Map of values.
+         * 
+         * @param keysAndDefaults A Map of names and the default values.
+         * @returns Map of configuration values if exist, or default values.
          */
-        static getConfigString(key?: string, defaultValue?: string, keyAndDefault?: { [key: string]: string; }):
+        static getConfigString(keysAndDefaults: { [key: string]: string; }): 
                                Promise<{ [key: string]: string; }>;
 
         /**
@@ -502,7 +462,8 @@ declare module 'react-native-flurry-sdk' {
              * Initialize the Flurry SDK.
              * 
              * There are two overloads,
-             * e.g. build('FLURRY_API_KEY'); build('FLURRY_ANDROID_API_KEY', 'FLURRY_IOS_API_KEY');
+             * e.g., build('FLURRY_API_KEY');
+             *       build('FLURRY_ANDROID_API_KEY', 'FLURRY_IOS_API_KEY');
              * - build(apikey)
              * - build(apikeyAndroid, apikeyIos)
              * 

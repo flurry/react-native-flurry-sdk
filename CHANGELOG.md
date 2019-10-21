@@ -1,5 +1,16 @@
 # Change Log
 
+## v5.1.0 (2019-10-22)
+
+#### Features
+
+* Upgrade Flurry Android SDK version to 12.0.1
+* Remove deprecated Flurry.init/with methods
+
+#### Bug Fixes
+
+* Improve TypeScript overloading
+
 # v5.0.0 (2019-10-08)
 
 #### Features
