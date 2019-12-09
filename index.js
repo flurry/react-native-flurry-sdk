@@ -104,6 +104,16 @@ export default class Flurry {
             return this;
         }
 
+        withDataSaleOptOut(isOptOut = false) {
+            if (typeof isOptOut !== 'boolean') {
+                console.error(`Flurry.Builder.withDataSaleOptOut: isOptOut must be one of [true, false]. Got ${isOptOut}`);
+                return this;
+            }
+
+            ReactNativeFlurry.withDataSaleOptOut(isOptOut);
+            return this;
+        }
+
         withIAPReportingEnabled(enableIAP = true) {
             if (Platform.OS === 'ios') {
                 if (typeof enableIAP !== 'boolean') {
@@ -232,6 +242,19 @@ export default class Flurry {
         }
 
         ReactNativeFlurry.setIAPReportingEnabled(enableIAP);
+    }
+
+    static setDataSaleOptOut(isOptOut = false) {
+        if (typeof isOptOut !== 'boolean') {
+            console.error(`Flurry.setDataSaleOptOut: isOptOut must be one of [true, false]. Got ${isOptOut}`);
+            return;
+        }
+
+        ReactNativeFlurry.setDataSaleOptOut(isOptOut);
+    }
+
+    static deleteData() {
+        ReactNativeFlurry.deleteData();
     }
 
     /**

@@ -51,7 +51,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String FLURRY_MESSAGING_EVENT = "FlurryMessagingEvent";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "5.1.0";
+    private static final String ORIGIN_VERSION = "5.2.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 
@@ -116,6 +116,11 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void withDataSaleOptOut(boolean isOptOut) {
+        mFlurryAgentBuilder.withDataSaleOptOut(isOptOut);
+    }
+
+    @ReactMethod
     public void withIncludeBackgroundSessionsInMetrics(boolean includeBackgroundSessionsInMetrics) {
         mFlurryAgentBuilder.withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics);
     }
@@ -174,6 +179,16 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setIAPReportingEnabled(boolean enableIAP) {
         Log.i(TAG, "setIAPReportingEnabled is not supported on Android. Please use logPayment instead.");
+    }
+
+    @ReactMethod
+    public void setDataSaleOptOut(boolean isOptOut) {
+        FlurryAgent.setDataSaleOptOut(isOptOut);
+    }
+
+    @ReactMethod
+    public void deleteData() {
+        FlurryAgent.deleteData();
     }
 
     @ReactMethod

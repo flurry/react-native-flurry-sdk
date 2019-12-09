@@ -285,6 +285,7 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
   Flurry.Builder.withAppVersion(versionName = '1.0'); // iOS only. For Android, please use Flurry.setVersionName() instead.
   Flurry.Builder.withContinueSessionMillis(sessionMillis = 10000);
   Flurry.Builder.withCrashReporting(crashReporting = true);
+  Flurry.Builder.withDataSaleOptOut(isOptOut = false);
   Flurry.Builder.withIAPReportingEnabled(enableIAP = true); // iOS only.
   Flurry.Builder.withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics = true);
   Flurry.Builder.withLogEnabled(enableLog = true);
@@ -308,6 +309,9 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
   Flurry.setSessionOrigin(originName: string, deepLink: string);
   Flurry.setUserId(userId: string);
   Flurry.setVersionName(versionName: string); // Android only. For iOS, please use Flurry.Builder.withAppVersion() instead.
+
+  Flurry.setDataSaleOptOut(isOptOut: boolean);
+  Flurry.deleteData();
   
   Flurry.addOrigin(originName: string, originVersion: string);
   Flurry.addOrigin(originName: string, originVersion: string, originParameters: { [key: string]: string; });

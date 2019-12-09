@@ -104,6 +104,22 @@ declare module 'react-native-flurry-sdk' {
         static setIAPReportingEnabled(enableIAP?: boolean): void;
 
         /**
+         * This api allows you to set opt-out/opt-in for data sale
+         *
+         * e.g. Flurry.setDataSaleOptOut(true);
+         *
+         * @param isOptOut true to opt-out data sale, false to opt-in
+         */
+        static setDataSaleOptOut(isOptOut?: boolean): void;
+
+        /**
+         * This api allows you to delete data collected by Flurry
+         *
+         * e.g. Flurry.deleteData();
+         */
+        static deleteData(): void;
+
+        /**
          * Add origin attribution.
          * 
          * There are two overloads,
@@ -493,6 +509,13 @@ declare module 'react-native-flurry-sdk' {
              * @param sessionMillis The time in milliseconds to set the session timeout to. Minimum value of 5000.
              */
             withContinueSessionMillis(sessionMillis?: number): Flurry.Builder;
+
+            /**
+             * True to opt-out data sale or false to opt-in data sale
+             *
+             * @param isOptOut true to opt-out data sale, false to opt-in
+             */
+            withDataSaleOptOut(isOptOut?: boolean): Flurry.Builder;
 
             /**
              * Set the iOS In-App Purchase reporting enabled.

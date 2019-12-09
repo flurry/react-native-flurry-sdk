@@ -57,7 +57,7 @@
 #endif
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"5.1.0";
+static NSString * const originVersion = @"5.2.0";
 
 @interface ReactNativeFlurry ()<RNFlurryEventDispatcherDelegate>
 
@@ -149,6 +149,10 @@ RCT_EXPORT_METHOD(withContinueSessionMillis:(NSInteger)value) {
     [self.sessionBuilder withSessionContinueSeconds:(NSInteger)(round(seconds))];
 }
 
+RCT_EXPORT_METHOD(withDataSaleOptOut:(BOOL)isOptOut) {
+    [self.sessionBuilder withDataSaleOptOut:isOptOut];
+}
+
 RCT_EXPORT_METHOD(withIAPReportingEnabled:(BOOL)enableIAP) {
     [self.sessionBuilder withIAPReportingEnabled:enableIAP];
 }
@@ -230,6 +234,14 @@ RCT_EXPORT_METHOD(setVersionName:(nonnull NSString *)version) {
 
 RCT_EXPORT_METHOD(setIAPReportingEnabled:(BOOL)enableIAP) {
     [Flurry setIAPReportingEnabled:enableIAP];
+}
+
+RCT_EXPORT_METHOD(setDataSaleOptOut:(BOOL)isOptOut) {
+    [FlurryCCPA setDataSaleOptOut:isOptOut];
+}
+
+RCT_EXPORT_METHOD(deleteData) {
+    [FlurryCCPA setDelete];
 }
 
 RCT_EXPORT_METHOD(addOrigin:(nonnull NSString *)originName originVersion:(nonnull NSString *)originVersion) {

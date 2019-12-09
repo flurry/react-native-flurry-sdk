@@ -1,5 +1,13 @@
 # Change Log
 
+## v5.2.0 (2019-12-10)
+
+#### Features
+
+* Upgrade Flurry Android SDK version to 12.1.0
+* Upgrade Flurry iOS SDK version to 10.1.0
+* Support Privacy Regulations API
+
 ## v5.1.0 (2019-10-22)
 
 #### Features
