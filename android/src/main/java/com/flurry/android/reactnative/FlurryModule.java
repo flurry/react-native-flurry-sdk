@@ -25,8 +25,10 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
+import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.IllegalViewOperationException;
@@ -40,7 +42,9 @@ import com.flurry.android.marketing.FlurryMarketingOptions;
 import com.flurry.android.marketing.messaging.FlurryMessagingListener;
 import com.flurry.android.marketing.messaging.notification.FlurryMessage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FlurryModule extends ReactContextBaseJavaModule {
@@ -51,7 +55,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String FLURRY_MESSAGING_EVENT = "FlurryMessagingEvent";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "5.2.0";
+    private static final String ORIGIN_VERSION = "5.3.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 
@@ -102,6 +106,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
                     public void onSessionStarted() {
                     }
                 })
+                .withSessionForceStart(true)
                 .build(context, apiKey);
     }
 
@@ -291,6 +296,46 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void UserPropertiesSet(String propertyName, String propertyValue) {
+        FlurryAgent.UserProperties.set(propertyName, propertyValue);
+    }
+
+    @ReactMethod
+    public void UserPropertiesSetList(String propertyName, ReadableArray propertyValues) {
+        FlurryAgent.UserProperties.set(propertyName, toList(propertyValues));
+    }
+
+    @ReactMethod
+    public void UserPropertiesAdd(String propertyName, String propertyValue) {
+        FlurryAgent.UserProperties.add(propertyName, propertyValue);
+    }
+
+    @ReactMethod
+    public void UserPropertiesAddList(String propertyName, ReadableArray propertyValues) {
+        FlurryAgent.UserProperties.add(propertyName, toList(propertyValues));
+    }
+
+    @ReactMethod
+    public void UserPropertiesRemove(String propertyName, String propertyValue) {
+        FlurryAgent.UserProperties.remove(propertyName, propertyValue);
+    }
+
+    @ReactMethod
+    public void UserPropertiesRemoveList(String propertyName, ReadableArray propertyValues) {
+        FlurryAgent.UserProperties.remove(propertyName, toList(propertyValues));
+    }
+
+    @ReactMethod
+    public void UserPropertiesRemoveAll(String propertyName) {
+        FlurryAgent.UserProperties.remove(propertyName);
+    }
+
+    @ReactMethod
+    public void UserPropertiesFlag(String propertyName) {
+        FlurryAgent.UserProperties.flag(propertyName);
+    }
+
+    @ReactMethod
     public void enableMessagingListener(boolean enable) {
         sEnableMessagingListener = enable;
     }
@@ -367,6 +412,21 @@ public class FlurryModule extends ReactContextBaseJavaModule {
         while (iterator.hasNextKey()) {
             String key = iterator.nextKey();
             result.put(key, readableMap.getString(key));
+        }
+
+        return result;
+    }
+
+    private static List<String> toList(final ReadableArray readableArray) {
+        if ((readableArray == null) || (readableArray.size() == 0)) {
+            return null;
+        }
+
+        List<String> result = new ArrayList<>();
+        for (int i = 0; i < readableArray.size(); i++) {
+            if (readableArray.getType(i) == ReadableType.String) {
+                result.add(readableArray.getString(i));
+            }
         }
 
         return result;

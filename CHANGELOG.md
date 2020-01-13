@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.3.0 (2020-01-13)
+
+#### Features
+
+* Upgrade Flurry Android SDK version to 12.2.0
+* Upgrade Flurry iOS SDK version to 10.2.0
+* Support User Properties API
+
+#### Bug Fixes
+
+* Fix Android Flurry session creation delay
+
 ## v5.2.0 (2019-12-10)
 
 #### Features

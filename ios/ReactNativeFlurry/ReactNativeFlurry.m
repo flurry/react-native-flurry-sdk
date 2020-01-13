@@ -23,6 +23,14 @@
 #import "Flurry.h"
 #endif
 
+#if __has_include(<Flurry-iOS-SDK/FlurryUserProperties.h>)
+#import <Flurry-iOS-SDK/FlurryUserProperties.h>
+#elif __has_include(<Flurry_iOS_SDK/FlurryUserProperties.h>)
+#import <Flurry_iOS_SDK/FlurryUserProperties.h>
+#else
+#import "FlurryUserProperties.h"
+#endif
+
 #if TARGET_OS_IOS
 #ifdef HAS_MESSAGING
 #if __has_include(<Flurry-iOS-SDK/FlurryMessaging.h>)
@@ -57,7 +65,7 @@
 #endif
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"5.2.0";
+static NSString * const originVersion = @"5.3.0";
 
 @interface ReactNativeFlurry ()<RNFlurryEventDispatcherDelegate>
 
@@ -242,6 +250,38 @@ RCT_EXPORT_METHOD(setDataSaleOptOut:(BOOL)isOptOut) {
 
 RCT_EXPORT_METHOD(deleteData) {
     [FlurryCCPA setDelete];
+}
+
+RCT_EXPORT_METHOD(UserPropertiesSet:(nonnull NSString *)propertyName propertyValue:(nonnull NSString *)propertyValue) {
+    [FlurryUserProperties set:propertyName value:propertyValue];
+}
+
+RCT_EXPORT_METHOD(UserPropertiesSetList:(nonnull NSString *)propertyName propertyValues:(nonnull NSArray *)propertyValues) {
+    [FlurryUserProperties set:propertyName values:propertyValues];
+}
+
+RCT_EXPORT_METHOD(UserPropertiesAdd:(nonnull NSString *)propertyName propertyValue:(nonnull NSString *)propertyValue) {
+    [FlurryUserProperties add:propertyName value:propertyValue];
+}
+
+RCT_EXPORT_METHOD(UserPropertiesAddList:(nonnull NSString *)propertyName propertyValues:(nonnull NSArray *)propertyValues) {
+    [FlurryUserProperties add:propertyName values:propertyValues];
+}
+
+RCT_EXPORT_METHOD(UserPropertiesRemove:(nonnull NSString *)propertyName propertyValue:(nonnull NSString *)propertyValue) {
+    [FlurryUserProperties remove:propertyName value:propertyValue];
+}
+
+RCT_EXPORT_METHOD(UserPropertiesRemoveList:(nonnull NSString *)propertyName propertyValues:(nonnull NSArray *)propertyValues) {
+    [FlurryUserProperties remove:propertyName values:propertyValues];
+}
+
+RCT_EXPORT_METHOD(UserPropertiesRemoveAll:(nonnull NSString *)propertyName) {
+    [FlurryUserProperties remove:propertyName];
+}
+
+RCT_EXPORT_METHOD(UserPropertiesFlag:(nonnull NSString *)propertyName) {
+    [FlurryUserProperties flag:propertyName];
 }
 
 RCT_EXPORT_METHOD(addOrigin:(nonnull NSString *)originName originVersion:(nonnull NSString *)originVersion) {

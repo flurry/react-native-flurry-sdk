@@ -30,6 +30,16 @@ declare module 'react-native-flurry-sdk' {
         }
 
         /**
+         * Constants for status in Flurry Config.
+         */
+        static ConfigStatus: {
+            SUCCESS:   string,
+            UNCHANGED: string,
+            ERROR:     string,
+            ACTIVATED: string
+        }
+
+        /**
          * Constants for message types in Flurry Push.
          */
         static MessageType: {
@@ -276,6 +286,24 @@ declare module 'react-native-flurry-sdk' {
          * @deprecated API removed, no longer supported by Flurry.
          */
         static onPageView(): void;
+
+        /**
+         * Constants and Methods for User Properties.
+         */
+        static UserProperties: {
+            PROPERTY_CURRENCY_PREFERENCE: string,
+            PROPERTY_PURCHASER:           string,
+            PROPERTY_REGISTERED_USER:     string,
+            PROPERTY_SUBSCRIBER:          string,
+
+            set(propertyName: string, propertyValue: string): void,
+            set(propertyName: string, propertyValue: string[]): void,
+            add(propertyName: string, propertyValue: string): void,
+            add(propertyName: string, propertyValue: string[]): void,
+            remove(propertyName: string, propertyValue?: string): void,
+            remove(propertyName: string, propertyValue:  string[]): void,
+            flag(propertyName: string): void
+        }
 
         /**
          * Register a listener for the state of fetching. Multiple listeners can be passed in and each

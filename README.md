@@ -102,11 +102,11 @@ A React Native plugin for Flurry SDK
   To set up Flurry Push, please take the following steps.
   1. Open your Podfile, which is located under `ios` folder of your project.
   2. Add the following line in your target section before `use_native_modules!`
-     
+
      ```ruby
      pod 'react-native-flurry-sdk', :path => '../node_modules/react-native-flurry-sdk/ios', :subspecs => ['FlurrySDK-Push']
      ```
-     
+
      Your target section of Podfile should now look like this:
 
      ```ruby
@@ -116,10 +116,10 @@ A React Native plugin for Flurry SDK
        pod 'React', :path => '../node_modules/react-native/'
        pod 'React-Core', :path => '../node_modules/react-native/React'
        # ... other React dependencies
-       
+
        # Add react-native-flurry-sdk
        pod 'react-native-flurry-sdk', :path => '../node_modules/react-native-flurry-sdk/ios', :subspecs => ['FlurrySDK-Push']
-       
+
        # ... other targets
        target 'YourTargetTests' do
          # ...
@@ -129,6 +129,7 @@ A React Native plugin for Flurry SDK
 
      end
      ```
+
   3. Install the dependencies again by executing
 
      ```bash
@@ -205,11 +206,14 @@ A React Native plugin for Flurry SDK
      }
   
      render() {
-       // Set users preferences.
+       // Set user preferences.
        Flurry.setAge(36);
        Flurry.setGender(Flurry.Gender.FEMALE);
        Flurry.setReportLocation(true);
   
+       // Set user properties.
+       Flurry.UserProperties.set(Flurry.UserProperties.PROPERTY_REGISTERED_USER, 'True');
+
        // Log Flurry events.
        Flurry.logEvent('React Native Event');
        Flurry.logEvent('React Native Timed Event', {param: 'true'}, true);
@@ -300,7 +304,7 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
   Flurry.Builder.withTVEventCountThreshold(threshold = 10);
   ```
 
-- **Methods to set users preferences**
+- **Methods to set user preferences**
 
   ```javascript
   Flurry.setAge(age: number);
@@ -316,6 +320,21 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
   Flurry.addOrigin(originName: string, originVersion: string);
   Flurry.addOrigin(originName: string, originVersion: string, originParameters: { [key: string]: string; });
   Flurry.addSessionProperty(name: string, value: string);
+  ```
+
+- **Methods to set user properties**
+
+  ```javascript
+  // Standard User Properties: Flurry.UserProperties = {
+  //     PROPERTY_CURRENCY_PREFERENCE, PROPERTY_PURCHASER, PROPERTY_REGISTERED_USER, PROPERTY_SUBSCRIBER }
+  Flurry.UserProperties.set(propertyName: string, propertyValue:  string);
+  Flurry.UserProperties.set(propertyName: string, propertyValues: string[]);
+  Flurry.UserProperties.add(propertyName: string, propertyValue:  string);
+  Flurry.UserProperties.add(propertyName: string, propertyValues: string[]);
+  Flurry.UserProperties.remove(propertyName: string);
+  Flurry.UserProperties.remove(propertyName: string, propertyValue:  string);
+  Flurry.UserProperties.remove(propertyName: string, propertyValues: string[]);
+  Flurry.UserProperties.flag(propertyName: string);
   ```
 
 - **Methods to get Flurry versions**

@@ -176,6 +176,63 @@ export default class Flurry {
         }
     };
 
+    static UserProperties = Object.freeze({
+        PROPERTY_CURRENCY_PREFERENCE: 'Flurry.CurrencyPreference',
+        PROPERTY_PURCHASER:           'Flurry.Purchaser',
+        PROPERTY_REGISTERED_USER:     'Flurry.RegisteredUser',
+        PROPERTY_SUBSCRIBER:          'Flurry.Subscriber',
+
+        set(propertyName, propertyValue) {
+            if (typeof propertyName !== 'string') {
+                console.error(`Flurry.UserProperties.set: propertyName must be string. Got ${propertyName}`);
+                return;
+            }
+
+            if (typeof propertyValue === 'string') {
+                ReactNativeFlurry.UserPropertiesSet(propertyName, propertyValue);
+            } else if (Array.isArray(propertyValue)) {
+                ReactNativeFlurry.UserPropertiesSetList(propertyName, propertyValue);
+            }
+        },
+
+        add(propertyName, propertyValue) {
+            if (typeof propertyName !== 'string') {
+                console.error(`Flurry.UserProperties.add: propertyName must be string. Got ${propertyName}`);
+                return;
+            }
+
+            if (typeof propertyValue === 'string') {
+                ReactNativeFlurry.UserPropertiesAdd(propertyName, propertyValue);
+            } else if (Array.isArray(propertyValue)) {
+                ReactNativeFlurry.UserPropertiesAddList(propertyName, propertyValue);
+            }
+        },
+
+        remove(...properties) {
+            if (typeof properties[0] !== 'string') {
+                console.error(`Flurry.UserProperties.remove: propertyName must be string. Got ${properties[0]}`);
+                return;
+            }
+
+            if (properties.length === 1) {
+                ReactNativeFlurry.UserPropertiesRemoveAll(properties[0]);
+            } else if (typeof properties[1] === 'string') {
+                ReactNativeFlurry.UserPropertiesRemove(properties[0], properties[1]);
+            } else if (Array.isArray(properties[1])) {
+                ReactNativeFlurry.UserPropertiesRemoveList(properties[0], properties[1]);
+            }
+        },
+
+        flag(propertyName) {
+            if (typeof propertyName !== 'string') {
+                console.error(`Flurry.UserProperties.flag: propertyName must be string. Got ${propertyName}`);
+                return;
+            }
+
+            ReactNativeFlurry.UserPropertiesFlag(propertyName);
+        }
+    });
+
     static setAge(age) {
         if (typeof age !== 'number' || age <= 0 || age >= 110) {
             console.error(`Flurry.setAge: age must be a valid positive number between 0 and 110. Got ${age}`);
