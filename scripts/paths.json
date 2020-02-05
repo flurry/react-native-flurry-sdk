@@ -1,0 +1,22 @@
+{
+    "Flurry iOS SDK": {
+        "link": "https://raw.githubusercontent.com/flurry/flurry-ios-sdk/master/Flurry/libFlurry_10.2.0.a",
+        "path": ["ios", "ReactNativeFlurry", "Flurry", "libFlurry.a"],
+        "md5": "07e0e23e09fe02359422537ab72eb50e"
+    },
+    "Flurry Messaging SDK": {
+        "link": "https://raw.githubusercontent.com/flurry/flurry-ios-sdk/master/FlurryMessaging/libFlurryMessaging_10.2.0.a",
+        "path": ["ios", "ReactNativeFlurry", "FlurryMessaging", "libFlurryMessaging.a"],
+        "md5": "ddaa31ecde3d15b2361e402628ecc789"
+    },
+    "FConfig SDK": {
+        "link": "https://raw.githubusercontent.com/flurry/flurry-ios-sdk/master/FlurryConfig/libFlurryConfig_10.2.0.a",
+        "path": ["ios", "ReactNativeFlurry", "FlurryConfig", "libFlurryConfig.a"],
+        "md5": "c0a0a99e1c6539ffa362bc4143bef3b6"
+    },
+    "Flurry tvOS SDK": {
+        "link": "https://raw.githubusercontent.com/flurry/flurry-ios-sdk/master/Flurry/libFlurryTVOS_10.2.0.a",
+        "path": ["ios", "ReactNativeFlurry", "Flurry", "libFlurryTVOS.a"],
+        "md5": "a244b55de6512c5e53b56991cb18886f"
+    }
+}

@@ -26,36 +26,12 @@ Pod::Spec.new do |s|
                       LICENSE
                     }
   s.author       = { "Flurry SDK" => "flurrysdk@gmail.com" }
+  s.platform     = :ios, "8.0"
   s.source       = { :git => "https://github.com/flurry/react-native-flurry-sdk.git", :tag => "master" }
+  s.source_files = "ReactNativeFlurry/**/*.{h,m}"
+  s.vendored_libraries = "ReactNativeFlurry/Flurry/libFlurry.a", "ReactNativeFlurry/FlurryMessaging/libFlurryMessaging.a", "ReactNativeFlurry/FlurryConfig/libFlurryConfig.a"
   s.requires_arc = true
-  s.default_subspec = 'FlurrySDK'
 
-  s.subspec 'FlurrySDK' do |ss|
-    ss.ios.deployment_target = '8.0'
-    ss.ios.source_files = [
-      'ReactNativeFlurry/ReactNativeFlurry.{h,m}',
-      'ReactNativeFlurry/ReactNativeFlurryConfigListener.{h,m}'
-    ]
-    ss.ios.dependency 'Flurry-iOS-SDK/FlurrySDK', "~> #{sdkVersion}"
-    ss.ios.dependency 'Flurry-iOS-SDK/FlurryConfig', "~> #{sdkVersion}"
-
-    ss.tvos.deployment_target = '9.0'
-    ss.tvos.source_files = [
-      'ReactNativeFlurry/ReactNativeFlurry.{h,m}'
-    ]
-    ss.tvos.dependency 'Flurry-iOS-SDK/FlurrySDK', "~> #{sdkVersion}"
-    
-    ss.dependency 'React'
-  end
-
-  s.subspec 'FlurrySDK-Push' do |ss|
-    ss.source_files = 'ReactNativeFlurry/**/*.{h,m}'
-    ss.platform = :ios, '9.0'
-    ss.pod_target_xcconfig = { 'GCC_PREPROCESSOR_DEFINITIONS' => 'HAS_MESSAGING=1' }
-    ss.dependency 'React'
-    ss.dependency 'Flurry-iOS-SDK/FlurrySDK', "~> #{sdkVersion}"
-    ss.dependency 'Flurry-iOS-SDK/FlurryConfig', "~> #{sdkVersion}"
-    ss.dependency 'Flurry-iOS-SDK/FlurryMessaging', "~> #{sdkVersion}"
-  end
+  s.dependency 'React'
 
 end

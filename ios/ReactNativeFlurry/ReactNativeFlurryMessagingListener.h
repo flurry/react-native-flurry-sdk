@@ -15,13 +15,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#if __has_include(<Flurry-iOS-SDK/FlurryMessaging.h>)
-#import <Flurry-iOS-SDK/FlurryMessaging.h>
-#elif __has_include(<Flurry_iOS_SDK/FlurryMessaging.h>)
-#import <Flurry_iOS_SDK/FlurryMessaging.h>
-#else
-#import "FlurryMessaging.h"
-#endif
+#import "FlurryMessaging/FlurryMessaging.h"
 #import "ReactNativeFlurry.h"
 
 @interface ReactNativeFlurryMessagingListener : NSObject<FlurryMessagingDelegate>
