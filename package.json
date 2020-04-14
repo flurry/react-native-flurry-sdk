@@ -1,6 +1,6 @@
 {
   "name": "react-native-flurry-sdk",
-  "version": "5.3.1",
+  "version": "5.3.9",
   "description": "React Native wrapper for Flurry SDK",
   "main": "index.js",
   "types": "index.d.ts",
@@ -25,7 +25,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/flurry/react-native-flurry-sdk.git"
+    "url": "https://github.com/flurry/react-native-flurry-sdk/tree/Pre060"
   },
   "homepage": "https://github.com/flurry/react-native-flurry-sdk#readme",
   "bugs": {

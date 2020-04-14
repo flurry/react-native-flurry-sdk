@@ -6,7 +6,9 @@
 
 A React Native plugin for Flurry SDK
 
-**Flurry Push** for messaging and **Flurry Config** for remote configuration are now supported by our plugin!
+- **Tutorial and sample project** are now available at [https://github.com/flurry/React-Native-Tutorial](https://github.com/flurry/React-Native-Tutorial).
+- **Flurry Push** for messaging and **Flurry Config** for remote configuration are now supported by our plugin!
+- If you are using React Native >= 0.60, please use release [v5.4.0](https://www.npmjs.com/package/react-native-flurry-sdk/v/5.4.0).
 
 ## Table of contents
 
@@ -60,9 +62,11 @@ A React Native plugin for Flurry SDK
 
 - **Flurry Push**</br>
   In order to use [Flurry Push](https://developer.yahoo.com/flurry/docs/push/) for [Android](https://developer.yahoo.com/flurry/docs/push/integration/android/), please follow the additional steps below:
-  1. Flurry Push requires your projects to initialize Flurry from your Application class. Please do the Flurry setup in `MainApplication.onCreate()`. With the same APIs as the JavaScript version.
+  1. Android Flurry Push requires your projects to initialize Flurry from the native Application class. Please do the Flurry setup in `MainApplication.onCreate()`. With the same APIs as the JavaScript version.
 
      ```java
+     import com.flurry.android.reactnative.FlurryModule;
+  
        new FlurryModule.Builder()
             .withCrashReporting(true)
             .withLogEnabled(true)
@@ -77,18 +81,17 @@ A React Native plugin for Flurry SDK
         // android/build.gradle (project-level)
         buildscript {
             dependencies {
-                classpath 'com.google.gms:google-services:4.0.1'
+                classpath 'com.google.gms:google-services:4.3.3'
             }
         }
      ```
 
      ```groovy
-        // android/app/build.gradle
+        // android/app/build.gradle (app-level)
         apply plugin: 'com.google.gms.google-services'
 
         dependencies {
-            implementation 'com.google.firebase:firebase-core:16.0.3'
-            implementation 'com.google.firebase:firebase-messaging:17.3.2'
+            implementation 'com.google.firebase:firebase-messaging:20.1.0'
         }
      ```
 
@@ -100,7 +103,7 @@ A React Native plugin for Flurry SDK
 
 - **Flurry Push**</br>
   To set up Flurry Push, please take the following steps.
-  1. Open your Podfile, which is located under `ios` folder of your project.
+  1. Open your Podfile, which is located under the `ios` folder of your project.
   2. Add the following line in your target section before `use_native_modules!`
 
      ```ruby
@@ -170,7 +173,7 @@ A React Native plugin for Flurry SDK
    import Flurry from 'react-native-flurry-sdk';
   
    // Init Flurry once as early as possible recommended in index.js.
-   // For each platfrom (Android, iOS) where the app runs you need to acquire a unique Flurry API Key.
+   // For each platform (Android, iOS) where the app runs you need to acquire a unique Flurry API Key.
    // i.e., you need two API keys if you are going to release the app on both Android and iOS platforms.
    // If you are building for TV platforms, you will need two API keys for Android TV and tvOS.
    new Flurry.Builder()
