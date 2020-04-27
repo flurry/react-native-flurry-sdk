@@ -1,5 +1,17 @@
 # Change Log
 
+## v5.5.0 (2020-04-28)
+
+#### Features
+
+* Upgrade Flurry iOS SDK version to 10.3.1
+
+### v5.4.9 (2020-04-28)
+
+#### Features
+
+* Support React Native < 0.60, based on v5.5.0
+
 ## v5.4.0 (2020-04-14)
 
 #### Features
