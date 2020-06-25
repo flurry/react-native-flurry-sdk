@@ -8,7 +8,7 @@ A React Native plugin for Flurry SDK
 
 - **Tutorial and sample project** are now available at [https://github.com/flurry/React-Native-Tutorial](https://github.com/flurry/React-Native-Tutorial).
 - **Flurry Push** for messaging and **Flurry Config** for remote configuration are now supported by our plugin!
-- If you are using React Native >= 0.60, please use release [v5.5.0](https://www.npmjs.com/package/react-native-flurry-sdk/v/5.5.0).
+- If you are using React Native >= 0.60, please use release [v5.6.0](https://www.npmjs.com/package/react-native-flurry-sdk/v/5.6.0).
 
 ## Table of contents
 
@@ -99,7 +99,7 @@ A React Native plugin for Flurry SDK
 
 ### iOS
 
-- Please note that starting from [React Native 0.60](https://facebook.github.io/react-native/blog/2019/07/03/version-60), [CocoaPods](https://cocoapods.org) is now the default integration approach for React Native iOS projects. If you are not using CocoaPods, please stick to `react-native-flurry-sdk@3.7.0`.
+- Please note that starting from [React Native 0.60](https://facebook.github.io/react-native/blog/2019/07/03/version-60), [CocoaPods](https://cocoapods.org) is now the default integration approach for React Native iOS projects. If you are not using CocoaPods, please stick to `react-native-flurry-sdk@5.5.9`.
 
 - **Flurry Push**</br>
   To set up Flurry Push, please take the following steps.
