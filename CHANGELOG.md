@@ -1,5 +1,19 @@
 # Change Log
 
+## v5.7.0 (2020-07-28)
+
+#### Features
+
+* Upgrade Flurry Android SDK version to 12.5.0
+* Upgrade Flurry iOS SDK version to 10.3.4
+* Support Performance Metrics API for Android
+
+### v5.6.9 (2020-07-28)
+
+#### Features
+
+* Support React Native < 0.60, based on v5.7.0
+
 ## v5.6.0 (2020-06-24)
 
 #### Features
@@ -12,7 +26,6 @@
 #### Features
 
 * Support React Native < 0.60, based on v5.6.0
-
 
 ## v5.5.0 (2020-04-28)
 

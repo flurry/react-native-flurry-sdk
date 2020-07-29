@@ -75,7 +75,7 @@ export default class Flurry {
         withAppVersion(versionName = '1.0') {
             if (Platform.OS === 'ios') {
                 if (typeof versionName !== 'string') {
-                    console.error(`Flurry.withAppVersion: versionName must be string. Got ${versionName}`);
+                    console.error(`Flurry.Builder.withAppVersion: versionName must be string. Got ${versionName}`);
                     return this;
                 }
 
@@ -147,7 +147,24 @@ export default class Flurry {
         }
 
         withLogLevel(logLevel = Flurry.LogLevel.WARN) {
+            if (typeof logLevel !== 'number') {
+                console.error(`Flurry.Builder.withLogLevel: logLevel must be number. Got ${logLevel}`);
+                return this;
+            }
+
             ReactNativeFlurry.withLogLevel(logLevel);
+            return this;
+        }
+
+        withPerformanceMetrics(performanceMetrics = Flurry.PerformanceMetrics.ALL) {
+            if (Platform.OS === 'android') {
+                if (typeof performanceMetrics !== 'number') {
+                    console.error(`Flurry.Builder.withPerformanceMetrics: performanceMetrics must be number. Got ${performanceMetrics}`);
+                    return this;
+                }
+
+                ReactNativeFlurry.withPerformanceMetrics(performanceMetrics);
+            }
             return this;
         }
 
@@ -163,6 +180,11 @@ export default class Flurry {
 
         withTVSessionReportingInterval(interval = 5) {
             if (Platform.OS === 'ios' && Platform.isTVOS) {
+                if (typeof interval !== 'number') {
+                    console.error(`Flurry.Builder.withTVSessionReportingInterval: interval must be number. Got ${interval}`);
+                    return this;
+                }
+
                 ReactNativeFlurry.withTVSessionReportingInterval(interval);
             }
             return this;
@@ -170,6 +192,11 @@ export default class Flurry {
 
         withTVEventCountThreshold(threshold = 10) {
             if (Platform.OS === 'ios' && Platform.isTVOS) {
+                if (typeof threshold !== 'number') {
+                    console.error(`Flurry.Builder.withTVEventCountThreshold: threshold must be number. Got ${threshold}`);
+                    return this;
+                }
+
                 ReactNativeFlurry.withTVEventCountThreshold(threshold);
             }
             return this;
@@ -230,6 +257,30 @@ export default class Flurry {
             }
 
             ReactNativeFlurry.UserPropertiesFlag(propertyName);
+        }
+    });
+
+    static Performance = Object.freeze({
+	    NONE:        0,
+	    COLD_START:  1,
+	    SCREEN_TIME: 2,
+	    ALL:         1 | 2,
+
+        reportFullyDrawn() {
+            ReactNativeFlurry.reportFullyDrawn();
+        },
+
+        startResourceLogger() {
+            ReactNativeFlurry.startPerformanceResourceLogger();
+        },
+
+        logResourceLogger(id) {
+            if (typeof id !== 'string') {
+                console.error(`Flurry.Performance.logResourceLogger: id must be string. Got ${id}`);
+                return;
+            }
+
+            ReactNativeFlurry.logPerformanceResourceLogger(id);
         }
     });
 

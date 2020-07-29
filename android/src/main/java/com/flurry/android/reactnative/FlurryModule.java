@@ -37,6 +37,7 @@ import com.flurry.android.FlurryAgent;
 import com.flurry.android.FlurryAgentListener;
 import com.flurry.android.FlurryConfig;
 import com.flurry.android.FlurryConfigListener;
+import com.flurry.android.FlurryPerformance;
 import com.flurry.android.marketing.FlurryMarketingModule;
 import com.flurry.android.marketing.FlurryMarketingOptions;
 import com.flurry.android.marketing.messaging.FlurryMessagingListener;
@@ -55,9 +56,11 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String FLURRY_MESSAGING_EVENT = "FlurryMessagingEvent";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "5.6.0";
+    private static final String ORIGIN_VERSION = "5.7.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
+
+    private static FlurryPerformance.ResourceLogger sFlurryPerformanceResourceLogger = null;
 
     private static ReactApplicationContext sReactApplicationContext = null;
     private static boolean sEnableMessagingListener = false;
@@ -138,6 +141,11 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void withLogLevel(int logLevel) {
         mFlurryAgentBuilder.withLogLevel(logLevel);
+    }
+
+    @ReactMethod
+    public void withPerformanceMetrics(int performanceMetrics) {
+        mFlurryAgentBuilder.withPerformanceMetrics(performanceMetrics);
     }
 
     @ReactMethod
@@ -336,6 +344,23 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void reportFullyDrawn() {
+        FlurryPerformance.reportFullyDrawn();
+    }
+
+    @ReactMethod
+    public void startPerformanceResourceLogger() {
+        sFlurryPerformanceResourceLogger = new FlurryPerformance.ResourceLogger();
+    }
+
+    @ReactMethod
+    public void logPerformanceResourceLogger(String id) {
+        if (sFlurryPerformanceResourceLogger != null) {
+            sFlurryPerformanceResourceLogger.logEvent(id);
+        }
+    }
+
+    @ReactMethod
     public void enableMessagingListener(boolean enable) {
         sEnableMessagingListener = enable;
     }
@@ -495,6 +520,17 @@ public class FlurryModule extends ReactContextBaseJavaModule {
          */
         public Builder withLogLevel(final int logLevel) {
             mFlurryAgentBuilder.withLogLevel(logLevel);
+            return this;
+        }
+
+        /**
+         * Set flags for performance metrics.
+         *
+         * @param performanceMetrics Flags for performance metrics.
+         * @return The Builder instance.
+         */
+        public Builder withPerformanceMetrics(final int performanceMetrics) {
+            mFlurryAgentBuilder.withPerformanceMetrics(performanceMetrics);
             return this;
         }
 

@@ -306,6 +306,44 @@ declare module 'react-native-flurry-sdk' {
         }
 
         /**
+         * Constants and Methods for Performance Metrics.
+         */
+        static Performance: {
+        	NONE:        0,
+        	COLD_START:  1,
+        	SCREEN_TIME: 2,
+        	ALL:         1 | 2,
+
+            /**
+             * Report to the Flurry Cold Start metrics that your app is now fully drawn.
+             * This is only used to help measuring application launch times, so that the
+             * app can report when it is fully in a usable state similar to
+             * {@link android.app.Activity#reportFullyDrawn}.
+             */
+            reportFullyDrawn(): void,
+
+            /**
+             * Provide a Resource logger that users can start before profiled codes start,
+             * then log event after finished. Flurry will compute the time.
+             *
+             * e.g.
+             *   Flurry.Performance.startResourceLogger;
+             *   {
+             *       // profiled codes ...
+             *   }
+             *   Flurry.Performance.logResourceLogger;
+             */
+            startResourceLogger(): void,
+
+            /**
+             * Log Flurry Resources Consuming events.
+             *
+             * @param id    The group ID
+             */
+            logResourceLogger(id: string): void
+        }
+
+        /**
          * Register a listener for the state of fetching. Multiple listeners can be passed in and each
          * one will be called in the order they are registered.
          *
@@ -572,7 +610,15 @@ declare module 'react-native-flurry-sdk' {
              * @param logLevel The level to set it to { VERBOSE, DEBUG, INFO, WARN, ERROR, ASSERT }.
              */
             withLogLevel(logLevel?: number): Flurry.Builder;
-    
+
+            /**
+             * Set flags for performance metrics.
+             *
+             * @param performanceMetrics Flags for performance metrics.
+             *                           E.g., Flurry.PerformanceMetrics.COLD_START | Flurry.PerformanceMetrics.SCREEN_TIME.
+             */
+            withPerformanceMetrics(performanceMetrics?: number): Flurry.Builder;
+
             /**
              * True to enable or false to disable the Flurry Push for messaging.
              * 
