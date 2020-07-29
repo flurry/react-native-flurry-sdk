@@ -1,22 +1,22 @@
 {
     "Flurry iOS SDK": {
-        "link": "https://raw.githubusercontent.com/flurry/flurry-ios-sdk/br_10.3.3/Flurry/libFlurry_10.3.3.a",
+        "link": "https://raw.githubusercontent.com/flurry/flurry-ios-sdk/br_10.3.4/Flurry/libFlurry_10.3.4.a",
         "path": ["ios", "ReactNativeFlurry", "Flurry", "libFlurry.a"],
-        "md5": "80e21033ce671fcab372f84b5cb41fce"
+        "md5": "ad8f80676f384879b290ca6df21c113f"
     },
     "Flurry Messaging SDK": {
-        "link": "https://raw.githubusercontent.com/flurry/flurry-ios-sdk/br_10.3.3/FlurryMessaging/libFlurryMessaging_10.3.3.a",
+        "link": "https://raw.githubusercontent.com/flurry/flurry-ios-sdk/br_10.3.4/FlurryMessaging/libFlurryMessaging_10.3.4.a",
         "path": ["ios", "ReactNativeFlurry", "FlurryMessaging", "libFlurryMessaging.a"],
-        "md5": "7b24b567e10cd578ed12e73636489833"
+        "md5": "5d31fa5ffeacb7d66144e50dda038ba9"
     },
     "FConfig SDK": {
-        "link": "https://raw.githubusercontent.com/flurry/flurry-ios-sdk/br_10.3.3/FlurryConfig/libFlurryConfig_10.3.3.a",
+        "link": "https://raw.githubusercontent.com/flurry/flurry-ios-sdk/br_10.3.4/FlurryConfig/libFlurryConfig_10.3.4.a",
         "path": ["ios", "ReactNativeFlurry", "FlurryConfig", "libFlurryConfig.a"],
-        "md5": "c4007c9f153995b03ccfba2e0d501d94"
+        "md5": "4d58ea78a52f108d09ab0951ced683e7"
     },
     "Flurry tvOS SDK": {
-        "link": "https://raw.githubusercontent.com/flurry/flurry-ios-sdk/br_10.3.3/Flurry/libFlurryTVOS_10.3.3.a",
+        "link": "https://raw.githubusercontent.com/flurry/flurry-ios-sdk/br_10.3.4/Flurry/libFlurryTVOS_10.3.4.a",
         "path": ["ios", "ReactNativeFlurry", "Flurry", "libFlurryTVOS.a"],
-        "md5": "0e25e497dc3ca6f26d16ad805826833f"
+        "md5": "cc586e6e3619abb54c721299a5515e8d"
     }
 }

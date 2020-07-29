@@ -8,7 +8,7 @@ A React Native plugin for Flurry SDK
 
 - **Tutorial and sample project** are now available at [https://github.com/flurry/React-Native-Tutorial](https://github.com/flurry/React-Native-Tutorial).
 - **Flurry Push** for messaging and **Flurry Config** for remote configuration are now supported by our plugin!
-- If you are using React Native >= 0.60, please use release [v5.6.0](https://www.npmjs.com/package/react-native-flurry-sdk/v/5.6.0).
+- If you are using React Native >= 0.60, please use release [v5.7.0](https://www.npmjs.com/package/react-native-flurry-sdk/v/5.7.0).
 
 ## Table of contents
 
@@ -99,7 +99,7 @@ A React Native plugin for Flurry SDK
 
 ### iOS
 
-- Please note that starting from [React Native 0.60](https://facebook.github.io/react-native/blog/2019/07/03/version-60), [CocoaPods](https://cocoapods.org) is now the default integration approach for React Native iOS projects. If you are not using CocoaPods, please stick to `react-native-flurry-sdk@5.5.9`.
+- Please note that starting from [React Native 0.60](https://facebook.github.io/react-native/blog/2019/07/03/version-60), [CocoaPods](https://cocoapods.org) is now the default integration approach for React Native iOS projects. If you are not using CocoaPods, please stick to `react-native-flurry-sdk@5.6.9`.
 
 - **Flurry Push**</br>
   To set up Flurry Push, please take the following steps.
@@ -297,6 +297,7 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
   Flurry.Builder.withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics = true);
   Flurry.Builder.withLogEnabled(enableLog = true);
   Flurry.Builder.withLogLevel(logLevel = Flurry.LogLevel.WARN); // LogLevel = { VERBOSE, DEBUG, INFO, WARN, ERROR, ASSERT }
+  Flurry.Builder.withPerformanceMetrics(performanceMetrics = Flurry.PerformanceMetrics.ALL)); // performanceMetrics = { NONE, COLD_START, SCREEN_TIME, ALL }
   Flurry.Builder.withMessaging(enableMessaging = true); // not available on tvOS
   
   Flurry.Builder.build(apiKeyAndroid: string, apiKeyIos: string);  // preferred; passing null if not available
@@ -373,6 +374,14 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
 
   ```javascript
   Flurry.setIAPReportingEnabled(enableIAP: boolean);
+  ```
+
+- **Methods for Flurry Performance Metrics**
+
+  ```javascript
+  Flurry.Performance.startResourceLogger();
+  Flurry.Performance.logResourceLogger(id: string);
+  Flurry.Performance.reportFullyDrawn();
   ```
 
 - **Methods for Flurry Config**
