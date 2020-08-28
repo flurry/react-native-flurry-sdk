@@ -26,6 +26,14 @@ export default class Flurry {
 	    FEMALE: 'f'
     });
 
+    static SKAdNetworkEvent = Object.freeze({
+        NO_EVENT:        0,
+        REGISTRATION:    1,
+        LOGIN:           2,
+        SUBSCRIPTION:    3,
+        IN_APP_PURCHASE: 4
+    });
+
     static ConfigStatus = Object.freeze({
         SUCCESS:   'FetchSuccess',
         UNCHANGED: 'FetchNoChange',
@@ -267,20 +275,26 @@ export default class Flurry {
 	    ALL:         1 | 2,
 
         reportFullyDrawn() {
-            ReactNativeFlurry.reportFullyDrawn();
+            if (Platform.OS === 'android') {
+                ReactNativeFlurry.reportFullyDrawn();
+            }
         },
 
         startResourceLogger() {
-            ReactNativeFlurry.startPerformanceResourceLogger();
+            if (Platform.OS === 'android') {
+                ReactNativeFlurry.startPerformanceResourceLogger();
+            }
         },
 
         logResourceLogger(id) {
-            if (typeof id !== 'string') {
-                console.error(`Flurry.Performance.logResourceLogger: id must be string. Got ${id}`);
-                return;
-            }
+            if (Platform.OS === 'android') {
+                if (typeof id !== 'string') {
+                    console.error(`Flurry.Performance.logResourceLogger: id must be string. Got ${id}`);
+                    return;
+                }
 
-            ReactNativeFlurry.logPerformanceResourceLogger(id);
+                ReactNativeFlurry.logPerformanceResourceLogger(id);
+            }
         }
     });
 
@@ -363,6 +377,10 @@ export default class Flurry {
 
     static deleteData() {
         ReactNativeFlurry.deleteData();
+    }
+
+    static openPrivacyDashboard() {
+        ReactNativeFlurry.openPrivacyDashboard();
     }
 
     /**
@@ -528,6 +546,28 @@ export default class Flurry {
         console.warn(`Flurry.onPageView method is deprecated. API removed, no longer supported by Flurry.`);
 
         ReactNativeFlurry.onPageView();
+    }
+
+    static updateConversionValue(conversionValue) {
+        if (Platform.OS === 'ios') {
+            if (typeof conversionValue !== 'number') {
+                console.error(`Flurry.updateConversionValue: conversionValue must be a number. Got ${conversionValue}`);
+                return;
+            }
+
+            ReactNativeFlurry.updateConversionValue(conversionValue);
+        }
+    }
+
+    static updateConversionValueWithEvent(flurryEvent) {
+        if (Platform.OS === 'ios') {
+            if (typeof flurryEvent !== 'number') {
+                console.error(`Flurry.updateConversionValueWithEvent: flurryEvent must be a number. Got ${flurryEvent}`);
+                return;
+            }
+
+            ReactNativeFlurry.updateConversionValueWithEvent(flurryEvent);
+        }
     }
 
     static addConfigListener(callback) {

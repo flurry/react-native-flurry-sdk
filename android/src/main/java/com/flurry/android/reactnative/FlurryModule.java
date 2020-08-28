@@ -38,6 +38,7 @@ import com.flurry.android.FlurryAgentListener;
 import com.flurry.android.FlurryConfig;
 import com.flurry.android.FlurryConfigListener;
 import com.flurry.android.FlurryPerformance;
+import com.flurry.android.FlurryPrivacySession;
 import com.flurry.android.marketing.FlurryMarketingModule;
 import com.flurry.android.marketing.FlurryMarketingOptions;
 import com.flurry.android.marketing.messaging.FlurryMessagingListener;
@@ -56,7 +57,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String FLURRY_MESSAGING_EVENT = "FlurryMessagingEvent";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "5.6.9";
+    private static final String ORIGIN_VERSION = "5.9.9";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 
@@ -202,6 +203,30 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void deleteData() {
         FlurryAgent.deleteData();
+    }
+
+    @ReactMethod
+    public void openPrivacyDashboard() {
+        if (sReactApplicationContext == null) {
+            Log.w(TAG, "Application Context is not available to open Privacy Dashboard.");
+            return;
+        }
+
+        FlurryPrivacySession.Callback callback = new FlurryPrivacySession.Callback() {
+            @Override
+            public void success() {
+                Log.d(TAG, "Privacy Dashboard opened successfully.");
+            }
+
+            @Override
+            public void failure() {
+                Log.d(TAG, "Opening Privacy Dashboard failed.");
+            }
+        };
+
+        FlurryPrivacySession.Request request = new FlurryPrivacySession.Request(
+                sReactApplicationContext, callback);
+        FlurryAgent.openPrivacyDashboard(request);
     }
 
     @ReactMethod
@@ -358,6 +383,16 @@ public class FlurryModule extends ReactContextBaseJavaModule {
         if (sFlurryPerformanceResourceLogger != null) {
             sFlurryPerformanceResourceLogger.logEvent(id);
         }
+    }
+
+    @ReactMethod
+    public void updateConversionValue(int conversionValue) {
+        Log.i(TAG, "UpdateConversionValue is for iOS only.");
+    }
+
+    @ReactMethod
+    public void updateConversionValueWithEvent(int flurryEvent) {
+        Log.i(TAG, "UpdateConversionValueWithEvent is for iOS only.");
     }
 
     @ReactMethod

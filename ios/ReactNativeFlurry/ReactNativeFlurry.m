@@ -18,6 +18,14 @@
 #import "Flurry/Flurry.h"
 #import "Flurry/FlurryUserProperties.h"
 
+#if __has_include(<Flurry-iOS-SDK/FlurrySKAdNetwork.h>)
+#import <Flurry-iOS-SDK/FlurrySKAdNetwork.h>
+#elif __has_include(<Flurry_iOS_SDK/FlurrySKAdNetwork.h>)
+#import <Flurry_iOS_SDK/FlurrySKAdNetwork.h>
+#else
+#import "FlurrySKAdNetwork.h"
+#endif
+
 #if TARGET_OS_IOS
 #ifdef HAS_MESSAGING
 #import "FlurryMessaging/FlurryMessaging.h"
@@ -40,7 +48,7 @@
 #endif
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"5.6.9";
+static NSString * const originVersion = @"5.9.9";
 
 @interface ReactNativeFlurry ()<RNFlurryEventDispatcherDelegate>
 
@@ -227,6 +235,12 @@ RCT_EXPORT_METHOD(deleteData) {
     [FlurryCCPA setDelete];
 }
 
+RCT_EXPORT_METHOD(openPrivacyDashboard) {
+    [Flurry openPrivacyDashboard:^(BOOL success) {
+            NSLog(@"Flurry privacy dashboard opened successfully.");
+    }];
+}
+
 RCT_EXPORT_METHOD(UserPropertiesSet:(nonnull NSString *)propertyName propertyValue:(nonnull NSString *)propertyValue) {
     [FlurryUserProperties set:propertyName value:propertyValue];
 }
@@ -333,12 +347,7 @@ RCT_EXPORT_METHOD(logPayment:(NSString *)productName productId:(NSString *)produ
 }
 
 RCT_EXPORT_METHOD(onPageView) {
-#if TARGET_OS_IOS
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    [Flurry logPageView];
-#pragma clang diagnostic pop
-#endif
+    NSLog(@"[Flurry logPageView] is removed in Flurry 11.0.0");
 }
 
 RCT_EXPORT_METHOD(onError:(nonnull NSString *)errorId message:(nullable NSString *)message errorClass:(nullable NSString *)errorClass) {
@@ -355,6 +364,18 @@ RCT_EXPORT_METHOD(onErrorParams:(nonnull NSString *)errorId message:(nullable NS
         error = [NSError errorWithDomain:errorClass code:0 userInfo:nil];
     }
     [Flurry logError:errorId message:message error:error withParameters:parameters];
+}
+
+RCT_EXPORT_METHOD(updateConversionValue:(NSInteger)conversionValue) {
+    if (@available(iOS 14.0, *)) {
+        [FlurrySKAdNetwork flurryUpdateConversionValue:conversionValue];
+    }
+}
+
+RCT_EXPORT_METHOD(updateConversionValueWithEvent:(NSInteger)flurryEvent) {
+    if (@available(iOS 14.0, *)) {
+        [FlurrySKAdNetwork flurryUpdateConversionValueWithEvent:(FlurryConversionValueEventType) flurryEvent];
+    }
 }
 
 #pragma mark - Flurry Messaging

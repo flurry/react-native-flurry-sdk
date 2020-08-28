@@ -1,5 +1,24 @@
 # Change Log
 
+## v6.0.0 (2020-08-30)
+
+#### Features
+
+* Upgrade Flurry iOS SDK version to 11.0.0
+* Support iOS 14 Compliant
+* Support the iOS SKAdNetwork conversion
+* Support opening Privacy Dashboard
+
+#### Bug Fixes
+
+* Fix iOS Performance Metrics API not available error
+
+### v5.9.9 (2020-08-30)
+
+#### Features
+
+* Support React Native < 0.60, based on v6.0.0
+
 ## v5.7.0 (2020-07-28)
 
 #### Features
