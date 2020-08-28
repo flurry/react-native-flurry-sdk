@@ -30,6 +30,17 @@ declare module 'react-native-flurry-sdk' {
         }
 
         /**
+         * Constants for logging post install events using Flurry's FlurrySKAdNetwork class.
+         */
+        static SKAdNetworkEvent: {
+            NO_EVENT:        number,
+            REGISTRATION:    number,
+            LOGIN:           number,
+            SUBSCRIPTION:    number,
+            IN_APP_PURCHASE: number
+        }
+
+        /**
          * Constants for status in Flurry Config.
          */
         static ConfigStatus: {
@@ -128,6 +139,15 @@ declare module 'react-native-flurry-sdk' {
          * e.g. Flurry.deleteData();
          */
         static deleteData(): void;
+
+        /**
+         * This api opens privacy dashboard in Chrome CustomTab
+         * (if its dependency's been included in the gradle and device support it as well)
+         * otherwise will open it in the external browser.
+         *
+         * e.g. Flurry.openPrivacyDashboard();
+         */
+        static openPrivacyDashboard(): void;
 
         /**
          * Add origin attribution.
@@ -286,6 +306,28 @@ declare module 'react-native-flurry-sdk' {
          * @deprecated API removed, no longer supported by Flurry.
          */
         static onPageView(): void;
+
+        /**
+         * Sets the iOS conversion value sent to Apple through SKAdNetwork.
+         *
+         * e.g. Flurry.updateConversionValue(conversionValue);
+         *
+         * @param conversionValue An integer value between 0-63. The conversion values meaning is determined by the developer.
+         */
+        static updateConversionValue(conversionValue: number): void;
+
+        /**
+         * Allows Flurry to set the SKAdNetwork conversion value for you.
+         *   The final conversion value is a decimal number between 0-63.
+         *   The conversion value is calculated from a 6 bit binary number.
+         *   The first two bits represent days of user retention from 0-3 days
+         *   The last four bits represent a true false state indicating if the user has completed the post install event.
+         *
+         * e.g. Flurry.updateConversionValueWithEvent(flurryEvent);
+         *
+         * @param flurryEvent Valid events are { NO_EVENT, REGISTRATION, LOGIN, SUBSCRIPTION, IN_APP_PURCHASE }.
+         */
+        static updateConversionValueWithEvent(flurryEvent: number): void;
 
         /**
          * Constants and Methods for User Properties.
