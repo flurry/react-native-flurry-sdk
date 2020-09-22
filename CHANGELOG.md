@@ -1,6 +1,23 @@
 # Change Log
 
-## v6.0.0 (2020-08-30)
+## v6.1.0 (2020-09-22)
+
+#### Features
+
+* Upgrade Flurry Android SDK version to 12.7.0
+* Upgrade Flurry iOS SDK version to 11.1.0
+
+### v6.0.9 (2020-09-22)
+
+#### Features
+
+* Support React Native < 0.60, based on v6.1.0
+
+#### Bug Fixes
+
+* Fix iOS header files link error
+
+# v6.0.0 (2020-08-30)
 
 #### Features
 

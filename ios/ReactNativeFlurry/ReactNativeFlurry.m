@@ -17,14 +17,7 @@
 #import "ReactNativeFlurry.h"
 #import "Flurry/Flurry.h"
 #import "Flurry/FlurryUserProperties.h"
-
-#if __has_include(<Flurry-iOS-SDK/FlurrySKAdNetwork.h>)
-#import <Flurry-iOS-SDK/FlurrySKAdNetwork.h>
-#elif __has_include(<Flurry_iOS_SDK/FlurrySKAdNetwork.h>)
-#import <Flurry_iOS_SDK/FlurrySKAdNetwork.h>
-#else
-#import "FlurrySKAdNetwork.h"
-#endif
+#import "Flurry/FlurrySKAdNetwork.h"
 
 #if TARGET_OS_IOS
 #ifdef HAS_MESSAGING
@@ -48,7 +41,7 @@
 #endif
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"5.9.9";
+static NSString * const originVersion = @"6.0.9";
 
 @interface ReactNativeFlurry ()<RNFlurryEventDispatcherDelegate>
 
