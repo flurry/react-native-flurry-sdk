@@ -57,7 +57,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String FLURRY_MESSAGING_EVENT = "FlurryMessagingEvent";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "6.1.0";
+    private static final String ORIGIN_VERSION = "6.2.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 
@@ -621,9 +621,25 @@ public class FlurryModule extends ReactContextBaseJavaModule {
          * @param messagingOptions user's messaging options.
          * @return The Builder instance.
          */
-        public Builder withMessaging(final boolean enableMessaging, final FlurryMarketingOptions messagingOptions) {
+        public Builder withMessaging(final boolean enableMessaging, FlurryMarketingOptions messagingOptions) {
             if (!enableMessaging) {
                 return this;
+            }
+
+            // If user does not specify the messaging listener, use the React Native default listener.
+            if (messagingOptions.getFlurryMessagingListener() == null) {
+                FlurryMarketingOptions.Builder builder = new FlurryMarketingOptions.Builder();
+                if (messagingOptions.isAutoIntegration()) {
+                    builder.setupMessagingWithAutoIntegration();
+                } else {
+                    builder.setupMessagingWithManualIntegration(messagingOptions.getToken());
+                }
+                messagingOptions = builder
+                        .withFlurryMessagingListener(new RNFlurryMessagingListener())
+                        .withDefaultNotificationChannelId(messagingOptions.getNotificationChannelId())
+                        .withDefaultNotificationIconResourceId(messagingOptions.getDefaultNotificationIconResourceId())
+                        .withDefaultNotificationIconAccentColor(messagingOptions.getDefaultNotificationIconAccentColor())
+                        .build();
             }
 
             FlurryMarketingModule marketingModule = new FlurryMarketingModule(messagingOptions);
@@ -707,7 +723,18 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Wrapper Flurry Messaging listenet.
+     * Get the default React Native Messaging listener.
+     * Used by MainApplication to initialize Flurry Push for messaging,
+     * when constructing the optional FlurryMarketingOptions.
+     *
+     * @return the default React Native Messaging listener
+     */
+    public static FlurryMessagingListener getFlurryMessagingListener() {
+        return new RNFlurryMessagingListener();
+    }
+
+    /**
+     * Wrapper Flurry Messaging listener.
      */
     static class RNFlurryMessagingListener implements FlurryMessagingListener {
         private volatile static boolean sCallbackReturnValue = false;

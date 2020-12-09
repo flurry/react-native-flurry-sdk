@@ -1,5 +1,19 @@
 # Change Log
 
+## v6.2.0 (2020-12-09)
+
+#### Features
+
+* Upgrade Flurry Android SDK version to 12.9.0
+* Upgrade Flurry iOS SDK version to 11.2.0
+* Provide an API to get the default Flurry Android Messaging listener; for constructing the optional FlurryMarketingOptions.
+
+### v6.1.9 (2020-12-09)
+
+#### Features
+
+* Support Apple Xcode 12, based on v6.2.0
+
 ## v6.1.0 (2020-09-22)
 
 #### Features
