@@ -1,7 +1,7 @@
 require 'json'
 
 package = JSON.parse(File.read('../package.json'))
-sdkVersion = '11.2.0'
+sdkVersion = '11.2.0.xcode12'
 
 Pod::Spec.new do |s|
   s.name         = package['name']
