@@ -1,5 +1,20 @@
 # Change Log
 
+* [Flurry Android SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/android/)
+* [Flurry iOS SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/ios/)
+
+## v6.3.0 (2021-02-22)
+
+#### Features
+
+* Upgrade Flurry Android SDK version to 12.11.0
+
+### v6.2.9 (2021-02-22)
+
+#### Features
+
+* Support Apple Xcode 12, based on v6.3.0
+
 ## v6.2.0 (2020-12-09)
 
 #### Features

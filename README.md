@@ -8,7 +8,7 @@ A React Native plugin for Flurry SDK
 
 - **Tutorial and sample project** are now available at [https://github.com/flurry/React-Native-Tutorial](https://github.com/flurry/React-Native-Tutorial).
 - **Flurry Push** for messaging and **Flurry Config** for remote configuration are now supported by our plugin!
-- If you are using Apple Xcode < 12, please use release [v6.2.0](https://www.npmjs.com/package/react-native-flurry-sdk/v/6.2.0).
+- If you are using Apple Xcode < 12, please use release [v6.3.0](https://www.npmjs.com/package/react-native-flurry-sdk/v/6.3.0).
 - If you are using React Native < 0.60, please use release [v6.0.9](https://www.npmjs.com/package/react-native-flurry-sdk/v/6.0.9).
 
 ## Table of contents
