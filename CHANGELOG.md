@@ -3,6 +3,20 @@
 * [Flurry Android SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/android/)
 * [Flurry iOS SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/ios/)
 
+# v7.0.0 (2021-08-28)
+
+#### Features
+
+* Upgrade Flurry Android SDK version to 13.0.0
+* Upgrade Flurry iOS SDK version to 11.3.0
+* Support Standard Event API
+* Support Publisher Segmentation API
+* Support both JavaScript Object and Map types for parameters
+
+#### Bug Fixes
+
+* Fix the messaging callback onTokenRefresh been called before the React Native listener been registered
+
 ## v6.4.0 (2021-05-12)
 
 #### Features
@@ -28,7 +42,7 @@
 
 * Upgrade Flurry Android SDK version to 12.9.0
 * Upgrade Flurry iOS SDK version to 11.2.0
-* Provide an API to get the default Flurry Android Messaging listener; for constructing the optional FlurryMarketingOptions.
+* Provide an API to get the default Flurry Android Messaging listener; for constructing the optional FlurryMarketingOptions
 
 ### v6.1.9 (2020-12-09)
 

@@ -17,10 +17,13 @@
 #import "ReactNativeFlurry.h"
 #if __has_include(<Flurry-iOS-SDK/Flurry.h>)
 #import <Flurry-iOS-SDK/Flurry.h>
+#import <Flurry-iOS-SDK/Flurry+Event.h>
 #elif __has_include(<Flurry_iOS_SDK/Flurry.h>)
 #import <Flurry_iOS_SDK/Flurry.h>
+#import <Flurry_iOS_SDK/Flurry+Event.h>
 #else
 #import "Flurry.h"
+#import "Flurry+Event.h"
 #endif
 
 #if __has_include(<Flurry-iOS-SDK/FlurryUserProperties.h>)
@@ -72,8 +75,12 @@
 #import "RCTEventDispatcher.h"
 #endif
 
+#import "ReactNativeFlurryEvent.h"
+
+
+
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"6.4.0";
+static NSString * const originVersion = @"7.0.0";
 
 @interface ReactNativeFlurry ()<RNFlurryEventDispatcherDelegate>
 
@@ -355,6 +362,40 @@ RCT_EXPORT_METHOD(endTimedEventParams:(nonnull NSString *)eventId params:(nullab
     [Flurry endTimedEvent:eventId withParameters:params];
 }
 
+RCT_EXPORT_METHOD(logStandardEvent:(double) eventId params: (nullable NSDictionary *)params){
+    int eventName = (int)eventId;
+    if(eventName < FLURRY_EVENT_AD_CLICK || eventName > FLURRY_EVENT_PRIVACY_OPT_OUT){
+        NSLog(@"Invalid event ID to log");
+        return;
+    }
+    if(!params || ![params isKindOfClass:[NSDictionary class]]){
+        [Flurry logStandardEvent:(FlurryEvent)eventName withParameters:nil];
+        return;
+    }
+    FlurryParamBuilder *builder = [FlurryParamBuilder new];
+    for(NSString *key in [params allKeys]){
+        if([key isKindOfClass:[NSString class]]){
+            NSString *stdKey = (NSString *)key;
+            if([ReactNativeFlurryEvent typeMap][stdKey] && [[ReactNativeFlurryEvent typeMap][stdKey] intValue] == PT_String){
+                [builder setString:(NSString *)params[stdKey] forKey:stdKey];
+            }
+            else if([ReactNativeFlurryEvent typeMap][stdKey] && [[ReactNativeFlurryEvent typeMap][stdKey] intValue] == PT_Integer){
+                [builder setInteger:[params[stdKey] intValue] forKey:stdKey];
+            }
+            else if([ReactNativeFlurryEvent typeMap][stdKey] && [[ReactNativeFlurryEvent typeMap][stdKey] intValue] == PT_Double){
+                [builder setDouble:[params[stdKey] doubleValue] forKey:stdKey];
+            }
+            else if([ReactNativeFlurryEvent typeMap][stdKey] && [[ReactNativeFlurryEvent typeMap][stdKey] intValue] == PT_Boolean){
+                [builder setBoolean:[params[stdKey] boolValue] forKey:stdKey];
+            }
+            else if([ReactNativeFlurryEvent typeMap][stdKey] && [[ReactNativeFlurryEvent typeMap][stdKey] intValue] == PT_Long){
+                [builder setLong:[params[stdKey] intValue] forKey:stdKey];
+            }
+        }
+    }
+    [Flurry logStandardEvent:(FlurryEvent)eventName withParameters:builder];
+}
+
 RCT_EXPORT_METHOD(logBreadcrumb:(nonnull NSString *)breadcrumb) {
     [Flurry leaveBreadcrumb:breadcrumb];
 }
@@ -401,6 +442,31 @@ RCT_EXPORT_METHOD(updateConversionValueWithEvent:(NSInteger)flurryEvent) {
     if (@available(iOS 14.0, *)) {
         [FlurrySKAdNetwork flurryUpdateConversionValueWithEvent:(FlurryConversionValueEventType) flurryEvent];
     }
+}
+
+RCT_REMAP_METHOD(getPublisherSegmentation, getPublisherSegmentation:(BOOL)refresh
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+#if TARGET_OS_IOS
+    @try {
+        NSDictionary *map = [Flurry getPublisherData];
+        if(!map){
+            map = @{};
+        }
+        resolve(map);
+    } @catch (NSException *exception) {
+        reject([exception description], [exception reason], nil);
+    }
+#else
+    NSDictionary *map = @{};
+    resolve(map);
+#endif
+}
+
+RCT_EXPORT_METHOD(fetchPublisherSegmentation) {
+#if TARGET_OS_IOS
+    [Flurry fetch];
+#endif
 }
 
 #pragma mark - Flurry Messaging
@@ -524,3 +590,5 @@ RCT_REMAP_METHOD(getConfigStringMap, getConfigStringMap:(nonnull NSDictionary *)
 }
 
 @end
+
+

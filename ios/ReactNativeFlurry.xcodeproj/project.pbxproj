@@ -16,6 +16,7 @@
 		BCAE274422D6A62700310C31 /* ReactNativeFlurryMessagingListener.m in Sources */ = {isa = PBXBuildFile; fileRef = BC65D17F224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.m */; };
 		BCAE274522D6A62700310C31 /* ReactNativeFlurryConfigListener.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2344DF225FF45A00F38D94 /* ReactNativeFlurryConfigListener.m */; };
 		BCBC948422934CD3008720F2 /* ReactNativeFlurry.m in Sources */ = {isa = PBXBuildFile; fileRef = BC45200B21274B4D00EDF713 /* ReactNativeFlurry.m */; };
+		D1A5686226B0877E00FE4393 /* RNFlurryEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = D1A5686126B0877E00FE4393 /* RNFlurryEvent.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -58,6 +59,8 @@
 		BC65D17F224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactNativeFlurryMessagingListener.m; sourceTree = "<group>"; };
 		BC79F54822C18FC9006BE0D5 /* libReactNativeFlurryWithMessaging.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativeFlurryWithMessaging.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCBC947722934C97008720F2 /* libReactNativeFlurryTVOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativeFlurryTVOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D1A5686026B0877E00FE4393 /* RNFlurryEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNFlurryEvent.h; sourceTree = "<group>"; };
+		D1A5686126B0877E00FE4393 /* RNFlurryEvent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNFlurryEvent.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +115,8 @@
 				BC65D17F224AA21B003F3A4D /* ReactNativeFlurryMessagingListener.m */,
 				BC2344DE225FF45A00F38D94 /* ReactNativeFlurryConfigListener.h */,
 				BC2344DF225FF45A00F38D94 /* ReactNativeFlurryConfigListener.m */,
+				D1A5686026B0877E00FE4393 /* RNFlurryEvent.h */,
+				D1A5686126B0877E00FE4393 /* RNFlurryEvent.m */,
 			);
 			path = ReactNativeFlurry;
 			sourceTree = "<group>";
@@ -217,6 +222,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1A5686226B0877E00FE4393 /* RNFlurryEvent.m in Sources */,
 				BCAE274422D6A62700310C31 /* ReactNativeFlurryMessagingListener.m in Sources */,
 				BC4520FB212753B100EDF713 /* ReactNativeFlurry.m in Sources */,
 				BC2344E0225FF45A00F38D94 /* ReactNativeFlurryConfigListener.m in Sources */,

@@ -207,6 +207,11 @@ A React Native plugin for Flurry SDK
        Flurry.getVersions().then((versions) => {
          console.log('Versions: ' + versions.agentVersion + ' : ' + versions.releaseVersion + ' : ' + versions.sessionId);
        });
+
+       // Example to get Flurry Publisher Segmentation.
+       Flurry.getPublisherSegmentation(true).then((segmentations) => {
+         console.log('Publisher Segmentation: ' + segmentations.segments);
+       });
      }
   
      render() {
@@ -224,6 +229,16 @@ A React Native plugin for Flurry SDK
        ...
        Flurry.endTimedEvent('React Native Timed Event');
   
+       // Log Flurry standard events.
+       Flurry.logStandardEvent(Flurry.Event.APP_ACTIVATED);
+       var params = new Map([
+                        [Flurry.EventParam.TOTAL_AMOUNT, 34.99],
+                        [Flurry.EventParam.SUCCESS, true],
+                        [Flurry.EventParam.ITEM_NAME, 'book 1'],
+                        ['note', 'This is an awesome book to purchase !!!']
+                    ]);
+       Flurry.logStandardEvent(Flurry.Event.PURCHASED, params);
+
        return (
          <View style={styles.container}>
            ...
@@ -347,24 +362,30 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
   Flurry.UserProperties.flag(propertyName: string);
   ```
 
-- **Methods to get Flurry versions**
+- **Methods to get Flurry versions and publisher segmentation**
 
   ```javascript
   Flurry.getVersions(): Promise<{ agentVersion: number; releaseVersion: string; sessionId: string; }>;
   Flurry.getVersions(errorCallback: (errorMessage: string) => void,
                      successCallback: (agentVersion: number, releaseVersion: string, sessionId: string) => void);
+
+  Flurry.getPublisherSegmentation(refresh?: boolean): Promise<{ segments: string }>;
+  Flurry.fetchPublisherSegmentation();
   ```
 
 - **Methods to log Flurry events**
 
   ```javascript
   Flurry.logEvent(eventId: string);
-  Flurry.logEvent(eventId: string, timed: boolean);
   Flurry.logEvent(eventId: string, parameters: { [key: string]: string; });
+  Flurry.logEvent(eventId: string, timed: boolean);
   Flurry.logEvent(eventId: string, parameters: { [key: string]: string; }, timed: boolean);
   
   Flurry.endTimedEvent(eventId: string);
   Flurry.endTimedEvent(eventId: string, parameters: { [key: string]: string; });
+  
+  Flurry.logStandardEvent(eventId: Flurry.Event);
+  Flurry.logStandardEvent(eventId: Flurry.Event, parameters: { [key: Flurry.EventParam]: object; });
   
   Flurry.onPageView(); // Deprecated, API removed, no longer supported by Flurry.
   

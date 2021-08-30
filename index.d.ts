@@ -63,7 +63,9 @@ declare module 'react-native-flurry-sdk' {
         /**
          * Sets the age of the user at the time of this session.
          * 
-         * e.g. Flurry.setAge(36);
+         * ```javascript
+         * e.g., Flurry.setAge(36);
+         * ```
          * 
          * @param age valid values are 0-110 
          */
@@ -72,7 +74,9 @@ declare module 'react-native-flurry-sdk' {
         /**
          * Sets the gender of the user.
          * 
-         * e.g. Flurry.setGender(Flurry.Gender.FEMALE);
+         * ```javascript
+         * e.g., Flurry.setGender(Flurry.Gender.FEMALE);
+         * ```
          * 
          * @param gender type of Flurry.Gender
          */
@@ -81,7 +85,9 @@ declare module 'react-native-flurry-sdk' {
         /**
          * Set whether Flurry should record location via GPS.
          * 
-         * e.g. Flurry.setReportLocation('reportLocation');
+         * ```javascript
+         * e.g., Flurry.setReportLocation('reportLocation');
+         * ```
          * 
          * @param reportLocation True to allow Flurry to record location via GPS, false otherwise
          */
@@ -90,7 +96,9 @@ declare module 'react-native-flurry-sdk' {
         /**
          * This method allows you to specify session origin and deep link for each session.
          * 
-         * e.g. Flurry.setSessionOrigin('originName', 'deepLink');
+         * ```javascript
+         * e.g., Flurry.setSessionOrigin('originName', 'deepLink');
+         * ```
          * 
          * @param originName Name of the origin.
          * @param deepLink   Url of the deep Link.
@@ -100,7 +108,9 @@ declare module 'react-native-flurry-sdk' {
         /**
          * Sets the Flurry userId for this session.
          * 
-         * e.g. Flurry.setUserId(userId);
+         * ```javascript
+         * e.g., Flurry.setUserId(userId);
+         * ```
          * 
          * @param userId Unique user id for session.
          */
@@ -109,7 +119,9 @@ declare module 'react-native-flurry-sdk' {
         /**
          * Set the version name of the app.
          * 
-         * e.g. Flurry.setVersionName('versionName');
+         * ```javascript
+         * e.g., Flurry.setVersionName('versionName');
+         * ```
          * 
          * @param versionName The version of the app.
          */
@@ -118,7 +130,9 @@ declare module 'react-native-flurry-sdk' {
         /**
          * Sets the iOS In-App Purchase reporting enabled.
          * 
-         * e.g. Flurry.setIAPReportingEnabled(true);
+         * ```javascript
+         * e.g., Flurry.setIAPReportingEnabled(true);
+         * ```
          * 
          * @param enableIAP True to enable iOS In-App Purchase reporting, false otherwise
          */
@@ -127,7 +141,9 @@ declare module 'react-native-flurry-sdk' {
         /**
          * This api allows you to set opt-out/opt-in for data sale
          *
-         * e.g. Flurry.setDataSaleOptOut(true);
+         * ```javascript
+         * e.g., Flurry.setDataSaleOptOut(true);
+         * ```
          *
          * @param isOptOut true to opt-out data sale, false to opt-in
          */
@@ -136,7 +152,9 @@ declare module 'react-native-flurry-sdk' {
         /**
          * This api allows you to delete data collected by Flurry
          *
-         * e.g. Flurry.deleteData();
+         * ```javascript
+         * e.g., Flurry.deleteData();
+         * ```
          */
         static deleteData(): void;
 
@@ -145,7 +163,9 @@ declare module 'react-native-flurry-sdk' {
          * (if its dependency's been included in the gradle and device support it as well)
          * otherwise will open it in the external browser.
          *
-         * e.g. Flurry.openPrivacyDashboard();
+         * ```javascript
+         * e.g., Flurry.openPrivacyDashboard();
+         * ```
          */
         static openPrivacyDashboard(): void;
 
@@ -153,8 +173,10 @@ declare module 'react-native-flurry-sdk' {
          * Add origin attribution.
          * 
          * There are two overloads,
+         * ```javascript
          * e.g., Flurry.addOrigin('name', 'version');
          *       Flurry.addOrigin('name', 'version'), {param: 'true'});
+         * ```
          * - addOrigin(originName, originVersion)
          * - addOrigin(originName, originVersion, originParameters)
          * 
@@ -166,7 +188,9 @@ declare module 'react-native-flurry-sdk' {
         /**
          * This method allows you to associate parameters with an session.
          * 
-         * e.g. Flurry.addSessionProperty('name', 'value');
+         * ```javascript
+         * e.g., Flurry.addSessionProperty('name', 'value');
+         * ```
          * 
          * @param name  Property name.
          * @param value Property value.
@@ -179,6 +203,7 @@ declare module 'react-native-flurry-sdk' {
          * There are two overloads,
          * e.g., 3 ways to call
          *
+         * ```javascript
          * Flurry.getVersions(
          *     (msg) => {
          *         console.error(msg);
@@ -187,16 +212,20 @@ declare module 'react-native-flurry-sdk' {
          *         console.log('Versions: ' + agentVersion + ' : ' + releaseVersion + ' : ' + sessionId);
          *     }
          * );
+         * ```
          *
          * OR
          *
+         * ```javascript
          * (async () => {
          *     var versions = await Flurry.getVersions();
          *     console.log('Versions: ' + versions.agentVersion + ' : ' + versions.releaseVersion + ' : ' + versions.sessionId);
          * })();
+         * ```
          *
          * OR
          *
+         * ```javascript
          * Flurry.getVersions().then(
          *     (versions) => {
          *         console.log('Versions: ' + versions.agentVersion + ' : ' + versions.releaseVersion + ' : ' + versions.sessionId);
@@ -205,6 +234,7 @@ declare module 'react-native-flurry-sdk' {
          *         console.error(msg);
          *     }
          * );
+         * ```
          * 
          * @param errorCallback   error callback.
          * @param successCallback success callback.
@@ -215,9 +245,51 @@ declare module 'react-native-flurry-sdk' {
                            Promise<{ agentVersion: number; releaseVersion: string; sessionId: string; }>;
 
         /**
+         * Get the Publisher Segmentation data.
+         *
+         * e.g., 2 ways to call
+         *
+         * ```javascript
+         * (async () => {
+         *     var segmentations = await Flurry.getPublisherSegmentation();
+         *     console.log("Publisher Segmentation: " + segmentations.segments);
+         * })()
+         * ```
+         *
+         * OR
+         *
+         * ```javascript
+         * Flurry.getPublisherSegmentation().then(
+         *     (segmentations) => {
+         *         console.log('Publisher Segmentation: ' + segmentations.segments);
+         *     },
+         *     (msg) => {
+         *         console.error(msg);
+         *     }
+         * );
+         * ```
+         *
+         * @param refresh false to get cached data if available, otherwise fetch and wait.
+         * @return the Promise object.
+         */
+        static getPublisherSegmentation(refresh?: boolean):
+                                        Promise<{ [key: string]: string; }>;
+
+        /**
+         * Fetch the Publisher Segmentation.
+         * 
+         * ```javascript
+         * e.g., Flurry.fetchPublisherSegmentation();
+         * ```
+         */
+         static fetchPublisherSegmentation(): void;
+
+         /**
          * Logs the breadcrumb.
          * 
-         * e.g. Flurry.logBreadcrumb('crashBreadcrumb');
+         * ```javascript
+         * e.g., Flurry.logBreadcrumb('crashBreadcrumb');
+         * ```
          * 
          * @param crashBreadcrumb crash breadcrumb
          */
@@ -227,8 +299,10 @@ declare module 'react-native-flurry-sdk' {
          * Log an event.
          * 
          * There are two overloads,
+         * ```javascript
          * e.g., Flurry.logEvent('eventId');
          *       Flurry.logEvent('eventId', true);
+         * ```
          * - logEvent(eventId)
          * - logEvent(eventId, timed)
          * 
@@ -241,8 +315,10 @@ declare module 'react-native-flurry-sdk' {
          * Log an event with parameters.
          * 
          * There are two overloads,
+         * ```javascript
          * e.g., Flurry.logEvent('eventId', {param: 'true'});
          *       Flurry.logEvent('eventId', {param: 'true'}, true);
+         * ```
          * - logEvent(eventId, parameters)
          * - logEvent(eventId, parameters, timed)
          * 
@@ -253,9 +329,30 @@ declare module 'react-native-flurry-sdk' {
         static logEvent(eventId: string, parameters: { [key: string]: string; }, timed?: boolean): void;
 
         /**
+         * Log a standard event with parameters.
+         *
+         * e.g.,
+         * ```javascript
+         * var params = new Map([
+         *    [Flurry.EventParam.TOTAL_AMOUNT, 34.99],
+         *    [Flurry.EventParam.SUCCESS, true],
+         *    [Flurry.EventParam.ITEM_NAME, 'book 1'],
+         *    ['note', 'This is an awesome book to purchase !!!']
+         * ]);
+         * Flurry.logStandardEvent(Flurry.Event.PURCHASED, params);
+         * ```
+         *
+         * @param eventId       The id {@code Flurry.Event} of the event.
+         * @param parameters    A {@code Map<string|Flurry.EventParam, string|number|boolean>} of parameters to log with this event.
+         */
+        static logStandardEvent(eventId: object, parameters?: { [key: object]: object; }): void;
+
+        /**
          * Log a payment.
          * 
-         * e.g. Flurry.logPayment('productName', 'productId', 6, 36, 'currency', 'transactionId', {param: 'true'});
+         * ```javascript
+         * e.g., Flurry.logPayment('productName', 'productId', 6, 36, 'currency', 'transactionId', {param: 'true'});
+         * ```
          * 
          * @param productName   The name of the product purchased.
          * @param productId     The id of the product purchased.
@@ -273,8 +370,10 @@ declare module 'react-native-flurry-sdk' {
          * End a timed event.
          * 
          * There are two overloads,
+         * ```javascript
          * e.g., Flurry.endTimedEvent('eventId');
          *       Flurry.endTimedEvent('eventId', {param: 'true'});
+         * ```
          * - endTimedEvent(eventId)
          * - endTimedEvent(eventId, parameters)
          * 
@@ -287,8 +386,10 @@ declare module 'react-native-flurry-sdk' {
          * Report errors that your app catches.
          * 
          * There are two overloads,
+         * ```javascript
          * e.g., Flurry.onError('errorId', 'message', 'errorClass');
          *       Flurry.onError('errorId', 'message', 'errorClass', {param: 'true'});
+         * ```
          * - onError(errorId, message, errorClass)
          * - onError(errorId, message, errorClass, errorParams)
          * 
@@ -302,7 +403,9 @@ declare module 'react-native-flurry-sdk' {
         /**
          * Log a page view.
          * 
-         * e.g. Flurry.onPageView();
+         * ```javascript
+         * e.g., Flurry.onPageView();
+         * ```
          * @deprecated API removed, no longer supported by Flurry.
          */
         static onPageView(): void;
@@ -310,7 +413,9 @@ declare module 'react-native-flurry-sdk' {
         /**
          * Sets the iOS conversion value sent to Apple through SKAdNetwork.
          *
-         * e.g. Flurry.updateConversionValue(conversionValue);
+         * ```javascript
+         * e.g., Flurry.updateConversionValue(conversionValue);
+         * ```
          *
          * @param conversionValue An integer value between 0-63. The conversion values meaning is determined by the developer.
          */
@@ -323,7 +428,9 @@ declare module 'react-native-flurry-sdk' {
          *   The first two bits represent days of user retention from 0-3 days
          *   The last four bits represent a true false state indicating if the user has completed the post install event.
          *
-         * e.g. Flurry.updateConversionValueWithEvent(flurryEvent);
+         * ```javascript
+         * e.g., Flurry.updateConversionValueWithEvent(flurryEvent);
+         * ```
          *
          * @param flurryEvent Valid events are { NO_EVENT, REGISTRATION, LOGIN, SUBSCRIPTION, IN_APP_PURCHASE }.
          */
@@ -331,6 +438,13 @@ declare module 'react-native-flurry-sdk' {
 
         /**
          * Constants and Methods for User Properties.
+         *
+         * ```javascript
+         * e.g., Flurry.UserProperties.set   (Flurry.UserProperties.PROPERTY_REGISTERED_USER, 'True');
+         *       Flurry.UserProperties.add   (Flurry.UserProperties.PROPERTY_REGISTERED_USER, 'True');
+         *       Flurry.UserProperties.remove(Flurry.UserProperties.PROPERTY_REGISTERED_USER, 'True');
+         *       Flurry.UserProperties.flag  (Flurry.UserProperties.PROPERTY_PURCHASER);
+         * ```
          */
         static UserProperties: {
             PROPERTY_CURRENCY_PREFERENCE: string,
@@ -338,12 +452,89 @@ declare module 'react-native-flurry-sdk' {
             PROPERTY_REGISTERED_USER:     string,
             PROPERTY_SUBSCRIBER:          string,
 
+            /**
+             * Exactly set, or replace if any previously exists, any state for the property.
+             * null clears the property state.
+             *
+             * ```javascript
+             * e.g., Flurry.UserProperties.set(Flurry.UserProperties.PROPERTY_REGISTERED_USER, 'True');
+             * ```
+             * @param propertyName  property name
+             * @param propertyValue single property value
+             */
             set(propertyName: string, propertyValue: string): void,
+
+            /**
+             * Exactly set, or replace if any previously exists, any state for the property.
+             * Empty list or null clears the property state.
+             *
+             * ```javascript
+             * e.g., Flurry.UserProperties.set(Flurry.UserProperties.PROPERTY_CURRENCY_PREFERENCE, ['USD', 'EUR']);
+             * ```
+             * @param propertyName   property name
+             * @param propertyValues list of property values
+             */
             set(propertyName: string, propertyValue: string[]): void,
+
+            /**
+             * Extend any property, even no previous property.
+             * Adding values already included in the state has no effect and does not error.
+             *
+             * ```javascript
+             * e.g., Flurry.UserProperties.add(Flurry.UserProperties.PROPERTY_REGISTERED_USER, 'True');
+             * ```
+             * @param propertyName  property name
+             * @param propertyValue single property value
+             */
             add(propertyName: string, propertyValue: string): void,
+
+            /**
+             * Extend any property, even no previous property.
+             * Adding values already included in the state has no effect and does not error.
+             *
+             * ```javascript
+             * e.g., Flurry.UserProperties.add(Flurry.UserProperties.PROPERTY_CURRENCY_PREFERENCE, ['USD', 'EUR']);
+             * ```
+             * @param propertyName   property name
+             * @param propertyValues list of property values
+             */
             add(propertyName: string, propertyValue: string[]): void,
+
+            /**
+             * Reduce any property.
+             * Removing values not already included in the state has no effect and does not error
+             * Called with only the property name argument will clear the property to be empty.
+             *
+             * ```javascript
+             * e.g., Flurry.UserProperties.remove(Flurry.UserProperties.PROPERTY_REGISTERED_USER, 'True');
+             *       Flurry.UserProperties.remove(Flurry.UserProperties.PROPERTY_CURRENCY_PREFERENCE);
+             * ```
+             * @param propertyName  roperty name
+             * @param propertyValue single property value
+             */
             remove(propertyName: string, propertyValue?: string): void,
+
+            /**
+             * Reduce any property.
+             * Removing values not already included in the state has no effect and does not error
+             *
+             * ```javascript
+             * e.g., Flurry.UserProperties.remove(Flurry.UserProperties.PROPERTY_CURRENCY_PREFERENCE, ['USD', 'EUR']);
+             * ```
+             * @param propertyName   property name
+             * @param propertyValues list of property values
+             */
             remove(propertyName: string, propertyValue:  string[]): void,
+
+            /**
+             * Exactly set, or replace if any previously exists, any state for the property to a single true state.
+             * Implies that value is boolean and should only be flagged and cleared.
+             *
+             * ```javascript
+             * e.g., Flurry.UserProperties.flag(Flurry.UserProperties.PROPERTY_PURCHASER);
+             * ```
+             * @param propertyName property name
+             */
             flag(propertyName: string): void
         }
 
@@ -368,19 +559,29 @@ declare module 'react-native-flurry-sdk' {
              * Provide a Resource logger that users can start before profiled codes start,
              * then log event after finished. Flurry will compute the time.
              *
-             * e.g.
-             *   Flurry.Performance.startResourceLogger;
-             *   {
-             *       // profiled codes ...
-             *   }
-             *   Flurry.Performance.logResourceLogger;
+             * e.g.,
+             * ```javascript
+             * Flurry.Performance.startResourceLogger;
+             * {
+             *     // profiled codes ...
+             * }
+             * Flurry.Performance.logResourceLogger;
+             * ```
              */
             startResourceLogger(): void,
 
             /**
              * Log Flurry Resources Consuming events.
              *
-             * @param id    The group ID
+             * e.g.,
+             * ```javascript
+             * Flurry.Performance.startResourceLogger;
+             * {
+             *     // profiled codes ...
+             * }
+             * Flurry.Performance.logResourceLogger;
+             * ```
+             * @param id The group ID
              */
             logResourceLogger(id: string): void
         }
@@ -389,6 +590,7 @@ declare module 'react-native-flurry-sdk' {
          * Register a listener for the state of fetching. Multiple listeners can be passed in and each
          * one will be called in the order they are registered.
          *
+         * ```
          * Event.Type: ConfigStatus.SUCCESS:   Config data is successfully loaded from server.
          *             ConfigStatus.UNCHANGED: Fetch completes but no changes from server.
          *             ConfigStatus.ERROR:     Config data is failed to load from server.
@@ -398,8 +600,10 @@ declare module 'react-native-flurry-sdk' {
          *                                     Flurry Config can receive activate notification when cached data is read,
          *                                     and when newly fetched data is been activated.
          *                                     Event.isCache: true if activated from the cached data
+         * ```
          *
-         * e.g.
+         * e.g.,
+         * ```javascript
          * Flurry.addConfigListener((event) => {
          *     if (event.Type === Flurry.ConfigStatus.SUCCESS) {
          *         // Data fetched, activate it.
@@ -421,6 +625,7 @@ declare module 'react-native-flurry-sdk' {
          * });
          * 
          * Flurry.fetchConfig();
+         * ```
          *
          * @param callback Callback listener to be registered.
          */
@@ -451,10 +656,12 @@ declare module 'react-native-flurry-sdk' {
         /**
          * Retrieves a String value, or a Map of String values from the configuration.
          *
-         * e.g.
+         * e.g.,
+         * ```javascript
          * Flurry.getConfigString('welcome_message', 'Welcome!').then((value) => {
          *     console.log('Received data: ' + value.welcome_message);
          * });
+         * ```
          *
          * @param key           The name of the configuration to retrieve.
          * @param defaultValue  Value to return if this configuration does not exist.
@@ -466,7 +673,8 @@ declare module 'react-native-flurry-sdk' {
         /**
          * Retrieves a Map of String values from the configuration.
          * 
-         * e.g.
+         * e.g.,
+         * ```javascript
          * let keysAndDefaults = {
          *         welcome_message:    'Welcome!',
          *         welcome_font_size:  '12',
@@ -477,6 +685,7 @@ declare module 'react-native-flurry-sdk' {
          *     console.log('Received map of data: ' +
          *                 value.welcome_message + ":" + value.welcome_font_size + ":" + value.welcome_font_color);
          * });
+         * ```
          * 
          * @param keysAndDefaults A Map of names and the default values.
          * @returns Map of configuration values if exist, or default values.
@@ -486,15 +695,17 @@ declare module 'react-native-flurry-sdk' {
 
         /**
          * Add a listener to receive messaging events, and handle the notification.
+         * ```
          * Message.Type: RECEIVED:  a notification has been received.
          *               CLICKED:   a notification has been clicked.
          *               CANCELLED: a notification has been cancelled. (Android only)
-         *               REFRESH: push notification token has been changed. (Android only)
+         *               REFRESH:   push notification token has been changed. (Android only)
          * Message.Title:       message title
          * Message.Body:        message body
          * Message.Data:        message data (Map)
          * Message.ClickAction: click action (Android only)
          * Message.Token:       refreshed token
+         * ```
          *
          * Please call required Flurry.willHandleMessage(boolean) when received event types of
          * MessageType.RECEIVED or MessageType.CLICKED as soon as possible to avoid delay.
@@ -502,7 +713,8 @@ declare module 'react-native-flurry-sdk' {
          * you've handled it, and Flurry will not show the notification (MessageType.RECEIVED),
          * or Flurry will not launch the app or 'click_action' activity (MessageType.CLICKED).
          *
-         * e.g.
+         * e.g.,
+         * ```javascript
          * Flurry.addMessagingListener((message) => {
          *     if (message.Type === Flurry.MessageType.RECEIVED) {
          *         Flurry.willHandleMessage(false);
@@ -512,6 +724,7 @@ declare module 'react-native-flurry-sdk' {
          *
          *     Flurry.printMessage(message);
          * });
+         * ```
          *
          * @param callback messaging event callback.
          */
@@ -536,7 +749,9 @@ declare module 'react-native-flurry-sdk' {
          * Required: Even it is supported by Android only, it is required to notify Flurry
          *           when received event types of MessageType.RECEIVED or MessageType.CLICKED.
          *
-         * e.g. Flurry.willHandleMessage(true);
+         * ```javascript
+         * e.g., Flurry.willHandleMessage(true);
+         * ```
          *
          * @param handled True if you've handled the notification.
          *                False if you haven't and want Flurry to handle it.
@@ -552,6 +767,638 @@ declare module 'react-native-flurry-sdk' {
                     Title?: string; Body?: string; Data?: { [key: string]: string; }; ClickAction?: string;
                     Token?: string; }): void;
 
+        /**
+         * Constants for Standard Event Types.
+         */
+        static Event: {
+            /**
+             * Log this event when a user clicks on an Ad.
+             * @param mandatory_parameters none
+             * @param recommended_parameters Param.AD_TYPE
+             */
+             AD_CLICK: number,
+        
+             /**
+              * Log this event when a user views an Ad impression.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.AD_TYPE
+              */
+             AD_IMPRESSION: number,
+         
+             /**
+              * Log this event when a user is granted a reward for viewing a rewarded Ad.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.AD_TYPE
+              */
+             AD_REWARDED: number,
+         
+             /**
+              * Log this event when a user skips an Ad.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.AD_TYPE
+              */
+             AD_SKIPPED: number,
+         
+             /**
+              * Log this event when a user spends credit in the app.
+              * @param mandatory_parameters Param.TOTAL_AMOUNT
+              * @param recommended_parameters Param.LEVEL_NUMBER, Param.IS_CURRENCY_SOFT, Param.CREDIT_TYPE, Param.CREDIT_ID, Param.CREDIT_NAME, Param.CURRENCY_TYPE
+              */
+             CREDITS_SPENT: number,
+         
+             /**
+              * Log this event when a user purchases credit in the app.
+              * @param mandatory_parameters Param.TOTAL_AMOUNT
+              * @param recommended_parameters Param.LEVEL_NUMBER, Param.IS_CURRENCY_SOFT, Param.CREDIT_TYPE, Param.CREDIT_ID, Param.CREDIT_NAME, Param.CURRENCY_TYPE
+              */
+             CREDITS_PURCHASED: number,
+         
+             /**
+              * Log this event when a user earns credit in the app.
+              * @param mandatory_parameters Param.TOTAL_AMOUNT
+              * @param recommended_parameters Param.LEVEL_NUMBER, Param.IS_CURRENCY_SOFT, Param.CREDIT_TYPE, Param.CREDIT_ID, Param.CREDIT_NAME, Param.CURRENCY_TYPE
+              */
+             CREDITS_EARNED: number,
+         
+             /**
+              * Log this event when a user unlocks an achievement in the app.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.ACHIEVEMENT_ID
+              */
+             ACHIEVEMENT_UNLOCKED: number,
+         
+             /**
+              * Log this event when an App user completes a level.
+              * @param mandatory_parameters Param.LEVEL_NUMBEER
+              * @param recommended_parameters Param.LEVEL_NAME
+              */
+             LEVEL_COMPLETED: number,
+         
+             /**
+              * Log this event when an App user fails a level.
+              * @param mandatory_parameters Param.LEVEL_NUMBEER
+              * @param recommended_parameters Param.LEVEL_NAME
+              */
+             LEVEL_FAILED: number,
+         
+             /**
+              * Log this event when an App user levels up.
+              * @param mandatory_parameters Param.LEVEL_NUMBEER
+              * @param recommended_parameters Param.LEVEL_NAME
+              */
+             LEVEL_UP: number,
+         
+             /**
+              * Log this event when an App user starts a level.
+              * @param mandatory_parameters Param.LEVEL_NUMBEER
+              * @param recommended_parameters Param.LEVEL_NAME
+              */
+             LEVEL_STARTED: number,
+         
+             /**
+              * Log this event when an App user skips a level.
+              * @param mandatory_parameters Param.LEVEL_NUMBEER
+              * @param recommended_parameters Param.LEVEL_NAME
+              */
+             LEVEL_SKIP: number,
+         
+             /**
+              * Log this event when an App user posts his score.
+              * @param mandatory_parameters Param.SCORE
+              * @param recommended_parameters Param.LEVEL_NUMBEER
+              */
+             SCORE_POSTED: number,
+         
+             /**
+              * Log this event when a user rates a content in the App.
+              * @param mandatory_parameters Param.CONTENT_ID, Param.RATING
+              * @param recommended_parameters Param.CONTENT_TYPE, Param.CONTENT_NAME
+              */
+             CONTENT_RATED: number,
+         
+             /**
+              * Log this event when a specific content is viewed by a user.
+              * @param mandatory_parameters Param.CONTENT_ID
+              * @param recommended_parameters Param.CONTENT_TYPE, Param.CONTENT_NAME
+              */
+             CONTENT_VIEWED: number,
+         
+             /**
+              * Log this event when a user saves the content in the App.
+              * @param mandatory_parameters Param.CONTENT_ID
+              * @param recommended_parameters Param.CONTENT_TYPE, Param.CONTENT_NAME
+              */
+             CONTENT_SAVED: number,
+         
+             /**
+              * Log this event when a user customizes the App/product.
+              * @param mandatory_parameters none
+              * @param recommended_parameters none
+              */
+             PRODUCT_CUSTOMIZED: number,
+         
+             /**
+              * Log this event when the App is activated.
+              * @param mandatory_parameters none
+              * @param recommended_parameters none
+              */
+             APP_ACTIVATED: number,
+         
+             /**
+              * Log this event when a user submits an application through the App.
+              * @param mandatory_parameters none
+              * @param recommended_parameters none
+              */
+             APPLICATION_SUBMITTED: number,
+         
+             /**
+              * Log this event when an item is added to the cart.
+              * @param mandatory_parameters Param.ITEM_COUNT, Param.PRICE
+              * @param recommended_parameters Param.ITEM_ID, Param.ITEM_NAME, Param.ITEM_TYPE
+              */
+             ADD_ITEM_TO_CART: number,
+         
+             /**
+              * Log this event when an item is added to the wish list.
+              * @param mandatory_parameters Param.ITEM_COUNT, Param.PRICE
+              * @param recommended_parameters Param.ITEM_ID, Param.ITEM_NAME, Param.ITEM_TYPE
+              */
+             ADD_ITEM_TO_WISH_LIST: number,
+         
+             /**
+              * Log this event when checkout is completed or transaction is successfully completed.
+              * @param mandatory_parameters Param.ITEM_COUNT, Param.TOTAL_AMOUNT
+              * @param recommended_parameters Param.CURRENCY_TYPE, Param.TRANSACTION_ID
+              */
+             COMPLETED_CHECKOUT: number,
+         
+             /**
+              * Log this event when payment information is added during a checkout process.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.SUCCESS, Param.PAYMENT_TYPE
+              */
+             PAYMENT_INFO_ADDED: number,
+         
+             /**
+              * Log this event when an item is viewed.
+              * @param mandatory_parameters Param.ITEM_ID
+              * @param recommended_parameters Param.ITEM_NAME, Param.ITEM_TYPE, Param.PRICE
+              */
+             ITEM_VIEWED: number,
+         
+             /**
+              * Log this event when a list of items is viewed.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.ITEM_LIST_TYPE
+              */
+             ITEM_LIST_VIEWED: number,
+         
+             /**
+              * Log this event when a user does a purchase in the App.
+              * @param mandatory_parameters Param.TOTAL_AMOUNT
+              * @param recommended_parameters Param.ITEM_COUNT, Param.ITEM_ID, Param.SUCCESS, Param.ITEM_NAME, Param.ITEM_TYPE,
+              *                       Param.CURRENCY_TYPE, Param.TRANSACTION_ID
+              */
+             PURCHASED: number,
+         
+             /**
+              * Log this event at refund.
+              * @param mandatory_parameters Param.PRICE
+              * @param recommended_parameters Param.CURRENCY_TYPE
+              */
+             PURCHASE_REFUNDED: number,
+         
+             /**
+              * Log this event when a user removes an item from the cart.
+              * @param mandatory_parameters Param.ITEM_ID
+              * @param recommended_parameters Param.PRICE, Param.ITEM_NAME, Param.ITEM_TYPE
+              */
+             REMOVE_ITEM_FROM_CART: number,
+         
+             /**
+              * Log this event when a user starts checkout.
+              * @param mandatory_parameters Param.ITEM_COUNT, Param.TOTAL_AMOUNT
+              * @param recommended_parameters none
+              */
+             CHECKOUT_INITIATED: number,
+         
+             /**
+              * Log this event when a user donates fund to your App or through the App.
+              * @param mandatory_parameters Param.PRICE
+              * @param recommended_parameters Param.CURRENCY_TYPE
+              */
+             FUNDS_DONATED: number,
+         
+             /**
+              * Log this event when user schedules an appointment using the App.
+              * @param mandatory_parameters none
+              * @param recommended_parameters none
+              */
+             USER_SCHEDULED: number,
+         
+             /**
+              * Log this event when an offer is presented to the user.
+              * @param mandatory_parameters Param.ITEM_ID, Param.PRICE
+              * @param recommended_parameters Param.ITEM_NAME, Param.ITEM_CATEGORY
+              */
+             OFFER_PRESENTED: number,
+         
+             /**
+              * Log this event at the start of a paid subscription for a service or product.
+              * @param mandatory_parameters Param.PRICE, Param.IS_ANNUAL_SUBSCRIPTION
+              * @param recommended_parameters Param.TRIAL_DAYS, Param.PREDICTED_LTV, Param.CURRENCY_TYPE, Params.SUBSCRIPTION_COUNTRY
+              */
+             SUBSCRIPTION_STARTED: number,
+         
+             /**
+              * Log this event when a user unsubscribes from a paid subscription for a service or product.
+              * @param mandatory_parameters Param.IS_ANNUAL_SUBSCRIPTION
+              * @param recommended_parameters Param.CURRENCY_TYPE, Params.SUBSCRIPTION_COUNTRY
+              */
+             SUBSCRIPTION_ENDED: number,
+         
+             /**
+              * Log this event when user joins a group.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.GROUP_NAME
+              */
+             GROUP_JOINED: number,
+         
+             /**
+              * Log this event when user leaves a group.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.GROUP_NAME
+              */
+             GROUP_LEFT: number,
+         
+             /**
+              * Log this event when a user starts a tutorial.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.TUTORIAL_NAME
+              */
+             TUTORIAL_STARTED: number,
+         
+             /**
+              * Log this event when a user completes a tutorial.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.TUTORIAL_NAME
+              */
+             TUTORIAL_COMPLETED: number,
+         
+             /**
+              * Log this event when a specific tutorial step is completed.
+              * @param mandatory_parameters Param.STEP_NUMBER
+              * @param recommended_parameters Param.TUTORIAL_NAME
+              */
+             TUTORIAL_STEP_COMPLETED: number,
+         
+             /**
+              * Log this event when user skips the tutorial.
+              * @param mandatory_parameters Param.STEP_NUMBER
+              * @param recommended_parameters Param.TUTORIAL_NAME
+              */
+             TUTORIAL_SKIPPED: number,
+         
+             /**
+              * Log this event when a user login on the App.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.USER_ID, Param.METHOD
+              */
+             LOGIN: number,
+         
+             /**
+              * Log this event when a user logout of the App.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.USER_ID, Param.METHOD
+              */
+             LOGOUT: number,
+         
+             /**
+              * Log the event when a user registers (signup). Helps capture the method used to sign-up (sign up with google/apple or emailaddress) .
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.USER_ID, Param.METHOD
+              */
+             USER_REGISTERED: number,
+         
+             /**
+              * Log this event when user views search results.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.QUERY, Param.SEARCH_TYPE
+              */
+             SEARCH_RESULT_VIEWED: number,
+         
+             /**
+              * Log this event when a user searches for a keyword using Search.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.QUERY, Param.SEARCH_TYPE
+              */
+             KEYWORD_SEARCHED: number,
+         
+             /**
+              * Log this event when a user searches for a location using Search.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.QUERY
+              */
+             LOCATION_SEARCHED: number,
+         
+             /**
+              * Log this event when a user invites another user.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.USER_ID, Param.METHOD
+              */
+             INVITE: number,
+         
+             /**
+              * Log this event when a user shares content with another user in the App.
+              * @param mandatory_parameters Param.SOCIAL_CONTENT_ID
+              * @param recommended_parameters Param.SOCIAL_CONTENT_NAME, Param.METHOD
+              */
+             SHARE: number,
+         
+             /**
+              * Log this event when a user likes a social content. e.g. likeType captures what kind of like is logged: number,
+              * @param mandatory_parameters Param.SOCIAL_CONTENT_ID
+              * @param recommended_parameters Param.SOCIAL_CONTENT_NAME, Param.LIKE_TYPE
+              */
+             LIKE: number,
+         
+             /**
+              * Log this event when a user comments or replies on a social post.
+              * @param mandatory_parameters Param.SOCIAL_CONTENT_ID
+              * @param recommended_parameters Param.SOCIAL_CONTENT_NAME
+              */
+             COMMENT: number,
+         
+             /**
+              * Log this event when an image, audio or a video is captured.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.MEDIA_ID, Param.MEDIA_NAME, Param.MEDIA_TYPE
+              */
+             MEDIA_CAPTURED: number,
+         
+             /**
+              * Log this event when an audio or video starts.
+              * @param mandatory_parameters none
+              * @param recommended_parameters Param.MEDIA_ID, Param.MEDIA_NAME, Param.MEDIA_TYPE
+              */
+             MEDIA_STARTED: number,
+         
+             /**
+              * Log this event when an audio or video is stopped.
+              * @param mandatory_parameters Param.DURATION
+              * @param recommended_parameters Param.MEDIA_ID, Param.MEDIA_NAME, Param.MEDIA_TYPE
+              */
+             MEDIA_STOPPED: number,
+         
+             /**
+              * Log this event when an audio or video is paused.
+              * @param mandatory_parameters Param.DURATION
+              * @param recommended_parameters Param.MEDIA_ID, Param.MEDIA_NAME, Param.MEDIA_TYPE
+              */
+             MEDIA_PAUSED: number,
+         
+             /**
+              * Log this event when a privacy prompt is displayed.
+              * @param mandatory_parameters none
+              * @param recommended_parameters none
+              */
+             PRIVACY_PROMPT_DISPLAYED: number,
+         
+             /**
+              * Log this event when a user opts in (on the privacy prompt).
+              * @param mandatory_parameters none
+              * @param recommended_parameters none
+              */
+             PRIVACY_OPT_IN: number,
+         
+             /**
+              * Log this event when a user opts out (on the privacy prompt).
+              * @param mandatory_parameters none
+              * @param recommended_parameters none
+              */
+             PRIVACY_OPT_OUT: number,
+         }
+
+        /**
+         * Constants for Standard Event Parameter Types.
+         */
+        static EventParam: {
+            /**
+             * AD type - value type: string.
+             */
+             AD_TYPE: string,
+    
+             /**
+              * Level name - value type: string.
+              */
+             LEVEL_NAME: string,
+     
+             /**
+              * Level number - value type: number.
+              */
+             LEVEL_NUMBER: string,
+     
+             /**
+              * Content name - value type: string.
+              */
+             CONTENT_NAME: string,
+     
+             /**
+              * Content type - value type: string.
+              */
+             CONTENT_TYPE: string,
+     
+             /**
+              * Content ID - value type: string.
+              */
+             CONTENT_ID: string,
+     
+             /**
+              * Credit name - value type: string.
+              */
+             CREDIT_NAME: string,
+     
+             /**
+              * Credit type - value type: string.
+              */
+             CREDIT_TYPE: string,
+     
+             /**
+              * Credit ID - value type: string.
+              */
+             CREDIT_ID: string,
+     
+             /**
+              * Is Currency soft - value type: boolean.
+              */
+             IS_CURRENCY_SOFT: string,
+     
+             /**
+              * Currency type - value type: string.
+              */
+             CURRENCY_TYPE: string,
+     
+             /**
+              * Payment type - value type: string.
+              */
+             PAYMENT_TYPE: string,
+     
+             /**
+              * Item name - value type: string.
+              */
+             ITEM_NAME: string,
+     
+             /**
+              * Item type - value type: string.
+              */
+             ITEM_TYPE: string,
+     
+             /**
+              * Item ID - value type: string.
+              */
+             ITEM_ID: string,
+     
+             /**
+              * Item count - value type: number.
+              */
+             ITEM_COUNT: string,
+     
+             /**
+              * Item category - value type: string.
+              */
+             ITEM_CATEGORY: string,
+     
+             /**
+              * Item list type - value type: string.
+              */
+             ITEM_LIST_TYPE: string,
+     
+             /**
+              * Price - value type: number.
+              */
+             PRICE: string,
+     
+             /**
+              * Total amount - value type: number.
+              */
+             TOTAL_AMOUNT: string,
+     
+             /**
+              * Achievement ID - value type: string.
+              */
+             ACHIEVEMENT_ID: string,
+     
+             /**
+              * Score - value type: number.
+              */
+             SCORE: string,
+     
+             /**
+              * Rating - value type: string.
+              */
+             RATING: string,
+     
+             /**
+              * Transaction ID - value type: string.
+              */
+             TRANSACTION_ID: string,
+     
+             /**
+              * Success - value type: boolean.
+              */
+             SUCCESS: string,
+     
+             /**
+              * Is annual subscription - value type: boolean.
+              */
+             IS_ANNUAL_SUBSCRIPTION: string,
+     
+             /**
+              * Subscription country - value type: string.
+              */
+             SUBSCRIPTION_COUNTRY: string,
+     
+             /**
+              * Trial days - value type: number.
+              */
+             TRIAL_DAYS: string,
+     
+             /**
+              * Predicted LTV - value type: string.
+              */
+             PREDICTED_LTV: string,
+     
+             /**
+              * Group name - value type: string.
+              */
+             GROUP_NAME: string,
+     
+             /**
+              * Tutorial name - value type: string.
+              */
+             TUTORIAL_NAME: string,
+     
+             /**
+              * Step number - value type: number.
+              */
+             STEP_NUMBER: string,
+     
+             /**
+              * User ID - value type: string.
+              */
+             USER_ID: string,
+     
+             /**
+              * Method - value type: string.
+              */
+             METHOD: string,
+     
+             /**
+              * Query - value type: string.
+              */
+             QUERY: string,
+     
+             /**
+              * Search type - value type: string.
+              */
+             SEARCH_TYPE: string,
+     
+             /**
+              * Social content name - value type: string.
+              */
+             SOCIAL_CONTENT_NAME: string,
+     
+             /**
+              * Social content ID - value type: string.
+              */
+             SOCIAL_CONTENT_ID: string,
+     
+             /**
+              * Like type - value type: string.
+              */
+             LIKE_TYPE: string,
+     
+             /**
+              * Media name - value type: string.
+              */
+             MEDIA_NAME: string,
+     
+             /**
+              * Media type - value type: string.
+              */
+             MEDIA_TYPE: string,
+     
+             /**
+              * Media ID - value type: string.
+              */
+             MEDIA_ID: string,
+     
+             /**
+              * Duration - value type: number.
+              */
+             DURATION: string,
+        }
+
     }
 
     export module Flurry {
@@ -559,6 +1406,7 @@ declare module 'react-native-flurry-sdk' {
         /**
          * Builder pattern for Flurry.
          *
+         * ```
          * Initialize the Flurry SDK.
          *   build(apiKey1: string, apiKey2?: string): void;
          *
@@ -579,6 +1427,7 @@ declare module 'react-native-flurry-sdk' {
          *
          * Enable the Flurry Push for messaging.
          *   withMessaging(enableMessaging?: boolean): object;
+         * ```
          */       
         class Builder {
 
@@ -586,8 +1435,10 @@ declare module 'react-native-flurry-sdk' {
              * Initialize the Flurry SDK.
              * 
              * There are two overloads,
+             * ```javascript
              * e.g., build('FLURRY_API_KEY');
              *       build('FLURRY_ANDROID_API_KEY', 'FLURRY_IOS_API_KEY');
+             * ```
              * - build(apikey)
              * - build(apikeyAndroid, apikeyIos)
              * 

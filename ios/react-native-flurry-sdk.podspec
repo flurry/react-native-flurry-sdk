@@ -1,7 +1,7 @@
 require 'json'
 
 package = JSON.parse(File.read('../package.json'))
-sdkVersion = '11.2.1'
+sdkVersion = '11.3.0'
 
 Pod::Spec.new do |s|
   s.name         = package['name']
@@ -34,7 +34,9 @@ Pod::Spec.new do |s|
     ss.ios.deployment_target = '8.0'
     ss.ios.source_files = [
       'ReactNativeFlurry/ReactNativeFlurry.{h,m}',
-      'ReactNativeFlurry/ReactNativeFlurryConfigListener.{h,m}'
+      'ReactNativeFlurry/ReactNativeFlurryConfigListener.{h,m}',
+      'ReactNativeFlurry/ReactNativeFlurryEvent.{h,m}',
+      
     ]
     ss.ios.dependency 'Flurry-iOS-SDK/FlurrySDK', "~> #{sdkVersion}"
     ss.ios.dependency 'Flurry-iOS-SDK/FlurryConfig', "~> #{sdkVersion}"

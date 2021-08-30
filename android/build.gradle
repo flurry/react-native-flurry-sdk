@@ -40,7 +40,7 @@ dependencies {
     // implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.flurry.android:analytics:12.13.0'
-    implementation 'com.flurry.android:marketing:12.13.0'
+    implementation 'com.flurry.android:analytics:13.0.0'
+    implementation 'com.flurry.android:marketing:13.0.0'
 }
 

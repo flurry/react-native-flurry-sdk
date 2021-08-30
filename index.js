@@ -211,6 +211,115 @@ export default class Flurry {
         }
     };
 
+    static Event = Object.freeze({
+        AD_CLICK:                 0,
+        AD_IMPRESSION:            1,
+        AD_REWARDED:              2,
+        AD_SKIPPED:               3,
+        CREDITS_SPENT:            4,
+        CREDITS_PURCHASED:        5,
+        CREDITS_EARNED:           6,
+        ACHIEVEMENT_UNLOCKED:     7,
+        LEVEL_COMPLETED:          8,
+        LEVEL_FAILED:             9,
+        LEVEL_UP:                 10,
+        LEVEL_STARTED:            11,
+        LEVEL_SKIP:               12,
+        SCORE_POSTED:             13,
+        CONTENT_RATED:            14,
+        CONTENT_VIEWED:           15,
+        CONTENT_SAVED:            16,
+        PRODUCT_CUSTOMIZED:       17,
+        APP_ACTIVATED:            18,
+        APPLICATION_SUBMITTED:    19,
+        ADD_ITEM_TO_CART:         20,
+        ADD_ITEM_TO_WISH_LIST:    21,
+        COMPLETED_CHECKOUT:       22,
+        PAYMENT_INFO_ADDED:       23,
+        ITEM_VIEWED:              24,
+        ITEM_LIST_VIEWED:         25,
+        PURCHASED:                26,
+        PURCHASE_REFUNDED:        27,
+        REMOVE_ITEM_FROM_CART:    28,
+        CHECKOUT_INITIATED:       29,
+        FUNDS_DONATED:            30,
+        USER_SCHEDULED:           31,
+        OFFER_PRESENTED:          32,
+        SUBSCRIPTION_STARTED:     33,
+        SUBSCRIPTION_ENDED:       34,
+        GROUP_JOINED:             35,
+        GROUP_LEFT:               36,
+        TUTORIAL_STARTED:         37,
+        TUTORIAL_COMPLETED:       38,
+        TUTORIAL_STEP_COMPLETED:  39,
+        TUTORIAL_SKIPPED:         40,
+        LOGIN:                    41,
+        LOGOUT:                   42,
+        USER_REGISTERED:          43,
+        SEARCH_RESULT_VIEWED:     44,
+        KEYWORD_SEARCHED:         45,
+        LOCATION_SEARCHED:        46,
+        INVITE:                   47,
+        SHARE:                    48,
+        LIKE:                     49,
+        COMMENT:                  50,
+        MEDIA_CAPTURED:           51,
+        MEDIA_STARTED:            52,
+        MEDIA_STOPPED:            53,
+        MEDIA_PAUSED:             54,
+        PRIVACY_PROMPT_DISPLAYED: 55,
+        PRIVACY_OPT_IN:           56,
+        PRIVACY_OPT_OUT:          57,
+
+        _LAST:                    57
+    });
+
+    static EventParam = Object.freeze({
+        AD_TYPE:                'fl.ad.type',
+        LEVEL_NAME:             'fl.level.name',
+        LEVEL_NUMBER:           'fl.level.number',
+        CONTENT_NAME:           'fl.content.name',
+        CONTENT_TYPE:           'fl.content.type',
+        CONTENT_ID:             'fl.content.id',
+        CREDIT_NAME:            'fl.credit.name',
+        CREDIT_TYPE:            'fl.credit.type',
+        CREDIT_ID:              'fl.credit.id',
+        IS_CURRENCY_SOFT:       'fl.is.currency.soft',
+        CURRENCY_TYPE:          'fl.currency.type',
+        PAYMENT_TYPE:           'fl.payment.type',
+        ITEM_NAME:              'fl.item.name',
+        ITEM_TYPE:              'fl.item.type',
+        ITEM_ID:                'fl.item.id',
+        ITEM_COUNT:             'fl.item.count',
+        ITEM_CATEGORY:          'fl.item.category',
+        ITEM_LIST_TYPE:         'fl.item.list.type',
+        PRICE:                  'fl.price',
+        TOTAL_AMOUNT:           'fl.total.amount',
+        ACHIEVEMENT_ID:         'fl.achievement.id',
+        SCORE:                  'fl.score',
+        RATING:                 'fl.rating',
+        TRANSACTION_ID:         'fl.transaction.id',
+        SUCCESS:                'fl.success',
+        IS_ANNUAL_SUBSCRIPTION: 'fl.is.annual.subscription',
+        SUBSCRIPTION_COUNTRY:   'fl.subscription.country',
+        TRIAL_DAYS:             'fl.trial.days',
+        PREDICTED_LTV:          'fl.predicted.ltv',
+        GROUP_NAME:             'fl.group.name',
+        TUTORIAL_NAME:          'fl.tutorial.name',
+        STEP_NUMBER:            'fl.step.number',
+        USER_ID:                'fl.user.id',
+        METHOD:                 'fl.method',
+        QUERY:                  'fl.query',
+        SEARCH_TYPE:            'fl.search.type',
+        SOCIAL_CONTENT_NAME:    'fl.social.content.name',
+        SOCIAL_CONTENT_ID:      'fl.social.content.id',
+        LIKE_TYPE:              'fl.like.type',
+        MEDIA_NAME:             'fl.media.name',
+        MEDIA_TYPE:             'fl.media.type',
+        MEDIA_ID:               'fl.media.id',
+        DURATION:               'fl.duration'
+    });
+
     static UserProperties = Object.freeze({
         PROPERTY_CURRENCY_PREFERENCE: 'Flurry.CurrencyPreference',
         PROPERTY_PURCHASER:           'Flurry.Purchaser',
@@ -272,7 +381,7 @@ export default class Flurry {
 	    NONE:        0,
 	    COLD_START:  1,
 	    SCREEN_TIME: 2,
-	    ALL:         1 | 2,
+	    ALL:         3, // 1 | 2
 
         reportFullyDrawn() {
             if (Platform.OS === 'android') {
@@ -402,7 +511,11 @@ export default class Flurry {
         if (arguments.length === 2) {
             ReactNativeFlurry.addOrigin(originName, originVersion);
         } else if (arguments.length === 3) {
-            ReactNativeFlurry.addOriginParams(originName, originVersion, originParameters);
+            if (Object.prototype.toString.call(originParameters).includes('Object')) {
+                ReactNativeFlurry.addOriginParams(originName, originVersion, originParameters);
+            } else if (Object.prototype.toString.call(originParameters).includes('Map')) {
+                ReactNativeFlurry.addOriginParams(originName, originVersion, Object.fromEntries(originParameters));
+            }
         }
     }
 
@@ -425,6 +538,22 @@ export default class Flurry {
             return ReactNativeFlurry.getVersionsPromise();
         }
         ReactNativeFlurry.getVersions(errorCallback, successCallback);
+    }
+
+    static getPublisherSegmentation(refresh) {
+        if (arguments.length === 0) {
+            return ReactNativeFlurry.getPublisherSegmentation(false);
+        } else {
+            if (typeof refresh !== 'boolean') {
+                console.error(`Flurry.getPublisherSegmentation: refresh must be one of [true, false]. Got ${refresh}`);
+                return ReactNativeFlurry.getPublisherSegmentation(false);
+            }
+            return ReactNativeFlurry.getPublisherSegmentation(refresh);
+        }
+    }
+
+    static fetchPublisherSegmentation() {
+        ReactNativeFlurry.fetchPublisherSegmentation();
     }
 
     static logBreadcrumb(crashBreadcrumb) {
@@ -452,13 +581,62 @@ export default class Flurry {
         if (arguments.length === 1) {
             ReactNativeFlurry.logEvent(eventId);
         } else if (arguments.length === 2) {
-            if (typeof arguments[1] === 'boolean') {
-                ReactNativeFlurry.logEventTimed(eventId, arguments[1]);
-            } else if (Object.prototype.toString.call(arguments[1]).includes('Object')) {
-                ReactNativeFlurry.logEventParams(eventId, arguments[1]);
+            if (typeof timedOrParameters === 'boolean') {
+                ReactNativeFlurry.logEventTimed(eventId, timedOrParameters);
+            } else if (Object.prototype.toString.call(timedOrParameters).includes('Object')) {
+                ReactNativeFlurry.logEventParams(eventId, timedOrParameters);
+            } else if (Object.prototype.toString.call(timedOrParameters).includes('Map')) {
+                ReactNativeFlurry.logEventParams(eventId, Object.fromEntries(timedOrParameters));
             }
         } else if (arguments.length === 3) {
-            ReactNativeFlurry.logEventParamsTimed(eventId, timedOrParameters, timed);
+            if (Object.prototype.toString.call(timedOrParameters).includes('Object')) {
+                ReactNativeFlurry.logEventParamsTimed(eventId, timedOrParameters, timed);
+            } else if (Object.prototype.toString.call(timedOrParameters).includes('Map')) {
+                ReactNativeFlurry.logEventParamsTimed(eventId, Object.fromEntries(timedOrParameters), timed);
+            }
+        }
+    }
+
+    /**
+     * There are two overloads
+     * - endTimedEvent(eventId)
+     * - endTimedEvent(eventId, parameters)
+     */
+    static endTimedEvent(eventId, parameters) {
+        if (typeof eventId !== 'string') {
+            console.error(`Flurry.logEvent: endTimedEvent must be a string. Got ${eventId}`);
+            return;
+        }
+
+        if (arguments.length === 1) {
+            ReactNativeFlurry.endTimedEvent(eventId);
+        } else if (arguments.length === 2) {
+            if (Object.prototype.toString.call(parameters).includes('Object')) {
+                ReactNativeFlurry.endTimedEventParams(eventId, parameters);
+            } else if (Object.prototype.toString.call(parameters).includes('Map')) {
+                ReactNativeFlurry.endTimedEventParams(eventId, Object.fromEntries(parameters));
+            }
+        }
+    }
+
+    static logStandardEvent(eventId, parameters) {
+        if (typeof eventId !== 'number') {
+            console.error(`Flurry.logStandardEvent: eventId must be a number. Got ${eventId}`);
+            return;
+        }
+        if (eventId < 0 || eventId > Flurry.Event._LAST) {
+            console.error(`Flurry.logStandardEvent: eventId is out of range. Got ${eventId}`);
+            return;
+        }
+
+        if (arguments.length === 1) {
+            ReactNativeFlurry.logStandardEvent(eventId, null);
+        } else if (arguments.length === 2) {
+            if (Object.prototype.toString.call(parameters).includes('Object')) {
+                ReactNativeFlurry.logStandardEvent(eventId, parameters);
+            } else if (Object.prototype.toString.call(parameters).includes('Map')) {
+                ReactNativeFlurry.logStandardEvent(eventId, Object.fromEntries(parameters));
+            }
         }
     }
 
@@ -493,24 +671,10 @@ export default class Flurry {
             return;
         }
 
-        ReactNativeFlurry.logPayment(productName, productId, quantity, price, currency, transactionId, parameters);
-    }
-
-    /**
-     * There are two overloads
-     * - endTimedEvent(eventId)
-     * - endTimedEvent(eventId, parameters)
-     */
-    static endTimedEvent(eventId, parameters) {
-        if (typeof eventId !== 'string') {
-            console.error(`Flurry.logEvent: endTimedEvent must be a string. Got ${eventId}`);
-            return;
-        }
-
-        if (arguments.length === 1) {
-            ReactNativeFlurry.endTimedEvent(eventId);
-        } else if (arguments.length === 2) {
-            ReactNativeFlurry.endTimedEventParams(eventId, parameters);
+        if (Object.prototype.toString.call(parameters).includes('Object')) {
+            ReactNativeFlurry.logPayment(productName, productId, quantity, price, currency, transactionId, parameters);
+        } else if (Object.prototype.toString.call(parameters).includes('Map')) {
+            ReactNativeFlurry.logPayment(productName, productId, quantity, price, currency, transactionId, Object.fromEntries(parameters));
         }
     }
 
@@ -538,7 +702,11 @@ export default class Flurry {
         if (arguments.length === 3) {
             ReactNativeFlurry.onError(errorId, message, errorClass);
         } else if (arguments.length === 4) {
-            ReactNativeFlurry.onErrorParams(errorId, message, errorClass, errorParams);
+            if (Object.prototype.toString.call(errorParams).includes('Object')) {
+                ReactNativeFlurry.onErrorParams(errorId, message, errorClass, errorParams);
+            } else if (Object.prototype.toString.call(errorParams).includes('Map')) {
+                ReactNativeFlurry.onErrorParams(errorId, message, errorClass, Object.fromEntries(errorParams));
+            }
         }
     }
 

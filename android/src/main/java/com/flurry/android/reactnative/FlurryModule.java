@@ -17,6 +17,7 @@
 package com.flurry.android.reactnative;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
@@ -37,8 +38,10 @@ import com.flurry.android.FlurryAgent;
 import com.flurry.android.FlurryAgentListener;
 import com.flurry.android.FlurryConfig;
 import com.flurry.android.FlurryConfigListener;
+import com.flurry.android.FlurryEvent;
 import com.flurry.android.FlurryPerformance;
 import com.flurry.android.FlurryPrivacySession;
+import com.flurry.android.FlurryPublisherSegmentation;
 import com.flurry.android.marketing.FlurryMarketingModule;
 import com.flurry.android.marketing.FlurryMarketingOptions;
 import com.flurry.android.marketing.messaging.FlurryMessagingListener;
@@ -46,6 +49,7 @@ import com.flurry.android.marketing.messaging.notification.FlurryMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +61,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String FLURRY_MESSAGING_EVENT = "FlurryMessagingEvent";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "6.4.0";
+    private static final String ORIGIN_VERSION = "7.0.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 
@@ -69,6 +73,8 @@ public class FlurryModule extends ReactContextBaseJavaModule {
 
     private static RNFlurryConfigListener sRNFlurryConfigListener = null;
     private static int sRequestConfigListener = 0;
+
+    private static FlurryPublisherSegmentation.FetchListener sPublisherSegmentationListener = null;
 
     @Override
     public String getName() {
@@ -120,8 +126,8 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void withContinueSessionMillis(int sessionMillis) {
-        mFlurryAgentBuilder.withContinueSessionMillis(sessionMillis);
+    public void withContinueSessionMillis(double sessionMillis) {
+        mFlurryAgentBuilder.withContinueSessionMillis((long) sessionMillis);
     }
 
     @ReactMethod
@@ -140,13 +146,13 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void withLogLevel(int logLevel) {
-        mFlurryAgentBuilder.withLogLevel(logLevel);
+    public void withLogLevel(double logLevel) {
+        mFlurryAgentBuilder.withLogLevel((int) logLevel);
     }
 
     @ReactMethod
-    public void withPerformanceMetrics(int performanceMetrics) {
-        mFlurryAgentBuilder.withPerformanceMetrics(performanceMetrics);
+    public void withPerformanceMetrics(double performanceMetrics) {
+        mFlurryAgentBuilder.withPerformanceMetrics((int) performanceMetrics);
     }
 
     @ReactMethod
@@ -155,8 +161,8 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setAge(int age) {
-        FlurryAgent.setAge(age);
+    public void setAge(double age) {
+        FlurryAgent.setAge((int) age);
     }
 
     @ReactMethod
@@ -269,6 +275,52 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getPublisherSegmentation(boolean refresh, final Promise promise) {
+        try {
+            // Cached data is OK.
+            if (!refresh) {
+                Map<String, String> data = FlurryPublisherSegmentation.getPublisherData();
+                if (data != null) {
+                    resolvePublisherSegmentation(data, promise);
+                    return;
+                }
+            }
+
+            // Check whether the data is already fetched or not.
+            if (FlurryPublisherSegmentation.isFetchFinished()) {
+                resolvePublisherSegmentation(FlurryPublisherSegmentation.getPublisherData(), promise);
+            } else {
+                sPublisherSegmentationListener = new FlurryPublisherSegmentation.FetchListener() {
+                    @Override
+                    public void onFetched(Map<String, String> data) {
+                        FlurryPublisherSegmentation.unregisterFetchListener(sPublisherSegmentationListener);
+                        resolvePublisherSegmentation(data, promise);
+                    }
+                };
+                FlurryPublisherSegmentation.registerFetchListener(sPublisherSegmentationListener);
+                FlurryPublisherSegmentation.fetch();
+            }
+        } catch (IllegalViewOperationException e) {
+            promise.reject("Flurry.getPublisherSegmentation", e);
+        }
+    }
+
+    private void resolvePublisherSegmentation(Map<String, String> data, Promise promise) {
+        WritableMap map = Arguments.createMap();
+        if (data != null) {
+            for (Map.Entry<String, String> entry : data.entrySet()) {
+                map.putString(entry.getKey(), entry.getValue());
+            }
+        }
+        promise.resolve(map);
+    }
+
+    @ReactMethod
+    public void fetchPublisherSegmentation() {
+        FlurryPublisherSegmentation.fetch();
+    }
+
+    @ReactMethod
     public void logBreadcrumb(String crashBreadcrumb) {
         FlurryAgent.logBreadcrumb(crashBreadcrumb);
     }
@@ -295,9 +347,83 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void logPayment(String productName, String productId, int quantity, double price,
+    public void logStandardEvent(double eventId, ReadableMap parameters) {
+        int id = (int) eventId;
+        if ((id < 0) || (id >= ReactNativeFlurryEvent.EVENTS.length)) {
+            Log.e(TAG, "Standard event ID is out of range: " + id);
+            return;
+        }
+
+        FlurryAgent.logEvent(ReactNativeFlurryEvent.EVENTS[id], getStandardEventParams(parameters));
+    }
+
+    private static FlurryEvent.Params getStandardEventParams(final ReadableMap readableMap) {
+        FlurryEvent.Params params = new FlurryEvent.Params();
+        if (readableMap == null) {
+            return params;
+        }
+
+        Iterator<Map.Entry<String, Object>> iterator = readableMap.getEntryIterator();
+        if (!iterator.hasNext()) {
+            return params;
+        }
+
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = iterator.next();
+            String key = entry.getKey();
+            if (!TextUtils.isEmpty(key)) {
+                addStandardEventParams(params, key, entry.getValue());
+            }
+        }
+
+        return params;
+    }
+
+    private static void addStandardEventParams(FlurryEvent.Params params, String key, Object value) {
+        Object stdKey = null;
+        // Search all known standard event parameters.
+        for (Object check : ReactNativeFlurryEvent.PARAMS) {
+            if (key.equals(check.toString())) {
+                stdKey = check;
+                break;
+            }
+        }
+
+        // Not a standard event parameter.
+        if (stdKey == null) {
+            params.putString(key, value.toString());
+            return;
+        }
+
+        // Validate the type of value.
+        if (value instanceof String) {
+            if (stdKey instanceof FlurryEvent.c.d) {
+                params.putString((FlurryEvent.c.d) stdKey, (String) value);
+                return;
+            }
+        } else if (value instanceof Double) {
+            double number = (Double) value;
+            if (stdKey instanceof FlurryEvent.c.c) {
+                params.putLong((FlurryEvent.c.c) stdKey, (long) number);
+                return;
+            } else if (stdKey instanceof FlurryEvent.c.b) {
+                params.putDouble((FlurryEvent.c.b) stdKey, number);
+                return;
+            }
+        } else if (value instanceof Boolean) {
+            if (stdKey instanceof FlurryEvent.c.a) {
+                params.putBoolean((FlurryEvent.c.a) stdKey, (boolean) value);
+                return;
+            }
+        }
+
+        Log.e(TAG, "Wrong Standard parameter type: {" + key + ", " + value + "}.");
+    }
+
+    @ReactMethod
+    public void logPayment(String productName, String productId, double quantity, double price,
                            String currency, String transactionId, ReadableMap parameters) {
-        FlurryAgent.logPayment(productName, productId, quantity, price, currency, transactionId,
+        FlurryAgent.logPayment(productName, productId, (int) quantity, price, currency, transactionId,
                 toMap(parameters));
     }
 
@@ -386,18 +512,22 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void updateConversionValue(int conversionValue) {
+    public void updateConversionValue(double conversionValue) {
         Log.i(TAG, "UpdateConversionValue is for iOS only.");
     }
 
     @ReactMethod
-    public void updateConversionValueWithEvent(int flurryEvent) {
+    public void updateConversionValueWithEvent(double flurryEvent) {
         Log.i(TAG, "UpdateConversionValueWithEvent is for iOS only.");
     }
 
     @ReactMethod
     public void enableMessagingListener(boolean enable) {
         sEnableMessagingListener = enable;
+        if ((RNFlurryMessagingListener.sToken != null) && (sReactApplicationContext != null)) {
+            RNFlurryMessagingListener.sendEvent(
+                    RNFlurryMessagingListener.EventType.TokenRefresh, RNFlurryMessagingListener.sToken);
+        }
     }
 
     @ReactMethod
@@ -656,7 +786,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Wrapper Flurry Config listenet.
+     * Wrapper Flurry Config listener.
      */
     static class RNFlurryConfigListener implements FlurryConfigListener {
 
@@ -739,6 +869,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     static class RNFlurryMessagingListener implements FlurryMessagingListener {
         private volatile static boolean sCallbackReturnValue = false;
         private volatile static boolean sIsCallbackReturn = false;
+        private volatile static String sToken = null;
 
         enum EventType {
             NotificationReceived("NotificationReceived"),
@@ -786,6 +917,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
 
         @Override
         public void onTokenRefresh(String token) {
+            sToken = token;
             if (sEnableMessagingListener && (sReactApplicationContext != null)) {
                 sendEvent(EventType.TokenRefresh, token);
             }
