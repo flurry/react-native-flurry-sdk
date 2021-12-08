@@ -56,8 +56,7 @@ A React Native plugin for Flurry SDK
   ```groovy
   dependencies {
       // Recommended to add Google Play Services
-      implementation 'com.google.android.gms:play-services-base:15.0.1'
-      implementation 'com.google.android.gms:play-services-ads:15.0.1'
+      implementation 'com.google.android.gms:play-services-ads-identifier:17.1.0'
   }
   ```
 
@@ -82,7 +81,7 @@ A React Native plugin for Flurry SDK
         // android/build.gradle (project-level)
         buildscript {
             dependencies {
-                classpath 'com.google.gms:google-services:4.3.3'
+                classpath 'com.google.gms:google-services:4.3.10'
             }
         }
      ```
@@ -92,7 +91,7 @@ A React Native plugin for Flurry SDK
         apply plugin: 'com.google.gms.google-services'
 
         dependencies {
-            implementation 'com.google.firebase:firebase-messaging:20.1.0'
+            implementation 'com.google.firebase:firebase-messaging:21.1.0'
         }
      ```
 
@@ -215,6 +214,10 @@ A React Native plugin for Flurry SDK
      }
   
      render() {
+       // Set Flurry preferences.
+       Flurry.setLogEnabled(true);
+       Flurry.setLogLevel(Flurry.LogLevel.VERBOSE);
+    
        // Set user preferences.
        Flurry.setAge(36);
        Flurry.setGender(Flurry.Gender.FEMALE);
@@ -314,6 +317,7 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
   Flurry.Builder.withLogEnabled(enableLog = true);
   Flurry.Builder.withLogLevel(logLevel = Flurry.LogLevel.WARN); // LogLevel = { VERBOSE, DEBUG, INFO, WARN, ERROR, ASSERT }
   Flurry.Builder.withPerformanceMetrics(performanceMetrics = Flurry.Performance.ALL); // Performance = { NONE, COLD_START, SCREEN_TIME, ALL }
+  Flurry.Builder.withSslPinningEnabled(sslPinningEnabled = false); // Android only
   Flurry.Builder.withMessaging(enableMessaging = true); // not available on tvOS
   
   Flurry.Builder.build(apiKeyAndroid: string, apiKeyIos: string);  // preferred; passing null if not available
@@ -322,6 +326,17 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
   // tvOS only
   Flurry.Builder.withTVSessionReportingInterval(interval = 5);
   Flurry.Builder.withTVEventCountThreshold(threshold = 10);
+  ```
+
+- **Methods to set Flurry preferences**
+
+  ```javascript
+  Flurry.setContinueSessionMillis(sessionMillis = 10000);
+  Flurry.setCrashReporting(crashReporting = true);
+  Flurry.setIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics = true);
+  Flurry.setLogEnabled(enableLog = true);
+  Flurry.setLogLevel(logLevel = Flurry.LogLevel.WARN); // LogLevel = { VERBOSE, DEBUG, INFO, WARN, ERROR, ASSERT }
+  Flurry.setSslPinningEnabled(sslPinningEnabled = false); // Android only
   ```
 
 - **Methods to set user preferences**

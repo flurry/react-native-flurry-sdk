@@ -164,7 +164,7 @@ export default class Flurry {
             return this;
         }
 
-        withPerformanceMetrics(performanceMetrics = Flurry.PerformanceMetrics.ALL) {
+        withPerformanceMetrics(performanceMetrics = Flurry.Performance.ALL) {
             if (Platform.OS === 'android') {
                 if (typeof performanceMetrics !== 'number') {
                     console.error(`Flurry.Builder.withPerformanceMetrics: performanceMetrics must be number. Got ${performanceMetrics}`);
@@ -172,6 +172,18 @@ export default class Flurry {
                 }
 
                 ReactNativeFlurry.withPerformanceMetrics(performanceMetrics);
+            }
+            return this;
+        }
+
+        withSslPinningEnabled(sslPinningEnabled = false) {
+            if (Platform.OS === 'android') {
+                if (typeof sslPinningEnabled !== 'boolean') {
+                    console.error(`Flurry.Builder.withSslPinningEnabled: sslPinningEnabled must be one of [true, false]. Got ${sslPinningEnabled}`);
+                    return this;
+                }
+    
+                ReactNativeFlurry.withSslPinningEnabled(sslPinningEnabled);
             }
             return this;
         }
@@ -406,6 +418,68 @@ export default class Flurry {
             }
         }
     });
+
+    static setContinueSessionMillis(sessionMillis = 10000) {
+        if (typeof sessionMillis !== 'number' || sessionMillis < 5000) {
+            console.error('Flurry.setContinueSessionMillis: the minimum timeout for a session is 5,000 ms.');
+            return;
+        }
+
+        ReactNativeFlurry.setContinueSessionMillis(sessionMillis);
+    }
+
+    static setCrashReporting(crashReporting = true) {
+        if (Platform.OS === 'android') {
+            if (typeof crashReporting !== 'boolean') {
+                console.error(`Flurry.setCrashReporting: crashReporting must be one of [true, false]. Got ${crashReporting}`);
+                return;
+            }
+    
+            ReactNativeFlurry.setCrashReporting(crashReporting);
+        }
+    }
+
+    static setIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics = true) {
+        if (typeof includeBackgroundSessionsInMetrics !== 'boolean') {
+            console.error(`Flurry.setIncludeBackgroundSessionsInMetrics: includeBackgroundSessionsInMetrics must be one of [true, false]. Got ${includeBackgroundSessionsInMetrics}`);
+            return;
+        }
+
+        ReactNativeFlurry.setIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics);
+    }
+
+    static setLogEnabled(enableLog = true) {
+        if (Platform.OS === 'android') {
+            if (typeof enableLog !== 'boolean') {
+                console.error(`Flurry.setLogEnabled: enableLog must be one of [true, false]. Got ${enableLog}`);
+                return;
+            }
+    
+            ReactNativeFlurry.setLogEnabled(enableLog);
+        }
+    }
+
+    static setLogLevel(logLevel = Flurry.LogLevel.WARN) {
+        if (Platform.OS === 'android') {
+            if (typeof logLevel !== 'number') {
+                console.error(`Flurry.setLogLevel: logLevel must be number. Got ${logLevel}`);
+                return;
+            }
+    
+            ReactNativeFlurry.setLogLevel(logLevel);
+        }
+    }
+
+    static setSslPinningEnabled(sslPinningEnabled = false) {
+        if (Platform.OS === 'android') {
+            if (typeof sslPinningEnabled !== 'boolean') {
+                console.error(`Flurry.setSslPinningEnabled: sslPinningEnabled must be one of [true, false]. Got ${sslPinningEnabled}`);
+                return;
+            }
+
+            ReactNativeFlurry.setSslPinningEnabled(sslPinningEnabled);
+        }
+    }
 
     static setAge(age) {
         if (typeof age !== 'number' || age <= 0 || age >= 110) {

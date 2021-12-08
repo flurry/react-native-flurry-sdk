@@ -61,7 +61,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String FLURRY_MESSAGING_EVENT = "FlurryMessagingEvent";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "7.0.0";
+    private static final String ORIGIN_VERSION = "7.1.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 
@@ -156,8 +156,43 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void withSslPinningEnabled(boolean sslPinningEnabled) {
+        mFlurryAgentBuilder.withSslPinningEnabled(sslPinningEnabled);
+    }
+
+    @ReactMethod
     public void withMessaging(boolean enableMessaging) {
         Log.i(TAG, "To enable Flurry Push for Android, please duplicate Builder setup in your MainApplication.java.");
+    }
+
+    @ReactMethod
+    public void setContinueSessionMillis(double sessionMillis) {
+        FlurryAgent.setContinueSessionMillis((long) sessionMillis);
+    }
+
+    @ReactMethod
+    public void setCrashReporting(boolean captureExceptions) {
+        FlurryAgent.setCaptureUncaughtExceptions(captureExceptions);
+    }
+
+    @ReactMethod
+    public void setIncludeBackgroundSessionsInMetrics(boolean includeBackgroundSessionsInMetrics) {
+        FlurryAgent.setIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics);
+    }
+
+    @ReactMethod
+    public void setLogEnabled(boolean enableLog) {
+        FlurryAgent.setLogEnabled(enableLog);
+    }
+
+    @ReactMethod
+    public void setLogLevel(int logLevel) {
+        FlurryAgent.setLogLevel(logLevel);
+    }
+
+    @ReactMethod
+    public void setSslPinningEnabled(boolean sslPinningEnabled) {
+        FlurryAgent.setSslPinningEnabled(sslPinningEnabled);
     }
 
     @ReactMethod
@@ -380,9 +415,9 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     private static void addStandardEventParams(FlurryEvent.Params params, String key, Object value) {
-        Object stdKey = null;
+        FlurryEvent.ParamBase stdKey = null;
         // Search all known standard event parameters.
-        for (Object check : ReactNativeFlurryEvent.PARAMS) {
+        for (FlurryEvent.ParamBase check : ReactNativeFlurryEvent.PARAMS) {
             if (key.equals(check.toString())) {
                 stdKey = check;
                 break;
@@ -397,22 +432,22 @@ public class FlurryModule extends ReactContextBaseJavaModule {
 
         // Validate the type of value.
         if (value instanceof String) {
-            if (stdKey instanceof FlurryEvent.c.d) {
-                params.putString((FlurryEvent.c.d) stdKey, (String) value);
+            if (stdKey instanceof FlurryEvent.StringParam) {
+                params.putString((FlurryEvent.StringParam) stdKey, (String) value);
                 return;
             }
         } else if (value instanceof Double) {
-            double number = (Double) value;
-            if (stdKey instanceof FlurryEvent.c.c) {
-                params.putLong((FlurryEvent.c.c) stdKey, (long) number);
+            double number = (double) value;
+            if (stdKey instanceof FlurryEvent.IntegerParam) {
+                params.putLong((FlurryEvent.IntegerParam) stdKey, (long) number);
                 return;
-            } else if (stdKey instanceof FlurryEvent.c.b) {
-                params.putDouble((FlurryEvent.c.b) stdKey, number);
+            } else if (stdKey instanceof FlurryEvent.DoubleParam) {
+                params.putDouble((FlurryEvent.DoubleParam) stdKey, number);
                 return;
             }
         } else if (value instanceof Boolean) {
-            if (stdKey instanceof FlurryEvent.c.a) {
-                params.putBoolean((FlurryEvent.c.a) stdKey, (boolean) value);
+            if (stdKey instanceof FlurryEvent.BooleanParam) {
+                params.putBoolean((FlurryEvent.BooleanParam) stdKey, (boolean) value);
                 return;
             }
         }
@@ -660,6 +695,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
          * Default is set to true.
          *
          * @param includeBackgroundSessionsInMetrics if background and inactive session should be counted toward dau
+         * @return The Builder instance.
          */
         public Builder withIncludeBackgroundSessionsInMetrics(final boolean includeBackgroundSessionsInMetrics) {
             mFlurryAgentBuilder.withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics);
@@ -696,6 +732,20 @@ public class FlurryModule extends ReactContextBaseJavaModule {
          */
         public Builder withPerformanceMetrics(final int performanceMetrics) {
             mFlurryAgentBuilder.withPerformanceMetrics(performanceMetrics);
+            return this;
+        }
+
+        /**
+         * True to enable or  false to disable SSL Pinning for Flurry Analytics connection. Defaults to false.
+         *
+         * Turn on to add SSL Pinning protection for the Flurry Analytics connections. Disable it
+         * if your app is using proxy or any services that are not compliant with SSL Pinning.
+         *
+         * @param sslPinningEnabled true to enable SSL Pinning for Flurry Analytics connection, false to disable it.
+         * @return The Builder instance.
+         */
+        public Builder withSslPinningEnabled(final boolean sslPinningEnabled) {
+            mFlurryAgentBuilder.withSslPinningEnabled(sslPinningEnabled);
             return this;
         }
 

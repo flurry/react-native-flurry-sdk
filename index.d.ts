@@ -61,6 +61,52 @@ declare module 'react-native-flurry-sdk' {
         }
 
         /**
+         * Set the timeout for expiring a Flurry session.
+         * 
+         * @param sessionMillis The time in milliseconds to set the session timeout to. Minimum value of 5000.
+         */
+         static setContinueSessionMillis(sessionMillis?: number): void;
+ 
+         /**
+         * True to enable or false to disable the ability to catch all uncaught exceptions
+         * and have them reported back to Flurry.
+         * 
+         * @param crashReporting true to enable, false to disable.
+         */
+        static setCrashReporting(crashReporting?: boolean): void;
+
+        /**
+         * True if this session should be added to total sessions/DAUs when applicationstate is inactive or background.
+         * 
+         * @param includeBackgroundSessionsInMetrics if background and inactive session should be counted toward dau
+         */
+        static setIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics?: boolean): void;
+ 
+        /**
+         * True to enable or false to disable the internal logging for the Flurry SDK.
+         * 
+         * @param enableLog true to enable logging, false to disable it.
+         */
+        static setLogEnabled(enableLog?: boolean): void;
+ 
+        /**
+         * Set the log level of the internal Flurry SDK logging.
+         * 
+         * @param logLevel The level to set it to { VERBOSE, DEBUG, INFO, WARN, ERROR, ASSERT }.
+         */
+        static setLogLevel(logLevel?: number): void;
+ 
+        /**
+         * True to enable or  false to disable SSL Pinning for Flurry Analytics connection. Defaults to false.
+         *
+         * Turn on to add SSL Pinning protection for the Flurry Analytics connections. Disable it
+         * if your app is using proxy or any services that are not compliant with SSL Pinning.
+         *
+         * @param sslPinningEnabled true to enable SSL Pinning for Flurry Analytics connection, false to disable it.
+         */
+        static setSslPinningEnabled(sslPinningEnabled?: boolean): void;
+  
+        /**
          * Sets the age of the user at the time of this session.
          * 
          * ```javascript
@@ -184,6 +230,7 @@ declare module 'react-native-flurry-sdk' {
          * @param originVersion The version of the origin you wish to attribute.
          */
         static addOrigin(originName: string, originVersion: string, originParameters?: { [key: string]: string; }): void;
+        static addOrigin(originName: string, originVersion: string, originParameters?: Map<string, string>       ): void;
 
         /**
          * This method allows you to associate parameters with an session.
@@ -252,7 +299,7 @@ declare module 'react-native-flurry-sdk' {
          * ```javascript
          * (async () => {
          *     var segmentations = await Flurry.getPublisherSegmentation();
-         *     console.log("Publisher Segmentation: " + segmentations.segments);
+         *     console.log('Publisher Segmentation: ' + segmentations.segments);
          * })()
          * ```
          *
@@ -327,6 +374,7 @@ declare module 'react-native-flurry-sdk' {
          * @param timed         True if this event is timed, false otherwise.
          */
         static logEvent(eventId: string, parameters: { [key: string]: string; }, timed?: boolean): void;
+        static logEvent(eventId: string, parameters: Map<string, string>,        timed?: boolean): void;
 
         /**
          * Log a standard event with parameters.
@@ -345,7 +393,8 @@ declare module 'react-native-flurry-sdk' {
          * @param eventId       The id {@code Flurry.Event} of the event.
          * @param parameters    A {@code Map<string|Flurry.EventParam, string|number|boolean>} of parameters to log with this event.
          */
-        static logStandardEvent(eventId: object, parameters?: { [key: object]: object; }): void;
+        static logStandardEvent(eventId: number, parameters?: { [key: string]: string|number|boolean; }): void;
+        static logStandardEvent(eventId: number, parameters?: Map<string, string|number|boolean>       ): void;
 
         /**
          * Log a payment.
@@ -365,7 +414,9 @@ declare module 'react-native-flurry-sdk' {
          */
         static logPayment(productName: string, productId: string, quantity: number, price: number,
                    currency: string, transactionId: string, parameters: { [key: string]: string; }): void;
-
+        static logPayment(productName: string, productId: string, quantity: number, price: number,
+                    currency: string, transactionId: string, parameters: Map<string, string>      ): void;
+ 
         /**
          * End a timed event.
          * 
@@ -381,6 +432,7 @@ declare module 'react-native-flurry-sdk' {
          * @param parameters A {@code Map<String, String>} of parameters to log with this event.
          */
         static endTimedEvent(eventId: string, parameters?: { [key: string]: string; }): void;
+        static endTimedEvent(eventId: string, parameters?: Map<string, string>       ): void;
 
         /**
          * Report errors that your app catches.
@@ -399,6 +451,7 @@ declare module 'react-native-flurry-sdk' {
          * @param errorParams A {@code Map<String, String>} of parameters to log with this report.
          */
         static onError(errorId: string, message: string, errorClass: string, errorParams?: { [key: string]: string; }): void;
+        static onError(errorId: string, message: string, errorClass: string, errorParams?: Map<string, string>       ): void;
 
         /**
          * Log a page view.
@@ -683,7 +736,7 @@ declare module 'react-native-flurry-sdk' {
          * 
          * Flurry.getConfigString(keysAndDefaults).then((value) => {
          *     console.log('Received map of data: ' +
-         *                 value.welcome_message + ":" + value.welcome_font_size + ":" + value.welcome_font_color);
+         *                 value.welcome_message + ':' + value.welcome_font_size + ':' + value.welcome_font_color);
          * });
          * ```
          * 
@@ -1411,22 +1464,22 @@ declare module 'react-native-flurry-sdk' {
          *   build(apiKey1: string, apiKey2?: string): void;
          *
          * Enable the ability to catch all uncaught exceptions and have them reported back to Flurry.
-         *   withCrashReporting(crashReporting?: boolean): object;
+         *   withCrashReporting(crashReporting?: boolean): Builder;
          *
          * Set the timeout for expiring a Flurry session.
-         *   withContinueSessionMillis(sessionMillis?: number): object;
+         *   withContinueSessionMillis(sessionMillis?: number): Builder;
          *
          * Enable if this session should be added to total sessions/DAUs when applicationstate is inactive or background.
-         *   withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics?: boolean): object;
+         *   withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics?: boolean): Builder;
          *
          * Enable the internal logging for the Flurry SDK.
-         *   withLogEnabled(enableLog?: boolean): object;
+         *   withLogEnabled(enableLog?: boolean): Builder;
          *
          * Set the log level of the internal Flurry SDK logging.
-         *   withLogLevel(logLevel?: number): object;
+         *   withLogLevel(logLevel?: number): Builder;
          *
          * Enable the Flurry Push for messaging.
-         *   withMessaging(enableMessaging?: boolean): object;
+         *   withMessaging(enableMessaging?: boolean): Builder;
          * ```
          */       
         class Builder {
@@ -1452,7 +1505,7 @@ declare module 'react-native-flurry-sdk' {
              * 
              * @param versionName The version of the app.
              */
-            withAppVersion(versionName?: string): Flurry.Builder;
+            withAppVersion(versionName?: string): Builder;
 
             /**
              * True to enable or false to disable the ability to catch all uncaught exceptions
@@ -1460,49 +1513,49 @@ declare module 'react-native-flurry-sdk' {
              * 
              * @param crashReporting true to enable, false to disable.
              */
-            withCrashReporting(crashReporting?: boolean): Flurry.Builder;
+            withCrashReporting(crashReporting?: boolean): Builder;
     
             /**
              * Set the timeout for expiring a Flurry session.
              * 
              * @param sessionMillis The time in milliseconds to set the session timeout to. Minimum value of 5000.
              */
-            withContinueSessionMillis(sessionMillis?: number): Flurry.Builder;
+            withContinueSessionMillis(sessionMillis?: number): Builder;
 
             /**
              * True to opt-out data sale or false to opt-in data sale
              *
              * @param isOptOut true to opt-out data sale, false to opt-in
              */
-            withDataSaleOptOut(isOptOut?: boolean): Flurry.Builder;
+            withDataSaleOptOut(isOptOut?: boolean): Builder;
 
             /**
              * Set the iOS In-App Purchase reporting enabled.
              * 
              * @param enableIAP True to enable iOS In-App Purchase reporting, false otherwise.
              */
-            withIAPReportingEnabled(enableIAP?: boolean): Flurry.Builder;
+            withIAPReportingEnabled(enableIAP?: boolean): Builder;
     
             /**
              * True if this session should be added to total sessions/DAUs when applicationstate is inactive or background.
              * 
              * @param includeBackgroundSessionsInMetrics if background and inactive session should be counted toward dau
              */
-            withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics?: boolean): Flurry.Builder;
+            withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics?: boolean): Builder;
     
             /**
              * True to enable or false to disable the internal logging for the Flurry SDK.
              * 
              * @param enableLog true to enable logging, false to disable it.
              */
-            withLogEnabled(enableLog?: boolean): Flurry.Builder;
+            withLogEnabled(enableLog?: boolean): Builder;
     
             /**
              * Set the log level of the internal Flurry SDK logging.
              * 
              * @param logLevel The level to set it to { VERBOSE, DEBUG, INFO, WARN, ERROR, ASSERT }.
              */
-            withLogLevel(logLevel?: number): Flurry.Builder;
+            withLogLevel(logLevel?: number): Builder;
 
             /**
              * Set flags for performance metrics.
@@ -1510,28 +1563,38 @@ declare module 'react-native-flurry-sdk' {
              * @param performanceMetrics Flags for performance metrics.
              *                           E.g., Flurry.PerformanceMetrics.COLD_START | Flurry.PerformanceMetrics.SCREEN_TIME.
              */
-            withPerformanceMetrics(performanceMetrics?: number): Flurry.Builder;
+            withPerformanceMetrics(performanceMetrics?: number): Builder;
+
+            /**
+             * True to enable or  false to disable SSL Pinning for Flurry Analytics connection. Defaults to false.
+             *
+             * Turn on to add SSL Pinning protection for the Flurry Analytics connections. Disable it
+             * if your app is using proxy or any services that are not compliant with SSL Pinning.
+             *
+             * @param sslPinningEnabled true to enable SSL Pinning for Flurry Analytics connection, false to disable it.
+             */
+             withSslPinningEnabled(sslPinningEnabled?: boolean): Builder;
 
             /**
              * True to enable or false to disable the Flurry Push for messaging.
              * 
              * @param enableMessaging true to enable messaging, false to disable it.
              */
-            withMessaging(enableMessaging?: boolean): Flurry.Builder;
+            withMessaging(enableMessaging?: boolean): Builder;
 
             /**
              * Set the minimum duration (in minutes) before a partial session report is sent to Flurry. The acceptable values are between 5 and 60 minutes. tvOS only.
              * 
              * @param interval The period after which a partial session report is sent to Flurry.
              */
-            withTVSessionReportingInterval(interval?: number): Flurry.Builder;
+            withTVSessionReportingInterval(interval?: number): Builder;
 
             /**
              * Sets the minimum number of events before a partial session report is sent to Flurry. The acceptable values are between 5 and 50. tvOS only.
              * 
              * @param threshold The number of events after which partial session report is sent to Flurry.
              */
-            withTVEventCountThreshold(threshold?: number): Flurry.Builder;
+            withTVEventCountThreshold(threshold?: number): Builder;
         }
     }
 

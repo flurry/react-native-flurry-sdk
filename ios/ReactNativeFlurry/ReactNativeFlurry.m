@@ -80,7 +80,7 @@
 
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"7.0.0";
+static NSString * const originVersion = @"7.1.0";
 
 @interface ReactNativeFlurry ()<RNFlurryEventDispatcherDelegate>
 
@@ -252,7 +252,16 @@ RCT_EXPORT_METHOD(setUserId:(nullable NSString *)userId) {
 }
 
 RCT_EXPORT_METHOD(setVersionName:(nonnull NSString *)version) {
-    NSLog(@"Flurry API Removal: [Flurry setAppVersion:] was deprecated and is removed from this version.");
+    [Flurry setAppVersion:version];
+}
+
+RCT_EXPORT_METHOD(setContinueSessionMillis:(int)sessionMillis) {
+    double seconds = (double) value / 1000.0;
+    [Flurry setSessionContinueSeconds:(NSInteger)(round(seconds))];
+}
+
+RCT_EXPORT_METHOD(setIncludeBackgroundSessionsInMetrics:(BOOL)includeBackgroundSessionsInMetrics) {
+    [Flurry setCountBackgroundSessions:includeBackgroundSessionsInMetrics];
 }
 
 RCT_EXPORT_METHOD(setIAPReportingEnabled:(BOOL)enableIAP) {
@@ -401,13 +410,13 @@ RCT_EXPORT_METHOD(logBreadcrumb:(nonnull NSString *)breadcrumb) {
 }
 
 RCT_EXPORT_METHOD(logPayment:(NSString *)productName productId:(NSString *)productId quantity:(NSInteger)quantity price:(double)price currency:(NSString *)currency transactionId:(NSString *)transactionId parameters:(NSDictionary *)parameters) {
-    [Flurry logPaymentTransactionParamsWithTransactionId:transactionId
+    [Flurry logPaymentTransactionWithTransactionId:transactionId
                                                productId:productId
-                                                quantity:[NSString stringWithFormat:@"%ld", quantity]
-                                                   price:[NSString stringWithFormat:@"%f", price]
+                                                quantity:quantity
+                                                   price:price
                                                 currency:currency
                                              productName:productName
-                                        transactionState:@"0"
+                                        transactionState:FlurryPaymentTransactionStatePurchasing
                                        userDefinedParams:parameters
                                           statusCallback:nil];
 }

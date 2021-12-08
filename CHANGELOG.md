@@ -3,6 +3,15 @@
 * [Flurry Android SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/android/)
 * [Flurry iOS SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/ios/)
 
+## v7.1.0 (2021-12-06)
+
+#### Features
+
+* Upgrade Flurry Android SDK version to 13.1.0
+* Upgrade Flurry iOS SDK version to 11.4.0
+* Support Agent setters APIs
+* Improve TypeScript support
+
 # v7.0.0 (2021-08-28)
 
 #### Features

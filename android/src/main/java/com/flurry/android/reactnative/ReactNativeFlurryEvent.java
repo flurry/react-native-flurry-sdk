@@ -80,7 +80,7 @@ public class ReactNativeFlurryEvent {
             FlurryEvent.PRIVACY_OPT_OUT
     };
 
-    final static Object[] PARAMS = new Object[] {
+    final static FlurryEvent.ParamBase[] PARAMS = new FlurryEvent.ParamBase[] {
             FlurryEvent.Param.AD_TYPE,
             FlurryEvent.Param.LEVEL_NAME,
             FlurryEvent.Param.LEVEL_NUMBER,
