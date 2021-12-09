@@ -80,7 +80,7 @@
 
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"7.1.0";
+static NSString * const originVersion = @"7.1.1";
 
 @interface ReactNativeFlurry ()<RNFlurryEventDispatcherDelegate>
 
@@ -256,7 +256,7 @@ RCT_EXPORT_METHOD(setVersionName:(nonnull NSString *)version) {
 }
 
 RCT_EXPORT_METHOD(setContinueSessionMillis:(int)sessionMillis) {
-    double seconds = (double) value / 1000.0;
+    double seconds = (double) sessionMillis / 1000.0;
     [Flurry setSessionContinueSeconds:(NSInteger)(round(seconds))];
 }
 

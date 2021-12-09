@@ -3,6 +3,12 @@
 * [Flurry Android SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/android/)
 * [Flurry iOS SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/ios/)
 
+### v7.1.1 (2021-12-08)
+
+#### Bug Fixes
+
+* Fix parameter typo
+
 ## v7.1.0 (2021-12-06)
 
 #### Features
