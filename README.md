@@ -62,20 +62,7 @@ A React Native plugin for Flurry SDK
 
 - **Flurry Push**</br>
   In order to use [Flurry Push](https://developer.yahoo.com/flurry/docs/push/) for [Android](https://developer.yahoo.com/flurry/docs/push/integration/android/), please follow the additional steps below:
-  1. Android Flurry Push requires your projects to initialize Flurry from the native Application class. Please do the Flurry setup in `MainApplication.onCreate()`. With the same APIs as the JavaScript version.
-
-     ```java
-     import com.flurry.android.reactnative.FlurryModule;
-  
-       new FlurryModule.Builder()
-            .withCrashReporting(true)
-            .withLogEnabled(true)
-            .withLogLevel(Log.VERBOSE)
-            .withMessaging(true, options_or_listener) // optional user's native `FlurryMarketingOptions` or `FlurryMessagingListener`.
-            .build(this, FLURRY_ANDROID_API_KEY);
-     ```
-
-  2. Follow [Set up a Firebase Cloud Messaging client app on Android](https://firebase.google.com/docs/cloud-messaging/android/client). Complete "Set up Firebase and the FCM SDK" step for adding Firebase to your Android project. There should be a file `google-services.json` in your project's `android/app` folder now. You do not need to provide any setup codes here. Your `build.gradle` will look like:
+  1. Follow [Set up a Firebase Cloud Messaging client app on Android](https://firebase.google.com/docs/cloud-messaging/android/client). Complete "Set up Firebase and the FCM SDK" step for adding Firebase to your Android project. There should be a file `google-services.json` in your project's `android/app` folder now. You do not need to provide any setup codes here. Your `build.gradle` will look like:
 
      ```groovy
         // android/build.gradle (project-level)
@@ -93,6 +80,25 @@ A React Native plugin for Flurry SDK
         dependencies {
             implementation 'com.google.firebase:firebase-messaging:21.1.0'
         }
+     ```
+
+  2. If you want to customize Flurry Push notification, please do the Flurry setup in `MainApplication.onCreate()`. With the same APIs as the JavaScript version.
+
+     ```java
+     import com.flurry.android.reactnative.FlurryModule;
+
+     public class MainApplication extends Application implements ReactApplication {
+
+       @Override
+       public void onCreate() {
+         super.onCreate();
+     
+         new FlurryModule.Builder()
+           .withCrashReporting(true)
+           .withLogEnabled(true)
+           .withLogLevel(Log.VERBOSE)
+           .withMessaging(true, options_or_listener) // optional user's native `FlurryMarketingOptions` or `FlurryMessagingListener`.
+           .build(this, FLURRY_ANDROID_API_KEY);
      ```
 
   3. Set up "Android Authorization" in Flurry [Push Authorization](https://developer.yahoo.com/flurry/docs/push/authorization/).
@@ -281,7 +287,7 @@ A React Native plugin for Flurry SDK
 - `index.js / Messaging.js`
 
    ```javascript
-   // To enable Flurry Push for Android, please duplicate Builder setup in your MainApplication.java.
+   // To customize Flurry Push for Android, please duplicate Builder setup in your MainApplication.java.
    new Flurry.Builder()
      .withMessaging(true)
      ...
@@ -302,8 +308,8 @@ A React Native plugin for Flurry SDK
 
 ## API Reference
 
-See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http://flurry.github.io/flurry-android-sdk/com/flurry/android/FlurryAgent.html) /
-[iOS](http://flurry.github.io/flurry-ios-sdk/)-[(Flurry)](http://flurry.github.io/flurry-ios-sdk/interface_flurry.html) for the Flurry references.
+See [Android](https://flurry.github.io/flurry-android-sdk/analytics/index.html)-[(FlurryAgent)](https://flurry.github.io/flurry-android-sdk/analytics/com/flurry/android/FlurryAgent.html) /
+[iOS](https://flurry.github.io/flurry-ios-sdk/Flurry%20Analytics%20API%20Documentation/index.html)-[(Flurry)](https://flurry.github.io/flurry-ios-sdk/Flurry%20Analytics%20API%20Documentation/interface_flurry.html) for the Flurry references.
 
 - **Methods to initialize Flurry**
 
@@ -475,6 +481,6 @@ See [Android](http://flurry.github.io/flurry-android-sdk/)-[(FlurryAgent)](http:
 
 ## License
 
-Copyright 2018 Oath Inc.
+Copyright 2022 Yahoo Inc.
 
-This project is licensed under the terms of the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0) open source license. Please refer to [LICENSE](LICENSE) for the full terms.
+This project is licensed under the terms of the [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) open source license. Please refer to [LICENSE](LICENSE) for the full terms.

@@ -3,6 +3,17 @@
 * [Flurry Android SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/android/)
 * [Flurry iOS SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/ios/)
 
+## v7.2.0 (2022-05-26)
+
+#### Features
+
+* Upgrade Flurry Android SDK version to 13.3.0
+* Upgrade Flurry iOS SDK version to 12.0.0
+* Support initializing Flurry Push from the JavaScript for Android
+* Apply safeExtGet for Android build.gradle to sync with the root project
+* Use mavenCentral instead of the deprecated jcenter
+* Support Android 12
+
 ### v7.1.1 (2021-12-08)
 
 #### Bug Fixes

@@ -3,20 +3,24 @@ apply plugin: 'com.android.library'
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:3.2.1"
+        classpath "com.android.tools.build:gradle:4.2.2"
     }
 }
 
+def safeExtGet(prop, fallback) {
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
 android {
-    compileSdkVersion 28
+    compileSdkVersion safeExtGet('compileSdkVersion', 31)
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 28
+        minSdkVersion safeExtGet('minSdkVersion', 16)
+        targetSdkVersion safeExtGet('targetSdkVersion', 31)
         versionCode 1
         versionName "1.0"
     }
@@ -33,14 +37,13 @@ repositories {
     }
     mavenCentral()
     google()
-    jcenter()
 }
 
 dependencies {
     // implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.flurry.android:analytics:13.1.0'
-    implementation 'com.flurry.android:marketing:13.1.0'
+    implementation 'com.flurry.android:analytics:13.3.0'
+    implementation 'com.flurry.android:marketing:13.3.0'
 }
 

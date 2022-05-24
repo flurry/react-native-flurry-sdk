@@ -61,13 +61,14 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String FLURRY_MESSAGING_EVENT = "FlurryMessagingEvent";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "7.1.1";
+    private static final String ORIGIN_VERSION = "7.2.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 
     private static FlurryPerformance.ResourceLogger sFlurryPerformanceResourceLogger = null;
 
     private static ReactApplicationContext sReactApplicationContext = null;
+    private static boolean sMessagingInitialized = false;
     private static boolean sEnableMessagingListener = false;
     private static FlurryMessage sFlurryMessage = null;
 
@@ -162,7 +163,24 @@ public class FlurryModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void withMessaging(boolean enableMessaging) {
-        Log.i(TAG, "To enable Flurry Push for Android, please duplicate Builder setup in your MainApplication.java.");
+        Log.i(TAG, "To customize Flurry Push for Android, please duplicate Builder setup in your MainApplication.java.");
+
+        if (!enableMessaging || sMessagingInitialized) {
+            return;
+        }
+
+        RNFlurryMessagingListener messagingListener = new RNFlurryMessagingListener();
+        FlurryMarketingOptions messagingOptions = new FlurryMarketingOptions.Builder()
+                .setupMessagingWithAutoIntegration()
+                .withFlurryMessagingListener(messagingListener)
+                // Define yours if needed
+                // .withDefaultNotificationChannelId(NOTIFICATION_CHANNEL_ID)
+                // .withDefaultNotificationIconResourceId(R.mipmap.ic_launcher_round)
+                // .withDefaultNotificationIconAccentColor(getResources().getColor(R.color.colorPrimary))
+                .build();
+
+        FlurryMarketingModule marketingModule = new FlurryMarketingModule(messagingOptions);
+        mFlurryAgentBuilder.withModule(marketingModule);
     }
 
     @ReactMethod
@@ -791,6 +809,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
             FlurryMarketingModule marketingModule = new FlurryMarketingModule(messagingOptions);
             mFlurryAgentBuilder.withModule(marketingModule);
 
+            sMessagingInitialized = true;
             return this;
         }
 
@@ -825,6 +844,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
             FlurryMarketingModule marketingModule = new FlurryMarketingModule(messagingOptions);
             mFlurryAgentBuilder.withModule(marketingModule);
 
+            sMessagingInitialized = true;
             return this;
         }
 
