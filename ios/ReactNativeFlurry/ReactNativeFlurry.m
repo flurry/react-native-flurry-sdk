@@ -15,51 +15,15 @@
  */
 
 #import "ReactNativeFlurry.h"
-#if __has_include(<Flurry-iOS-SDK/Flurry.h>)
-#import <Flurry-iOS-SDK/Flurry.h>
-#import <Flurry-iOS-SDK/Flurry+Event.h>
-#elif __has_include(<Flurry_iOS_SDK/Flurry.h>)
-#import <Flurry_iOS_SDK/Flurry.h>
-#import <Flurry_iOS_SDK/Flurry+Event.h>
-#else
-#import "Flurry.h"
-#import "Flurry+Event.h"
-#endif
 
-#if __has_include(<Flurry-iOS-SDK/FlurryUserProperties.h>)
-#import <Flurry-iOS-SDK/FlurryUserProperties.h>
-#elif __has_include(<Flurry_iOS_SDK/FlurryUserProperties.h>)
-#import <Flurry_iOS_SDK/FlurryUserProperties.h>
-#else
-#import "FlurryUserProperties.h"
-#endif
-
-#if __has_include(<Flurry-iOS-SDK/FlurrySKAdNetwork.h>)
-#import <Flurry-iOS-SDK/FlurrySKAdNetwork.h>
-#elif __has_include(<Flurry_iOS_SDK/FlurrySKAdNetwork.h>)
-#import <Flurry_iOS_SDK/FlurrySKAdNetwork.h>
-#else
-#import "FlurrySKAdNetwork.h"
-#endif
+#import <Flurry_iOS_SDK/Flurry_iOS_SDK.h>
 
 #if TARGET_OS_IOS
 #ifdef HAS_MESSAGING
-#if __has_include(<Flurry-iOS-SDK/FlurryMessaging.h>)
-#import <Flurry-iOS-SDK/FlurryMessaging.h>
-#elif __has_include(<Flurry_iOS_SDK/FlurryMessaging.h>)
-#import <Flurry_iOS_SDK/FlurryMessaging.h>
-#else
-#import "FlurryMessaging.h"
-#endif
+#import <Flurry_Messaging/Flurry_Messaging.h>
 #import "ReactNativeFlurryMessagingListener.h"
 #endif
-#if __has_include(<Flurry-iOS-SDK/FConfig.h>)
-#import <Flurry-iOS-SDK/FConfig.h>
-#elif __has_include(<Flurry_iOS_SDK/FConfig.h>)
-#import <Flurry_iOS_SDK/FConfig.h>
-#else
-#import "FConfig.h"
-#endif
+#import <Flurry_Config/Flurry_Config.h>
 #import "ReactNativeFlurryConfigListener.h"
 #endif
 
@@ -80,7 +44,7 @@
 
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"7.2.0";
+static NSString * const originVersion = @"7.1.1";
 
 @interface ReactNativeFlurry ()<RNFlurryEventDispatcherDelegate>
 
