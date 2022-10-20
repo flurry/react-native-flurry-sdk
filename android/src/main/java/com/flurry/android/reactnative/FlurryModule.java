@@ -61,7 +61,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String FLURRY_MESSAGING_EVENT = "FlurryMessagingEvent";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "7.3.0";
+    private static final String ORIGIN_VERSION = "8.0.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 
@@ -101,6 +101,14 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void initBuilder() {
         mFlurryAgentBuilder = new FlurryAgent.Builder();
+        mFlurryAgentBuilder
+                .withListener(new FlurryAgentListener() {
+                    @Override
+                    public void onSessionStarted() {
+                    }
+                })
+                .withSessionForceStart(true)
+                .withReportLocation(true);
     }
 
     @ReactMethod
@@ -111,14 +119,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
         if (context == null) {
             context = getReactApplicationContext();
         }
-        mFlurryAgentBuilder
-                .withListener(new FlurryAgentListener() {
-                    @Override
-                    public void onSessionStarted() {
-                    }
-                })
-                .withSessionForceStart(true)
-                .build(context, apiKey);
+        mFlurryAgentBuilder.build(context, apiKey);
     }
 
     @ReactMethod
@@ -683,6 +684,9 @@ public class FlurryModule extends ReactContextBaseJavaModule {
 
         public Builder() {
             mFlurryAgentBuilder = new FlurryAgent.Builder();
+            mFlurryAgentBuilder
+                    .withSessionForceStart(true)
+                    .withReportLocation(true);
         }
 
         /**
@@ -849,9 +853,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
         }
 
         public void build(final Context context, final String apiKey) {
-            mFlurryAgentBuilder
-                    .withSessionForceStart(true)
-                    .build(context, apiKey);
+            mFlurryAgentBuilder.build(context, apiKey);
         }
     }
 

@@ -44,7 +44,7 @@
 
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"7.3.0";
+static NSString * const originVersion = @"8.0.0";
 
 @interface ReactNativeFlurry ()<RNFlurryEventDispatcherDelegate>
 

@@ -1,6 +1,7 @@
 require 'json'
 
-package = JSON.parse(File.read('../package.json'))
+package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
+
 sdkVersion = '12.1.1'
 
 Pod::Spec.new do |s|
@@ -10,7 +11,7 @@ Pod::Spec.new do |s|
   s.homepage     = "http://www.flurry.com"
   s.license      = {  :type => 'Apache License, Version 2.0',
                       :text => <<-LICENSE
-                        Copyright 2018, Oath Inc.
+                        Copyright 2022, Yahoo Inc.
               
                         Licensed under the Apache License, Version 2.0 (the "License");
                         you may not use this file except in compliance with the License.
@@ -33,9 +34,9 @@ Pod::Spec.new do |s|
   s.subspec 'FlurrySDK' do |ss|
     ss.ios.deployment_target = '8.0'
     ss.ios.source_files = [
-      'ReactNativeFlurry/ReactNativeFlurry.{h,m}',
-      'ReactNativeFlurry/ReactNativeFlurryConfigListener.{h,m}',
-      'ReactNativeFlurry/ReactNativeFlurryEvent.{h,m}',
+      'ios/ReactNativeFlurry/ReactNativeFlurry.{h,m}',
+      'ios/ReactNativeFlurry/ReactNativeFlurryConfigListener.{h,m}',
+      'ios/ReactNativeFlurry/ReactNativeFlurryEvent.{h,m}',
       
     ]
     ss.ios.dependency 'Flurry-iOS-SDK/FlurrySDK', "~> #{sdkVersion}"
@@ -43,7 +44,7 @@ Pod::Spec.new do |s|
 
     ss.tvos.deployment_target = '9.0'
     ss.tvos.source_files = [
-      'ReactNativeFlurry/ReactNativeFlurry.{h,m}'
+      'ios/ReactNativeFlurry/ReactNativeFlurry.{h,m}'
     ]
     ss.tvos.dependency 'Flurry-iOS-SDK/FlurrySDK', "~> #{sdkVersion}"
     
@@ -51,7 +52,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'FlurrySDK-Push' do |ss|
-    ss.source_files = 'ReactNativeFlurry/**/*.{h,m}'
+    ss.source_files = 'ios/ReactNativeFlurry/**/*.{h,m}'
     ss.platform = :ios, '9.0'
     ss.pod_target_xcconfig = { 'GCC_PREPROCESSOR_DEFINITIONS' => 'HAS_MESSAGING=1' }
     ss.dependency 'React'

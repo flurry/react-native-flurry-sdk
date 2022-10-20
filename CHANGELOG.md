@@ -3,7 +3,17 @@
 * [Flurry Android SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/android/)
 * [Flurry iOS SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/ios/)
 
-# v7.3.0 (2022-07-12)
+# v8.0.0 (2022-10-24)
+
+#### Features
+
+* Upgrade Flurry Android SDK version to 14.0.0
+
+#### Bug Fixes
+
+* Fix iOS CocoaPods build Autolinking failures
+
+## v7.3.0 (2022-07-12)
 
 #### Features
 
