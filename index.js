@@ -164,6 +164,18 @@ export default class Flurry {
             return this;
         }
 
+        withReportLocation(reportLocation = true) {
+            if (Platform.OS === 'android') {
+                if (typeof reportLocation !== 'boolean') {
+                    console.error(`Flurry.Builder.withReportLocation: reportLocation must be one of [true, false]. Got ${reportLocation}`);
+                    return this;
+                }
+    
+                ReactNativeFlurry.withReportLocation(reportLocation);
+            }
+            return this;
+        }
+
         withPerformanceMetrics(performanceMetrics = Flurry.Performance.ALL) {
             if (Platform.OS === 'android') {
                 if (typeof performanceMetrics !== 'number') {

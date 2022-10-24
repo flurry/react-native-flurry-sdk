@@ -1558,6 +1558,13 @@ declare module 'react-native-flurry-sdk' {
             withLogLevel(logLevel?: number): Builder;
 
             /**
+             * True to enable or false to disable Location report. Defaults to false.
+             *
+             * @param reportLocation true to enable Location report, false to disable it.
+             */
+             withReportLocation(reportLocation?: boolean): Builder;
+    
+            /**
              * Set flags for performance metrics.
              *
              * @param performanceMetrics Flags for performance metrics.

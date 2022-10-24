@@ -153,6 +153,11 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void withReportLocation(boolean reportLocation) {
+        mFlurryAgentBuilder.withReportLocation(reportLocation);
+    }
+
+    @ReactMethod
     public void withPerformanceMetrics(double performanceMetrics) {
         mFlurryAgentBuilder.withPerformanceMetrics((int) performanceMetrics);
     }
@@ -743,6 +748,17 @@ public class FlurryModule extends ReactContextBaseJavaModule {
          */
         public Builder withLogLevel(final int logLevel) {
             mFlurryAgentBuilder.withLogLevel(logLevel);
+            return this;
+        }
+
+        /**
+         * True to enable or false to disable Location report. Defaults to false.
+         *
+         * @param reportLocation true to enable Location report, false to disable it.
+         * @return The Builder instance.
+         */
+        public Builder withReportLocation(final boolean reportLocation) {
+            mFlurryAgentBuilder.withReportLocation(reportLocation);
             return this;
         }
 

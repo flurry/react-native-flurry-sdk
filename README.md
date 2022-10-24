@@ -322,6 +322,7 @@ See [Android](https://flurry.github.io/flurry-android-sdk/analytics/index.html)-
   Flurry.Builder.withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics = true);
   Flurry.Builder.withLogEnabled(enableLog = true);
   Flurry.Builder.withLogLevel(logLevel = Flurry.LogLevel.WARN); // LogLevel = { VERBOSE, DEBUG, INFO, WARN, ERROR, ASSERT }
+  Flurry.Builder.withReportLocation(reportLocation = true); // Android only
   Flurry.Builder.withPerformanceMetrics(performanceMetrics = Flurry.Performance.ALL); // Performance = { NONE, COLD_START, SCREEN_TIME, ALL }
   Flurry.Builder.withSslPinningEnabled(sslPinningEnabled = false); // Android only
   Flurry.Builder.withMessaging(enableMessaging = true); // not available on tvOS
