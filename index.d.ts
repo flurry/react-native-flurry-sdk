@@ -185,6 +185,18 @@ declare module 'react-native-flurry-sdk' {
         static setIAPReportingEnabled(enableIAP?: boolean): void;
 
         /**
+         * Set Flurry Consent for the IAB Global Privacy Platform (GPP). To pass an IAB string to Flurry,
+         *
+         * ```javascript
+         * e.g., Flurry.setGppConsent('GPP string', [1, 2]);
+         * ```
+         *
+         * @param gppString IAB GPP String.
+         * @param gppSectionIds Integer set of IAB GPP section ids that are applicable for this bid request.
+         */
+        static setGppConsent(gppString: string, gppSectionIds: number[]): void;
+
+        /**
          * This api allows you to set opt-out/opt-in for data sale
          *
          * ```javascript
@@ -1521,6 +1533,14 @@ declare module 'react-native-flurry-sdk' {
              * @param sessionMillis The time in milliseconds to set the session timeout to. Minimum value of 5000.
              */
             withContinueSessionMillis(sessionMillis?: number): Builder;
+
+            /**
+             * Set Flurry Consent for the IAB Global Privacy Platform (GPP). To pass an IAB string to Flurry,
+             *
+             * @param gppString IAB GPP String.
+             * @param gppSectionIds Integer set of IAB GPP section ids that are applicable for this bid request.
+             */
+            withGppConsent(gppString: string, gppSectionIds: number[]): Builder;
 
             /**
              * True to opt-out data sale or false to opt-in data sale

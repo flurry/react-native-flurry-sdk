@@ -49,9 +49,11 @@ import com.flurry.android.marketing.messaging.notification.FlurryMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String TAG = "FlurryModule";
@@ -61,7 +63,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String FLURRY_MESSAGING_EVENT = "FlurryMessagingEvent";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "8.0.0";
+    private static final String ORIGIN_VERSION = "8.1.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 
@@ -130,6 +132,11 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void withContinueSessionMillis(double sessionMillis) {
         mFlurryAgentBuilder.withContinueSessionMillis((long) sessionMillis);
+    }
+
+    @ReactMethod
+    public void withGppConsent(String gppString, ReadableArray gppSectionIds) {
+        mFlurryAgentBuilder.withGppConsent(gppString, toIntegerSet(gppSectionIds));
     }
 
     @ReactMethod
@@ -258,6 +265,11 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setIAPReportingEnabled(boolean enableIAP) {
         Log.i(TAG, "setIAPReportingEnabled is not supported on Android. Please use logPayment instead.");
+    }
+
+    @ReactMethod
+    public void setGppConsent(String gppString, ReadableArray gppSectionIds) {
+        FlurryAgent.setGppConsent(gppString, toIntegerSet(gppSectionIds));
     }
 
     @ReactMethod
@@ -681,6 +693,21 @@ public class FlurryModule extends ReactContextBaseJavaModule {
         return result;
     }
 
+    private static Set<Integer> toIntegerSet(final ReadableArray readableArray) {
+        if ((readableArray == null) || (readableArray.size() == 0)) {
+            return null;
+        }
+
+        Set<Integer> result = new HashSet<>();
+        for (int i = 0; i < readableArray.size(); i++) {
+            if (readableArray.getType(i) == ReadableType.Number) {
+                result.add(readableArray.getInt(i));
+            }
+        }
+
+        return result;
+    }
+
     /**
      * Builder Pattern class for Flurry. Used by MainApplication to initialize Flurry Push for messaging.
      */
@@ -759,6 +786,29 @@ public class FlurryModule extends ReactContextBaseJavaModule {
          */
         public Builder withReportLocation(final boolean reportLocation) {
             mFlurryAgentBuilder.withReportLocation(reportLocation);
+            return this;
+        }
+
+        /**
+         * Set Flurry Consent for the IAB Global Privacy Platform (GPP). To pass an IAB string to Flurry,
+         *
+         * @param gppString IAB GPP String.
+         * @param gppSectionIds Integer set of IAB GPP section ids that are applicable for this bid request.
+         * @return The Builder instance
+         */
+        public Builder withGppConsent(final String gppString, final Set<Integer> gppSectionIds) {
+            mFlurryAgentBuilder.withGppConsent(gppString, gppSectionIds);
+            return this;
+        }
+
+        /** True to opt-out data sale or false to opt-in data sale
+         *
+         * @param isOptOut true to opt-out data sale, false to opt-in
+         *
+         * @return The Builder instance
+         */
+        public Builder withDataSaleOptOut(final boolean isOptOut) {
+            mFlurryAgentBuilder.withDataSaleOptOut(isOptOut);
             return this;
         }
 

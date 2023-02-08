@@ -3,11 +3,20 @@
 * [Flurry Android SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/android/)
 * [Flurry iOS SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/ios/)
 
+## v8.1.0 (2023-02-02)
+
+#### Features
+
+* Upgrade Flurry Android SDK version to 14.1.0
+* Upgrade Flurry iOS SDK version to 12.2.0
+* Support GPP Consents APIs
+
 # v8.0.0 (2022-10-24)
 
 #### Features
 
 * Upgrade Flurry Android SDK version to 14.0.0
+* Support Report Location APIs
 
 #### Bug Fixes
 

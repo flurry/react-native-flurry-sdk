@@ -97,6 +97,7 @@ A React Native plugin for Flurry SDK
            .withCrashReporting(true)
            .withLogEnabled(true)
            .withLogLevel(Log.VERBOSE)
+           .withReportLocation(true)
            .withMessaging(true, options_or_listener) // optional user's native `FlurryMarketingOptions` or `FlurryMessagingListener`.
            .build(this, FLURRY_ANDROID_API_KEY);
      ```
@@ -186,6 +187,7 @@ A React Native plugin for Flurry SDK
      .withCrashReporting(true)
      .withLogEnabled(true)
      .withLogLevel(Flurry.LogLevel.DEBUG)
+     .withReportLocation(true)
      .build(FLURRY_ANDROID_API_KEY, FLURRY_IOS_API_KEY);
   
    AppRegistry.registerComponent(appName, () => App);
@@ -317,6 +319,7 @@ See [Android](https://flurry.github.io/flurry-android-sdk/analytics/index.html)-
   Flurry.Builder.withAppVersion(versionName = '1.0'); // iOS only. For Android, please use Flurry.setVersionName() instead.
   Flurry.Builder.withContinueSessionMillis(sessionMillis = 10000);
   Flurry.Builder.withCrashReporting(crashReporting = true);
+  Flurry.Builder.withGppConsent(gppString: string, gppSectionIds: number[]);
   Flurry.Builder.withDataSaleOptOut(isOptOut = false);
   Flurry.Builder.withIAPReportingEnabled(enableIAP = true); // iOS only.
   Flurry.Builder.withIncludeBackgroundSessionsInMetrics(includeBackgroundSessionsInMetrics = true);
@@ -364,6 +367,7 @@ See [Android](https://flurry.github.io/flurry-android-sdk/analytics/index.html)-
 - **Methods to set privacy preferences**
 
   ```javascript
+  Flurry.setGppConsent(gppString: string, gppSectionIds: number[]);
   Flurry.setDataSaleOptOut(isOptOut: boolean);
   Flurry.deleteData();
   Flurry.openPrivacyDashboard();

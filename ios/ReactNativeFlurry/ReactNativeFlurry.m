@@ -44,7 +44,7 @@
 
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"8.0.0";
+static NSString * const originVersion = @"8.1.0";
 
 @interface ReactNativeFlurry ()<RNFlurryEventDispatcherDelegate>
 
@@ -134,6 +134,10 @@ RCT_EXPORT_METHOD(withCrashReporting:(BOOL)crashReporting) {
 RCT_EXPORT_METHOD(withContinueSessionMillis:(NSInteger)value) {
     double seconds = (double) value / 1000.0;
     [self.sessionBuilder withSessionContinueSeconds:(NSInteger)(round(seconds))];
+}
+
+RCT_EXPORT_METHOD(withGppConsent:(nonnull NSString *)gppString gppSectionIds:(nonnull NSArray<NSNumber *>*)gppSectionIds) {
+    [self.sessionBuilder withGppConsent:gppString gppSectionIds:gppSectionIds];
 }
 
 RCT_EXPORT_METHOD(withDataSaleOptOut:(BOOL)isOptOut) {
@@ -230,6 +234,10 @@ RCT_EXPORT_METHOD(setIncludeBackgroundSessionsInMetrics:(BOOL)includeBackgroundS
 
 RCT_EXPORT_METHOD(setIAPReportingEnabled:(BOOL)enableIAP) {
     [Flurry setIAPReportingEnabled:enableIAP];
+}
+
+RCT_EXPORT_METHOD(setGppConsent:(nonnull NSString *)gppString gppSectionIds:(nonnull NSArray<NSNumber *>*)gppSectionIds) {
+    [Flurry setGppConsent:gppString gppSectionIds:gppSectionIds];
 }
 
 RCT_EXPORT_METHOD(setDataSaleOptOut:(BOOL)isOptOut) {

@@ -112,6 +112,21 @@ export default class Flurry {
             return this;
         }
 
+        withGppConsent(gppString, gppSectionIds) {
+            if (typeof gppString !== 'string') {
+                console.error(`Flurry.Builder.withGppConsent: gppString must be string. Got ${gppString}`);
+                return this;
+            }
+
+            if (!Array.isArray(gppSectionIds)) {
+                console.error(`Flurry.Builder.withGppConsent: gppSectionIds must be array. Got ${gppSectionIds}`);
+                return this;
+            }
+
+            ReactNativeFlurry.withGppConsent(gppString, gppSectionIds);
+            return this;
+        }
+
         withDataSaleOptOut(isOptOut = false) {
             if (typeof isOptOut !== 'boolean') {
                 console.error(`Flurry.Builder.withDataSaleOptOut: isOptOut must be one of [true, false]. Got ${isOptOut}`);
@@ -559,6 +574,20 @@ export default class Flurry {
         }
 
         ReactNativeFlurry.setIAPReportingEnabled(enableIAP);
+    }
+
+    static setGppConsent(gppString, gppSectionIds) {
+        if (typeof gppString !== 'string') {
+            console.error(`Flurry.setGppConsent: gppString must be string. Got ${gppString}`);
+            return;
+        }
+
+        if (!Array.isArray(gppSectionIds)) {
+            console.error(`Flurry.setGppConsent: gppSectionIds must be array. Got ${gppSectionIds}`);
+            return;
+        }
+
+        ReactNativeFlurry.setGppConsent(gppString, gppSectionIds);
     }
 
     static setDataSaleOptOut(isOptOut = false) {
