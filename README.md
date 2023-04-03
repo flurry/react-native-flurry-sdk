@@ -102,7 +102,13 @@ A React Native plugin for Flurry SDK
            .build(this, FLURRY_ANDROID_API_KEY);
      ```
 
-  3. Set up "Android Authorization" in Flurry [Push Authorization](https://developer.yahoo.com/flurry/docs/push/authorization/).
+  3. Add notification permission in the Android manifest file. (required on the Android 13 and above devices.)
+
+       ```xml
+        <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+     ```
+     
+  4. Set up "Android Authorization" in Flurry [Push Authorization](https://developer.yahoo.com/flurry/docs/push/authorization/).
 
 ### iOS
 

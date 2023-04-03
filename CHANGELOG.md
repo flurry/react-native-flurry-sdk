@@ -3,6 +3,12 @@
 * [Flurry Android SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/android/)
 * [Flurry iOS SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/ios/)
 
+## v8.2.0 (2023-04-02)
+
+#### Features
+
+* Upgrade Flurry Android SDK version to 14.2.0
+
 ## v8.1.0 (2023-02-02)
 
 #### Features
