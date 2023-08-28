@@ -3,6 +3,14 @@
 * [Flurry Android SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/android/)
 * [Flurry iOS SDK Release Notes](https://developer.yahoo.com/flurry/docs/releasenotes/ios/)
 
+## v8.3.0 (2023-08-22)
+
+#### Features
+
+* Upgrade Flurry Android SDK version to 14.4.0
+* Upgrade Flurry iOS SDK version to 12.4.0
+* Support Timed event logging APIs with the 2nd key
+
 ## v8.2.0 (2023-04-02)
 
 #### Features

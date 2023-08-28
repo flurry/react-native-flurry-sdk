@@ -684,8 +684,10 @@ export default class Flurry {
      * There are four overloads
      * - logEvent(eventId)
      * - logEvent(eventId, timed)
+     * - logEvent(eventId, timedId)
      * - logEvent(eventId, parameters)
      * - logEvent(eventId, parameters, timed)
+     * - logEvent(eventId, parameters, timedId)
      */
     static logEvent(eventId, timedOrParameters, timed) {
         if (typeof eventId !== 'string') {
@@ -698,6 +700,8 @@ export default class Flurry {
         } else if (arguments.length === 2) {
             if (typeof timedOrParameters === 'boolean') {
                 ReactNativeFlurry.logEventTimed(eventId, timedOrParameters);
+            } else if (typeof timedOrParameters === 'string') {
+                ReactNativeFlurry.logEventTimedId(eventId, timedOrParameters);
             } else if (Object.prototype.toString.call(timedOrParameters).includes('Object')) {
                 ReactNativeFlurry.logEventParams(eventId, timedOrParameters);
             } else if (Object.prototype.toString.call(timedOrParameters).includes('Map')) {
@@ -705,9 +709,17 @@ export default class Flurry {
             }
         } else if (arguments.length === 3) {
             if (Object.prototype.toString.call(timedOrParameters).includes('Object')) {
-                ReactNativeFlurry.logEventParamsTimed(eventId, timedOrParameters, timed);
+                if (typeof timed === 'boolean') {
+                    ReactNativeFlurry.logEventParamsTimed(eventId, timedOrParameters, timed);
+                } else if (typeof timed === 'string') {
+                    ReactNativeFlurry.logEventParamsTimedId(eventId, timedOrParameters, timed);
+                }
             } else if (Object.prototype.toString.call(timedOrParameters).includes('Map')) {
-                ReactNativeFlurry.logEventParamsTimed(eventId, Object.fromEntries(timedOrParameters), timed);
+                if (typeof timed === 'boolean') {
+                    ReactNativeFlurry.logEventParamsTimed(eventId, Object.fromEntries(timedOrParameters), timed);
+                } else if (typeof timed === 'string') {
+                    ReactNativeFlurry.logEventParamsTimedId(eventId, Object.fromEntries(timedOrParameters), timed);
+                }
             }
         }
     }
@@ -715,9 +727,11 @@ export default class Flurry {
     /**
      * There are two overloads
      * - endTimedEvent(eventId)
+     * - endTimedEvent(eventId, timedId)
      * - endTimedEvent(eventId, parameters)
+     * - endTimedEvent(eventId, parameters, timedId)
      */
-    static endTimedEvent(eventId, parameters) {
+    static endTimedEvent(eventId, timedIdOrParameters, timedId) {
         if (typeof eventId !== 'string') {
             console.error(`Flurry.logEvent: endTimedEvent must be a string. Got ${eventId}`);
             return;
@@ -726,10 +740,20 @@ export default class Flurry {
         if (arguments.length === 1) {
             ReactNativeFlurry.endTimedEvent(eventId);
         } else if (arguments.length === 2) {
-            if (Object.prototype.toString.call(parameters).includes('Object')) {
-                ReactNativeFlurry.endTimedEventParams(eventId, parameters);
-            } else if (Object.prototype.toString.call(parameters).includes('Map')) {
-                ReactNativeFlurry.endTimedEventParams(eventId, Object.fromEntries(parameters));
+            if (typeof timedIdOrParameters === 'string') {
+                ReactNativeFlurry.endTimedEventId(eventId, timedIdOrParameters);
+            } else if (Object.prototype.toString.call(timedIdOrParameters).includes('Object')) {
+                ReactNativeFlurry.endTimedEventParams(eventId, timedIdOrParameters);
+            } else if (Object.prototype.toString.call(timedIdOrParameters).includes('Map')) {
+                ReactNativeFlurry.endTimedEventParams(eventId, Object.fromEntries(timedIdOrParameters));
+            }
+        } else if (arguments.length === 3) {
+            if (typeof timedId === 'string') {
+                if (Object.prototype.toString.call(timedIdOrParameters).includes('Object')) {
+                    ReactNativeFlurry.endTimedEventParamsId(eventId, timedIdOrParameters, timedId);
+                } else if (Object.prototype.toString.call(timedIdOrParameters).includes('Map')) {
+                    ReactNativeFlurry.endTimedEventParamsId(eventId, Object.fromEntries(timedIdOrParameters), timedId);
+                }
             }
         }
     }

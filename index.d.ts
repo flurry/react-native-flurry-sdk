@@ -357,36 +357,63 @@ declare module 'react-native-flurry-sdk' {
         /**
          * Log an event.
          * 
-         * There are two overloads,
+         * There are three overloads,
          * ```javascript
          * e.g., Flurry.logEvent('eventId');
          *       Flurry.logEvent('eventId', true);
+         *       Flurry.logEvent('eventId', 'timedId');
          * ```
          * - logEvent(eventId)
          * - logEvent(eventId, timed)
-         * 
-         * @param eventId       The name/id of the event.
-         * @param timed         True if this event is timed, false otherwise.
+         * - logEvent(eventId, timedId)
+         *
+         * @param eventId The name/id of the event.
+         * @param timed   True if this event is timed, false otherwise.
+         * @param timedId The 2nd key for timed event.
          */
-        static logEvent(eventId: string, timed?: boolean): void;
+        static logEvent(eventId: string, timed?: boolean, timedId?: string): void;
 
         /**
          * Log an event with parameters.
          * 
-         * There are two overloads,
+         * There are three overloads,
          * ```javascript
          * e.g., Flurry.logEvent('eventId', {param: 'true'});
          *       Flurry.logEvent('eventId', {param: 'true'}, true);
+         *       Flurry.logEvent('eventId', {param: 'true'}, 'timedId');
+         * ```
+         * Example for timed event logging with the 2nd key:
+         * ```javascript
+         *  // 0    1    2    3    4    5    6    sec.
+         *  // ID1  ID2       ID3
+         *  //      -    -    -    ID2: 3 sec.
+         *  //                -    -    ID3: 2 sec.
+         *  // -    -    -    -    -    -    ID1: 6 sec.
+         *
+         *  Flurry.logEvent('TimedEventName', 'InstanceId1');
+         *  // sleep 1 sec.
+         *  Flurry.logEvent('TimedEventName', 'InstanceId2');
+         *  // sleep 2 sec.
+         *  Flurry.logEvent('TimedEventName', 'InstanceId3');
+         *
+         *  // sleep 1 sec.
+         *  Flurry.endTimedEvent('TimedEventName', 'InstanceId2');  // ID2 duration: 3 sec.
+         *  // sleep 1 sec.
+         *  Flurry.endTimedEvent('TimedEventName', 'InstanceId3');  // ID3 duration: 2 sec.
+         *  // sleep 1 sec.
+         *  Flurry.endTimedEvent('TimedEventName', 'InstanceId1');  // ID1 duration: 6 sec.
          * ```
          * - logEvent(eventId, parameters)
          * - logEvent(eventId, parameters, timed)
-         * 
-         * @param eventId       The name/id of the event.
-         * @param parameters    A {@code Map<String, String>} of parameters to log with this event.
-         * @param timed         True if this event is timed, false otherwise.
+         * - logEvent(eventId, parameters, timedId)
+         *
+         * @param eventId    The name/id of the event.
+         * @param parameters A {@code Map<String, String>} of parameters to log with this event.
+         * @param timed      True if this event is timed, false otherwise.
+         * @param timedId    The 2nd key for timed event.
          */
-        static logEvent(eventId: string, parameters: { [key: string]: string; }, timed?: boolean): void;
-        static logEvent(eventId: string, parameters: Map<string, string>,        timed?: boolean): void;
+        static logEvent(eventId: string, parameters: { [key: string]: string; }, timed?: boolean, timedId?: string): void;
+        static logEvent(eventId: string, parameters: Map<string, string>,        timed?: boolean, timedId?: string): void;
 
         /**
          * Log a standard event with parameters.
@@ -402,11 +429,33 @@ declare module 'react-native-flurry-sdk' {
          * Flurry.logStandardEvent(Flurry.Event.PURCHASED, params);
          * ```
          *
-         * @param eventId       The id {@code Flurry.Event} of the event.
-         * @param parameters    A {@code Map<string|Flurry.EventParam, string|number|boolean>} of parameters to log with this event.
+         * @param eventId    The id {@code Flurry.Event} of the event.
+         * @param parameters A {@code Map<string|Flurry.EventParam, string|number|boolean>} of parameters to log with this event.
          */
         static logStandardEvent(eventId: number, parameters?: { [key: string]: string|number|boolean; }): void;
         static logStandardEvent(eventId: number, parameters?: Map<string, string|number|boolean>       ): void;
+
+        /**
+         * End a timed event.
+         *
+         * There are four overloads,
+         * ```javascript
+         * e.g., Flurry.endTimedEvent('eventId');
+         *       Flurry.endTimedEvent('eventId', 'timedId');
+         *       Flurry.endTimedEvent('eventId', {param: 'true'});
+         *       Flurry.endTimedEvent('eventId', {param: 'true'}, 'timedId');
+         * ```
+         * - endTimedEvent(eventId)
+         * - endTimedEvent(eventId, timedId)
+         * - endTimedEvent(eventId, parameters)
+         * - endTimedEvent(eventId, parameters, timedId)
+         *
+         * @param eventId    The name/id of the event.
+         * @param parameters A {@code Map<String, String>} of parameters to log with this event.
+         * @param timedId    The 2nd key for timed event.
+         */
+        static endTimedEvent(eventId: string, parameters?: { [key: string]: string; }): void;
+        static endTimedEvent(eventId: string, parameters?: Map<string, string>       ): void;
 
         /**
          * Log a payment.
@@ -429,23 +478,6 @@ declare module 'react-native-flurry-sdk' {
         static logPayment(productName: string, productId: string, quantity: number, price: number,
                     currency: string, transactionId: string, parameters: Map<string, string>      ): void;
  
-        /**
-         * End a timed event.
-         * 
-         * There are two overloads,
-         * ```javascript
-         * e.g., Flurry.endTimedEvent('eventId');
-         *       Flurry.endTimedEvent('eventId', {param: 'true'});
-         * ```
-         * - endTimedEvent(eventId)
-         * - endTimedEvent(eventId, parameters)
-         * 
-         * @param eventId    The name/id of the event.
-         * @param parameters A {@code Map<String, String>} of parameters to log with this event.
-         */
-        static endTimedEvent(eventId: string, parameters?: { [key: string]: string; }): void;
-        static endTimedEvent(eventId: string, parameters?: Map<string, string>       ): void;
-
         /**
          * Report errors that your app catches.
          * 

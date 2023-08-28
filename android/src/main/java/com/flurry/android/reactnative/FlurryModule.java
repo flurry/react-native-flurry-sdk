@@ -63,7 +63,7 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     private static final String FLURRY_MESSAGING_EVENT = "FlurryMessagingEvent";
 
     private static final String ORIGIN_NAME = "react-native-flurry-sdk";
-    private static final String ORIGIN_VERSION = "8.2.0";
+    private static final String ORIGIN_VERSION = "8.3.0";
 
     private FlurryAgent.Builder mFlurryAgentBuilder;
 
@@ -418,6 +418,17 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void logEventTimedId(String eventId, String timedId) {
+        FlurryAgent.logEvent(eventId, timedId);
+    }
+
+    @ReactMethod
+    public void logEventParamsTimedId(String eventId, ReadableMap parameters,
+                                      String timedId) {
+        FlurryAgent.logEvent(eventId, toMap(parameters), timedId);
+    }
+
+    @ReactMethod
     public void logStandardEvent(double eventId, ReadableMap parameters) {
         int id = (int) eventId;
         if ((id < 0) || (id >= ReactNativeFlurryEvent.EVENTS.length)) {
@@ -492,13 +503,6 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void logPayment(String productName, String productId, double quantity, double price,
-                           String currency, String transactionId, ReadableMap parameters) {
-        FlurryAgent.logPayment(productName, productId, (int) quantity, price, currency, transactionId,
-                toMap(parameters));
-    }
-
-    @ReactMethod
     public void endTimedEvent(String eventId) {
         FlurryAgent.endTimedEvent(eventId);
     }
@@ -506,6 +510,23 @@ public class FlurryModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void endTimedEventParams(String eventId, ReadableMap parameters) {
         FlurryAgent.endTimedEvent(eventId, toMap(parameters));
+    }
+
+    @ReactMethod
+    public void endTimedEventId(String eventId, String timedId) {
+        FlurryAgent.endTimedEvent(eventId, timedId);
+    }
+
+    @ReactMethod
+    public void endTimedEventParamsId(String eventId, ReadableMap parameters, String timedId) {
+        FlurryAgent.endTimedEvent(eventId, toMap(parameters), timedId);
+    }
+
+    @ReactMethod
+    public void logPayment(String productName, String productId, double quantity, double price,
+                           String currency, String transactionId, ReadableMap parameters) {
+        FlurryAgent.logPayment(productName, productId, (int) quantity, price, currency, transactionId,
+                toMap(parameters));
     }
 
     @ReactMethod

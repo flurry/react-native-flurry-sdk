@@ -44,7 +44,7 @@
 
 
 static NSString * const originName = @"react-native-flurry-sdk";
-static NSString * const originVersion = @"8.2.0";
+static NSString * const originVersion = @"8.3.0";
 
 @interface ReactNativeFlurry ()<RNFlurryEventDispatcherDelegate>
 
@@ -323,16 +323,24 @@ RCT_EXPORT_METHOD(logEvent:(nonnull NSString *)eventId) {
     [Flurry logEvent:eventId];
 }
 
-RCT_EXPORT_METHOD(logEventTimed:(nonnull NSString *)eventId timed:(BOOL)timed) {
-    [Flurry logEvent:eventId timed:timed];
-}
-
 RCT_EXPORT_METHOD(logEventParams:(nonnull NSString *)eventId parameters:(nullable NSDictionary *)params) {
     [Flurry logEvent:eventId withParameters:params];
 }
 
+RCT_EXPORT_METHOD(logEventTimed:(nonnull NSString *)eventId timed:(BOOL)timed) {
+    [Flurry logEvent:eventId timed:timed];
+}
+
 RCT_EXPORT_METHOD(logEventParamsTimed:(nonnull NSString *)eventId parameters:(nullable NSDictionary *)params timed:(BOOL)timed) {
     [Flurry logEvent:eventId withParameters:params timed:timed];
+}
+
+RCT_EXPORT_METHOD(logEventTimedId:(nonnull NSString *)eventId timedId:(nullable NSString *)timedId) {
+    [Flurry logEvent:eventId withEventId:timedId];
+}
+
+RCT_EXPORT_METHOD(logEventParamsTimedId:(nonnull NSString *)eventId parameters:(nullable NSDictionary *)params timedId:(nullable NSString *)timedId) {
+    [Flurry logEvent:eventId withEventId:timedId withParameters:params];
 }
 
 RCT_EXPORT_METHOD(endTimedEvent:(nonnull NSString *)eventId) {
@@ -341,6 +349,14 @@ RCT_EXPORT_METHOD(endTimedEvent:(nonnull NSString *)eventId) {
 
 RCT_EXPORT_METHOD(endTimedEventParams:(nonnull NSString *)eventId params:(nullable NSDictionary *)params) {
     [Flurry endTimedEvent:eventId withParameters:params];
+}
+
+RCT_EXPORT_METHOD(endTimedEventId:(nonnull NSString *)eventId timedId:(nullable NSString *)timedId) {
+    [Flurry endTimedEvent:eventId withEventId:timedId withParameters:nil];
+}
+
+RCT_EXPORT_METHOD(endTimedEventIdParams:(nonnull NSString *)eventId params:(nullable NSDictionary *)params timedId:(nullable NSString *)timedId) {
+    [Flurry endTimedEvent:eventId withEventId:timedId withParameters:params];
 }
 
 RCT_EXPORT_METHOD(logStandardEvent:(double) eventId params: (nullable NSDictionary *)params){

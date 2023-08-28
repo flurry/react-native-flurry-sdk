@@ -117,6 +117,7 @@ A React Native plugin for Flurry SDK
 - **Flurry Push**</br>
   To set up Flurry Push, please take the following steps.
   1. Open your Podfile, which is located under the `ios` folder of your project.
+
   2. Add the following line in your target section before `use_native_modules!`
 
      ```ruby
@@ -154,11 +155,14 @@ A React Native plugin for Flurry SDK
 
   4. Open your `.xcworkspace` file which is under the `ios` folder. Go to "Capabilities" tab and enable Push Notifications.
      ![push_ios_1](images/push_ios_1.png)
+
   5. Enable Background Modes (Background Fetch and Remote Notifications turned on).
      ![push_ios_2](images/push_ios_2.png)
      Now your `Info.plist` should contain the following items. For more information, please see [Push Setup](https://developer.yahoo.com/flurry/docs/push/integration/ios/).
      ![push_ios_3](images/push_ios_3.png)
+
   6. Set up "iOS Authorization" in Flurry [Push Authorization](https://developer.yahoo.com/flurry/docs/push/authorization/).
+
   7. In order to handle notifications from a cold start, Flurry Push requires to be initialized from AppDelegate as early as possible. Please open `AppDelegate.m`, import the header file
 
      ```objc
@@ -412,9 +416,13 @@ See [Android](https://flurry.github.io/flurry-android-sdk/analytics/index.html)-
   Flurry.logEvent(eventId: string, parameters: { [key: string]: string; });
   Flurry.logEvent(eventId: string, timed: boolean);
   Flurry.logEvent(eventId: string, parameters: { [key: string]: string; }, timed: boolean);
+  Flurry.logEvent(eventId: string, timedId: string);
+  Flurry.logEvent(eventId: string, parameters: { [key: string]: string; }, timedId: string);
   
   Flurry.endTimedEvent(eventId: string);
   Flurry.endTimedEvent(eventId: string, parameters: { [key: string]: string; });
+  Flurry.endTimedEvent(eventId: string, timedId: string);
+  Flurry.endTimedEvent(eventId: string, parameters: { [key: string]: string; }, timedId: string);
   
   Flurry.logStandardEvent(eventId: Flurry.Event);
   Flurry.logStandardEvent(eventId: Flurry.Event, parameters: { [key: Flurry.EventParam]: object; });
