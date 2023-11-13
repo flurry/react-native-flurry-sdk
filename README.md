@@ -121,7 +121,7 @@ A React Native plugin for Flurry SDK
   2. Add the following line in your target section before `use_native_modules!`
 
      ```ruby
-     pod 'react-native-flurry-sdk', :path => '../node_modules/react-native-flurry-sdk/ios', :subspecs => ['FlurrySDK-Push']
+     pod 'react-native-flurry-sdk', :path => '../node_modules/react-native-flurry-sdk', :subspecs => ['FlurrySDK-Push']
      ```
 
      Your target section of Podfile should now look like this:
